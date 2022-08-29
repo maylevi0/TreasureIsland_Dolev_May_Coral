@@ -1,0 +1,94 @@
+﻿@page "/Games/{userID:int}"
+@using TreasureIsland_Dolev_May_Coral.Shared.Entities
+@inject HttpClient Http
+@inject NavigationManager nav
+
+<h1> המשחקים של @CurrentUser.FirstName @CurrentUser.LastName</h1>
+<MudButton>יצירת משחק חדש</MudButton>
+<MudTable Items="@CurrentUser.UserGames" Hover="true">
+    <HeaderContent>
+
+        <MudTh>שם המשחק</MudTh>
+        <MudTh>לצפייה</MudTh>
+        <MudTh>קוד משחק</MudTh>
+        <MudTh>מספר שאלות</MudTh>
+        <MudTh>הגדרות משחק</MudTh>
+        <MudTh>עריכה</MudTh>
+        <MudTh>מחיקה</MudTh>
+        <MudTh>פרסום</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="שם המשחק">@context.GameName</MudTd>
+        <MudTd DataLabel="לצפייה"><MudButton>כפתור</MudButton></MudTd>
+        <MudTd DataLabel="קוד המשחק">@context.GameCode</MudTd>
+        <MudTd DataLabel="מספר שאלות">@context.GameQuestions.Count</MudTd>
+        <MudTd DataLabel="הגדרות משחק"><MudButton>כפתור</MudButton></MudTd>
+        <MudTd DataLabel="עריכה"><MudButton>כפתור</MudButton></MudTd>
+        <MudTd DataLabel="מחיקה"><MudButton>כפתור</MudButton></MudTd>
+        <MudTd DataLabel="פרסום">
+            <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context))" Checked="@context.IsPublish" Color="Color.Primary"></MudCheckBox>
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+<p>@msg</p>
+
+
+@code { [Parameter]
+    public int userID { get; set; }
+
+    string msg = "";
+    User CurrentUser = new User();
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        var GetResponse = await Http.GetAsync("api/Games/" + userID);
+        if (GetResponse.IsSuccessStatusCode == true)
+        {
+            CurrentUser = GetResponse.Content.ReadFromJsonAsync<User>().Result;
+        }
+        else
+        {
+            string error = GetResponse.Content.ReadAsStringAsync().Result;
+            if (error == "user not login" || error == "empty Session")
+            {
+                nav.NavigateTo("./");
+            }
+            else
+            {
+                msg = "התרחשה תקלת שרת";
+            }
+        }
+
+    }
+
+    //void PublishGame(Game selectedGame)
+    //{
+
+    //    selectedGame.IsPublish = !selectedGame.IsPublish;
+    //}
+
+    //קריאה לקונטרולר לעדכון סטטוס השמחק האם פורסם
+
+    async Task PublishGame(Game selectedGame)
+    {
+        selectedGame.IsPublish = !selectedGame.IsPublish;
+
+        Console.WriteLine("המשחק פורסם / לא פורסם");
+
+        var postRespone = await Http.PostAsJsonAsync("api/Games/Update/Publish", selectedGame);
+        if (postRespone.IsSuccessStatusCode == true)
+        {
+            Game updateGame = postRespone.Content.ReadFromJsonAsync<Game>().Result;
+
+            selectedGame = new Game();
+        }
+        else
+        {
+            msg = "משחק לא פורסם";
+        }
+
+
+
+    }
+}

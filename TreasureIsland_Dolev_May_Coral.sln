@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31313.79
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreasureIsland_Dolev_May_Coral.Server", "Server\TreasureIsland_Dolev_May_Coral.Server.csproj", "{7A8FA874-F8E6-43C1-8928-2B3DBE02F9E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TreasureIsland_Dolev_May_Coral.Server", "Server\TreasureIsland_Dolev_May_Coral.Server.csproj", "{7A8FA874-F8E6-43C1-8928-2B3DBE02F9E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreasureIsland_Dolev_May_Coral.Client", "Client\TreasureIsland_Dolev_May_Coral.Client.csproj", "{754F343D-CF13-4C55-8C17-93455EFC4F65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TreasureIsland_Dolev_May_Coral.Client", "Client\TreasureIsland_Dolev_May_Coral.Client.csproj", "{754F343D-CF13-4C55-8C17-93455EFC4F65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreasureIsland_Dolev_May_Coral.Shared", "Shared\TreasureIsland_Dolev_May_Coral.Shared.csproj", "{02BEEC81-CB76-4917-9BD8-8BC40F465C4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TreasureIsland_Dolev_May_Coral.Shared", "Shared\TreasureIsland_Dolev_May_Coral.Shared.csproj", "{02BEEC81-CB76-4917-9BD8-8BC40F465C4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
