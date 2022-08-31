@@ -58,5 +58,69 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
                 return BadRequest("לא פורסם");
             }
         }
+
+        [HttpGet("byCode/{gameCodeFromClient}")]
+        public async Task<IActionResult> GetGameByCode(int gameCodeFromClient)
+        {
+            Game gameFromDB = await _context.Games.Include(gq => gq.GameQuestions).ThenInclude(qd => qd.QuestionDistractors).FirstOrDefaultAsync(g => g.GameCode == gameCodeFromClient);
+            if(gameFromDB != null)
+            {
+                if(gameFromDB.IsPublish == true)
+                {
+                    return Ok(gameFromDB);
+                }
+                else
+                {
+                    return BadRequest("Game not publish");
+                }
+            }
+            else
+            {
+                return BadRequest("Game not found");
+            }
+        }
+
+        //קוד משחק
+
+        [HttpPost]
+        public async Task<IActionResult> AddGame(Game gameToAdd)
+        {
+            string sessionContent = HttpContext.Session.GetString("UserID");
+            if (string.IsNullOrEmpty(sessionContent) == false)
+            {
+                int SessionID = Convert.ToInt32(sessionContent);
+                if (SessionID == gameToAdd.UserID)
+                {
+                    User UserFromDB = await _context.Users.Include(u => u.UserGames).FirstOrDefaultAsync(u => u.ID == gameToAdd.UserID);
+                    if (UserFromDB != null)
+                    {
+                        UserFromDB.UserGames.Add(gameToAdd);
+                        await _context.SaveChangesAsync();
+                        //יצירת קוד המשחק
+                        //שימו לב! בשלב זה המשתנה
+                        //gameToAdd
+                        //מסונכרן עם בסיס הנתונים ויש למשחק
+                        //ID
+                        gameToAdd.GameCode = gameToAdd.ID + 1000;
+                        await _context.SaveChangesAsync();
+                        return Ok(gameToAdd);
+                    }
+                    else
+                    {
+                        return BadRequest("user not found");
+                    }
+                }
+                else
+                {
+                    return BadRequest("user not login");
+                }
+            }
+            else
+            {
+                return BadRequest("empty Session");
+            }
+        }
+
+
     }
 }

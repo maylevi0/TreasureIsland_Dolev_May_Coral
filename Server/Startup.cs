@@ -62,6 +62,7 @@ namespace TreasureIsland_Dolev_May_Coral.Server
             app.UseStaticFiles();
             app.UseSession();
             app.UseRouting();
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseEndpoints(endpoints =>
             {
