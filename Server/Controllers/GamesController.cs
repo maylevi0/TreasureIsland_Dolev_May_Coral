@@ -89,7 +89,7 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> AddGame(Game gameToAdd)
         {
-            string sessionContent = HttpContext.Session.GetString("UserID");
+            string sessionContent = HttpContext.Session.GetString("UserId");
             if (string.IsNullOrEmpty(sessionContent) == false)
             {
                 int SessionID = Convert.ToInt32(sessionContent);
