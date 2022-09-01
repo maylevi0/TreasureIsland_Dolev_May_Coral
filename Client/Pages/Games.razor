@@ -2,9 +2,46 @@
 @using TreasureIsland_Dolev_May_Coral.Shared.Entities
 @inject HttpClient Http
 @inject NavigationManager nav
+@using System.ComponentModel.DataAnnotations
 
 <h1> המשחקים של @CurrentUser.FirstName @CurrentUser.LastName</h1>
-<MudButton>יצירת משחק חדש</MudButton>
+<br />
+<MudItem>
+    <MudButton ButtonType="ButtonType.Button" Color="Color.Secondary" OnClick="showComponent">יצירת משחק חדש</MudButton>
+</MudItem>
+<br />
+<br />
+@if (status == true)
+
+{
+    <EditForm Model="@newGame" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator />
+        <MudGrid>
+            <MudItem xs="7" sm="12">
+                <MudCard>
+                    <MudCardContent>
+                        <MudTextField Label="שם משחק" HelperText="2-25 תווים"
+                                      @bind-Value="newGame.GameName" For="@(() => newGame.GameName)" />
+
+                        <MudSelect T="int" Label="זמן שאלה" @bind-Value="newGame.QTimeLimit" For="@(() => newGame.QTimeLimit)" AnchorOrigin="Origin.BottomCenter">
+                            <MudSelectItem T="int" Value="20" />
+                            <MudSelectItem T="int" Value="30" />
+                            <MudSelectItem T="int" Value="40" />
+                            <MudSelectItem T="int" Value="50" />
+                            <MudSelectItem T="int" Value="60" />
+                        </MudSelect>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">צור משחק</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+
+        </MudGrid>
+    </EditForm>
+
+}
+
 <MudTable Items="@CurrentUser.UserGames" Hover="true">
     <HeaderContent>
 
@@ -30,16 +67,39 @@
         </MudTd>
     </RowTemplate>
 </MudTable>
+
+
+
 <p>@msg</p>
 
 
-@code { [Parameter]
+@code {
+
+
+    [Parameter]
     public int userID { get; set; }
 
+
+    // חיווי למשתמש
     string msg = "";
+
+    //יצירת מופע חדש של יוזר
     User CurrentUser = new User();
 
+    //יצירת מופע חדש של משחק
+    Game newGame = new Game();
 
+
+    //מצב מוסתר של טופס צור משחק
+    public bool status = false;
+    // הופך את הטופס לנראה ממצב מוסתר
+    void showComponent()
+    {
+        status = true;
+
+    }
+
+    //קריאה למאגר נותנים הצגת המשחקים של היוזר
     protected async override Task OnInitializedAsync()
     {
         var GetResponse = await Http.GetAsync("api/Games/" + userID);
@@ -68,7 +128,7 @@
     //    selectedGame.IsPublish = !selectedGame.IsPublish;
     //}
 
-    //קריאה לקונטרולר לעדכון סטטוס השמחק האם פורסם
+    //קריאה לקונטרולר לעדכון סטטוס המשחק האם פורסם
 
     async Task PublishGame(Game selectedGame)
     {
@@ -89,6 +149,18 @@
         }
 
 
-
     }
+
+
+    // קשור לטופס בלייזור
+    bool success;
+
+    //בלחיצה על כפתור של הטופס צריך להפעיל קריאה למאגר נתונים
+    private void OnValidSubmit(EditContext context)
+    {
+        success = true;
+        StateHasChanged();
+    }
+
+
 }
