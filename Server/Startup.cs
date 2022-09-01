@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
 using TreasureIsland_Dolev_May_Coral.Server.Data;
+using TreasureIsland_Dolev_May_Coral.Server.Helpers;
 
 namespace TreasureIsland_Dolev_May_Coral.Server
 {
@@ -39,6 +40,7 @@ namespace TreasureIsland_Dolev_May_Coral.Server
             });
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<FileStorage>();
 
         }
 

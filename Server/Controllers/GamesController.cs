@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TreasureIsland_Dolev_May_Coral.Shared.Entities;
 using TreasureIsland_Dolev_May_Coral.Server.Data;
+using TreasureIsland_Dolev_May_Coral.Server.Helpers;
 
 namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
 {
@@ -15,11 +16,14 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
     public class GamesController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly FileStorage _fileStorage;
 
-        public GamesController(DataContext context)
+        public GamesController(DataContext context, FileStorage fileStorage)
         {
             _context = context;
+           _fileStorage = fileStorage;
         }
+
         [HttpGet("{userIdClient}")]
         public async Task<IActionResult> GetAllGames(int userIdClient)
         {
@@ -120,7 +124,14 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
                 return BadRequest("empty Session");
             }
         }
-
+        //שמירת תמונה
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadFile([FromBody] string imageBase64)
+        {
+            byte[] picture = Convert.FromBase64String(imageBase64);
+            string url = await _fileStorage.SaveFile(picture, "png", "uploadedFiles");
+            return Ok(url);
+        }
 
     }
 }
