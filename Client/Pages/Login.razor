@@ -4,8 +4,15 @@
 @inject HttpClient Http
 <h3>Login</h3>
 
-<MudTextField @bind-Value="inputMail" Label="כתובת מייל" Variant="Variant.Outlined"></MudTextField>
-<MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="loginUser">כניסה</MudButton>
+
+    <p>כניסת עורך</p>
+    <MudTextField   Placeholder="הזינו כתובת מייל" @bind-Value="inputMail" Label="כתובת מייל" Variant="Variant.Outlined"></MudTextField>
+    @if (inputMail == "")
+    {
+
+<MudButton Variant="Variant.Filled" Disabled="true">כניסה</MudButton> }
+    else
+    {  <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="loginUser">כניסה</MudButton>}
 
 <p>@msg</p>
 
