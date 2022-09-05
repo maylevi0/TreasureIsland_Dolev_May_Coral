@@ -24,6 +24,8 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
            _fileStorage = fileStorage;
         }
 
+
+        //בדיקה התחברות משתמש
         [HttpGet("{userIdClient}")]
         public async Task<IActionResult> GetAllGames(int userIdClient)
         {
@@ -45,6 +47,7 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
             return BadRequest("Empty session");
         }
 
+        //פרסום משחק עדכון (לא יצירת משחק)
         [HttpPost("Update/Publish")]
         public async Task<IActionResult> UpdateGame(Game GameToUpdate)
         {
@@ -63,6 +66,7 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
             }
         }
 
+        //שליפת משחק על פי קוד
         [HttpGet("byCode/{gameCodeFromClient}")]
         public async Task<IActionResult> GetGameByCode(int gameCodeFromClient)
         {
@@ -84,7 +88,7 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
             }
         }
 
-        //קוד משחק
+        //קוד משחק יצירת משחק חדש
 
         [HttpPost]
         public async Task<IActionResult> AddGame(Game gameToAdd)
@@ -124,6 +128,24 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
                 return BadRequest("empty Session");
             }
         }
+
+        //מחיקת משחק
+        [HttpDelete("{gameID}")]
+        public async Task<IActionResult> DeleteGame(int gameID)
+        {
+            Game game = await _context.Games.FirstOrDefaultAsync(w => w.ID == gameID);
+            if (game != null)
+            {
+                _context.Games.Remove(game);
+                await _context.SaveChangesAsync();
+                return Ok(true);
+            }
+            else
+            {
+                return BadRequest("לא קיים משחק למחיקה");
+            }
+        }
+
         //שמירת תמונה
         [HttpPost("upload")]
         public async Task<IActionResult> UploadFile([FromBody] string imageBase64)
@@ -131,6 +153,17 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
             byte[] picture = Convert.FromBase64String(imageBase64);
             string url = await _fileStorage.SaveFile(picture, "png", "uploadedFiles");
             return Ok(url);
+        }
+
+        //מחיקת תמונה
+        [HttpPost("deleteImages")]
+        public async Task<IActionResult> DeleteImages([FromBody] List<string> images)
+        {
+            foreach (string img in images)
+            {
+                await _fileStorage.DeleteFile(img, "uploadedFiles");
+            }
+            return Ok("deleted");
         }
 
     }

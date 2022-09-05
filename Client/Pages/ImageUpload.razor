@@ -1,0 +1,71 @@
+﻿<h3>ImageUpload</h3>
+
+
+@page "/ImageUpload"
+@inject HttpClient Http
+
+<MudButton Class="ma-2" Variant="Variant.Filled" EndIcon="@Icons.Material.Outlined.Image" Color="Color.Primary" for="FileInputID" HtmlTag="label">Upload</MudButton>
+
+<InputFile id="FileInputID" OnChange="UploadFile" hidden />
+
+<img src="@myFileImage" width="150" />
+
+<MudButton Class="ma-2" Variant="Variant.Filled" EndIcon="@Icons.Material.Outlined.Delete" Color="Color.Primary" @onclick="DeleteImage" HtmlTag="label">Delete</MudButton>
+
+<p>@msg</p>
+
+
+
+@code {
+
+    string msg;
+
+    //רשימה מקומית לשמירה התמונות לפני שעושים פעולה של שליחה לשרת
+    List<string> DeletedImages = new List<string>();
+
+
+    string myFileImage;
+    long maxFileSize = 4194304;
+
+
+    //פונקצית העלאת תמונה
+    private async Task UploadFile(InputFileChangeEventArgs e)
+    {
+        var imageFiles = e.GetMultipleFiles();
+        foreach (var file in imageFiles)
+        {
+            if (file.Size <= maxFileSize)
+            {
+                var buffer = new byte[file.Size];
+                await file.OpenReadStream(maxFileSize).ReadAsync(buffer);
+                var imageBase64 = Convert.ToBase64String(buffer);
+                var saveResponse = await Http.PostAsJsonAsync("api/Games/upload", imageBase64);
+
+                if (saveResponse.IsSuccessStatusCode == true)
+                {
+                    string resizeUrl = saveResponse.Content.ReadAsStringAsync().Result;
+                    myFileImage = resizeUrl;
+                    Console.WriteLine(resizeUrl);
+                }
+            }
+        }
+    }
+
+    //פונקצית מחיקת תמונה
+    private async Task DeleteImage()
+    {
+        DeletedImages.Add(myFileImage);
+        var saveResponse = await Http.PostAsJsonAsync("api/Games/deleteImages", DeletedImages);
+
+        // צריך להפריד בין הפונקציות האלה
+
+        //פעולת המחיקה
+        if (saveResponse.IsSuccessStatusCode == true)
+        {
+            msg = "התמונה נמחקה בהצלחה";
+            myFileImage = "";
+        }
+    }
+
+
+}

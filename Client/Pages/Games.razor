@@ -1,38 +1,43 @@
-﻿@page "/Games/{userID:int}"
+﻿@page "/Games/{userId:int}"
 @using TreasureIsland_Dolev_May_Coral.Shared.Entities
 @inject HttpClient Http
 @inject NavigationManager nav
 @using System.ComponentModel.DataAnnotations
 
-<h1> המשחקים של @CurrentUser.FirstName @CurrentUser.LastName</h1>
+<h1 style="color:saddlebrown; text-align:center"><b>המשחקים שלי</b></h1>
 <br />
-<MudItem>
-    <MudButton ButtonType="ButtonType.Button" Color="Color.Secondary" OnClick="showComponent">יצירת משחק חדש</MudButton>
+
+
+<MudItem >
+    <MudButton Style="background-color:saddlebrown; color:azure " ButtonType="ButtonType.Button" Color="Color.Primary" OnClick="showComponent">יצירת משחק חדש</MudButton>
 </MudItem>
+
+
 <br />
 <br />
 @if (status == true)
 
 {
+
     <EditForm Model="@newGame" OnValidSubmit="OnValidSubmit">
         <DataAnnotationsValidator />
         <MudGrid>
-            <MudItem xs="7" sm="12">
-                <MudCard>
+            <MudItem Style="width: 400px; height:300px">
+                <MudCard >
                     <MudCardContent>
-                        <MudTextField Label="שם משחק" HelperText="2-25 תווים"
+                        <MudTextField Label="שם משחק" HelperText="2-25 תווים" @onkeydown="statusButton" @onkeyup="statusButton" 
                                       @bind-Value="newGame.GameName" For="@(() => newGame.GameName)" />
 
                         <MudSelect T="int" Label="זמן שאלה" @bind-Value="newGame.QTimeLimit" For="@(() => newGame.QTimeLimit)" AnchorOrigin="Origin.BottomCenter">
-                            <MudSelectItem T="int" Value="20" />
-                            <MudSelectItem T="int" Value="30" />
-                            <MudSelectItem T="int" Value="40" />
-                            <MudSelectItem T="int" Value="50" />
-                            <MudSelectItem T="int" Value="60" />
+                            <MudSelectItem T="int" Value="20">20 שניות</MudSelectItem>
+                            <MudSelectItem T="int" Value="30">30 שניות</MudSelectItem>
+                            <MudSelectItem T="int" Value="40">40 שניות</MudSelectItem>
+                            <MudSelectItem T="int" Value="50">50 שניות</MudSelectItem>
+                            <MudSelectItem T="int" Value="60">60 שניות</MudSelectItem>
                         </MudSelect>
                     </MudCardContent>
                     <MudCardActions>
-                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">צור משחק</MudButton>
+                        <MudButton Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Submit" Color="Color.Primary"  Disabled="IsButtonEabled" Variant="Variant.Filled">צור משחק</MudButton>
                     </MudCardActions>
                 </MudCard>
             </MudItem>
@@ -49,19 +54,20 @@
         <MudTh>לצפייה</MudTh>
         <MudTh>קוד משחק</MudTh>
         <MudTh>מספר שאלות</MudTh>
-        <MudTh>הגדרות משחק</MudTh>
-        <MudTh>עריכה</MudTh>
+        <MudTh><MudTooltip Text="שינוי הגדרות המשחק">הגדרות משחק<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
+        <MudTh><MudTooltip Text="עריכת המשחק">עריכה<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
         <MudTh>מחיקה</MudTh>
-        <MudTh>פרסום</MudTh>
+        <MudTh><MudTooltip Text="נדרשות מינימום 10 שאלות לפרסום המשחק">פרסום<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
+
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="שם המשחק">@context.GameName</MudTd>
-        <MudTd DataLabel="לצפייה"><MudButton>כפתור</MudButton></MudTd>
+        <MudTd DataLabel="לצפייה"><MudButton EndIcon="@Icons.Material.Outlined.RemoveRedEye"></MudButton></MudTd>
         <MudTd DataLabel="קוד המשחק">@context.GameCode</MudTd>
         <MudTd DataLabel="מספר שאלות">@context.GameQuestions.Count</MudTd>
-        <MudTd DataLabel="הגדרות משחק"><MudButton>כפתור</MudButton></MudTd>
-        <MudTd DataLabel="עריכה"><MudButton>כפתור</MudButton></MudTd>
-        <MudTd DataLabel="מחיקה"><MudButton>כפתור</MudButton></MudTd>
+        <MudTd DataLabel="הגדרות משחק"><MudButton  Color="Color.Info"  EndIcon="@Icons.Material.Outlined.Settings"></MudButton></MudTd>
+        <MudTd DataLabel="עריכה"><MudButton Color="Color.Info" EndIcon="@Icons.Material.Outlined.Edit" ></MudButton></MudTd>
+        <MudTd DataLabel="מחיקה"><MudButton Color="Color.Primary" OnClick="@(() => DeleteGame(context.ID))" EndIcon="@Icons.Material.Outlined.Delete" ></MudButton></MudTd>
         <MudTd DataLabel="פרסום">
             <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context))" Checked="@context.IsPublish" Color="Color.Primary"></MudCheckBox>
         </MudTd>
@@ -77,8 +83,11 @@
 
 
     [Parameter]
-    public int userID { get; set; }
+    public int userId { get; set; }
 
+
+    //משתנה לשינוי מצב הכפתור של צור משחק
+    bool IsButtonEabled = true;
 
     // חיווי למשתמש
     string msg = "";
@@ -102,7 +111,7 @@
     //קריאה למאגר נותנים הצגת המשחקים של היוזר
     protected async override Task OnInitializedAsync()
     {
-        var GetResponse = await Http.GetAsync("api/Games/" + userID);
+        var GetResponse = await Http.GetAsync("api/Games/" + userId);
         if (GetResponse.IsSuccessStatusCode == true)
         {
             CurrentUser = GetResponse.Content.ReadFromJsonAsync<User>().Result;
@@ -122,11 +131,7 @@
 
     }
 
-    //void PublishGame(Game selectedGame)
-    //{
 
-    //    selectedGame.IsPublish = !selectedGame.IsPublish;
-    //}
 
     //קריאה לקונטרולר לעדכון סטטוס המשחק האם פורסם
 
@@ -151,16 +156,112 @@
 
     }
 
-
-    // קשור לטופס בלייזור
-    bool success;
-
-    //בלחיצה על כפתור של הטופס צריך להפעיל קריאה למאגר נתונים
-    private void OnValidSubmit(EditContext context)
+    void statusButton()
     {
-        success = true;
         StateHasChanged();
+        if (string.IsNullOrEmpty(newGame.GameName) == false)
+        {
+
+            IsButtonEabled = true;
+            StateHasChanged();
+
+        }
+        else
+        {
+
+            IsButtonEabled = false;
+            StateHasChanged();
+
+        }
+
     }
 
+    // כפתור צור משחק- בלחיצה על כפתור של הטופס צריך להפעיל קריאה למאגר נתונים
+    protected async Task OnValidSubmit()
+    {
+
+
+
+        //   מאפיינים של מודל משחק חדש צריכים להיות מאוכלסים
+        newGame.UserID = userId;
+        // newGame.IsPublish = false;
+        //newGame.GameCode =;
+
+        //ואז קריאה לקונטרולר והוספת משחק
+
+        var postRespone = await Http.PostAsJsonAsync("api/Games/", newGame);
+        if (postRespone.IsSuccessStatusCode == true)
+        {
+            Game AddGame = postRespone.Content.ReadFromJsonAsync<Game>().Result;
+
+
+            //איפוס המופע לאפשר יצירת מופע חדש
+            newGame = new Game();
+
+            msg = " נוצר משחק";
+
+            // CurrentUser = new User();
+
+            await RefreshTable();
+
+
+        }
+        else
+        {
+            msg = "לא נוצר משחק";
+
+        }
+    }
+
+    //קריאה לרענון הטבלה
+    async Task RefreshTable()
+    {
+
+        var GetResponse = await Http.GetAsync("api/Games/" + userId);
+        if (GetResponse.IsSuccessStatusCode == true)
+        {
+            CurrentUser = GetResponse.Content.ReadFromJsonAsync<User>().Result;
+        }
+        else
+        {
+            string error = GetResponse.Content.ReadAsStringAsync().Result;
+            if (error == "user not login" || error == "empty Session")
+            {
+                nav.NavigateTo("./");
+            }
+            else
+            {
+                msg = "התרחשה תקלת שרת";
+            }
+        }
+    }
+
+    protected async Task DeleteGame(int gameID) //שיטה למחיקת משחק
+
+    {
+        newGame.ID = gameID;
+
+        var deleteResponse = await Http.DeleteAsync("api/Games/" + newGame.ID); //הנתיב של הקונטרולר מוצא לנו את המשחק שהמספר המזהה שלו נבחר או הוקלד
+
+        if (deleteResponse.IsSuccessStatusCode == true) //בדיקת תקינות
+        {
+
+
+            msg = "קריאה הצליחה אבל לא נמחק";
+            CurrentUser.UserGames.Remove(newGame);  //להסיר את המשחק
+
+            await RefreshTable(); // ריענון הטבלה
+
+            newGame = new Game();// איפוס המופע כדי להכינו לקבלת מידע חדש
+            msg = "אחרי המחיקה";
+
+        }
+        else
+        {
+            msg = "לא נמחק";
+        }
+    }
 
 }
+
+
