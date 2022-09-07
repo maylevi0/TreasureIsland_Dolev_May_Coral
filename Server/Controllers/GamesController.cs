@@ -66,6 +66,27 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
             }
         }
 
+
+        //עדכון שם המשחק וזמן המשחק
+        [HttpPost("Update/GameUpdate")]
+        public async Task<IActionResult> GameUpdate(Game GameToUpdate)
+        {
+            Game Game = await _context.Games.FirstOrDefaultAsync(w => w.ID == GameToUpdate.ID);
+
+            if (Game != null)
+            {
+
+                Game.GameName = GameToUpdate.GameName;
+                Game.QTimeLimit = GameToUpdate.QTimeLimit;
+                await _context.SaveChangesAsync();
+                return Ok(Game);
+            }
+            else
+            {
+                return BadRequest("לא פורסם");
+            }
+        }
+
         //שליפת משחק על פי קוד
         [HttpGet("byCode/{gameCodeFromClient}")]
         public async Task<IActionResult> GetGameByCode(int gameCodeFromClient)

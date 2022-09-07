@@ -1,0 +1,115 @@
+﻿
+@using TreasureIsland_Dolev_May_Coral.Shared.Entities
+@inject HttpClient Http
+
+
+<EditForm Model="@GameIDFromPage" OnValidSubmit="OnValidSubmit">
+    <MudText>
+        הגדרות משחק
+    </MudText>
+    <DataAnnotationsValidator />
+    <MudGrid>
+        <MudItem Style="width: 400px; height:300px ;backdrop-filter:grayscale()">
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField Placeholder="@GameIDFromPage.GameName" Label="שם משחק" HelperText="2-25 תווים"
+                                  @bind-Value="GameIDFromPage.GameName" For="@(() => GameIDFromPage.GameName)" />
+
+                    <MudSelect T="int" Label="זמן מענה לשאלה" @bind-Value="GameIDFromPage.QTimeLimit" For="@(() => UpdatedGame.QTimeLimit)" AnchorOrigin="Origin.BottomCenter">
+                        <MudSelectItem T="int" Value="20">20 שניות</MudSelectItem>
+                        <MudSelectItem T="int" Value="30">30 שניות</MudSelectItem>
+                        <MudSelectItem T="int" Value="40">40 שניות</MudSelectItem>
+                        <MudSelectItem T="int" Value="50">50 שניות</MudSelectItem>
+                        <MudSelectItem T="int" Value="60">60 שניות</MudSelectItem>
+                    </MudSelect>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Submit" Color="Color.Primary"  Variant="Variant.Filled">שמירת שינויים</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+
+    </MudGrid>
+</EditForm>
+
+<p>@GameIDFromPage.ID</p>
+
+@code {
+
+
+
+    [Parameter]
+    public Game GameIDFromPage { get; set; } // פרמטר שמתקבל מהדף
+
+    //[Parameter]
+    //public RenderFragment ChildContent { get; set; } // להציג תוכן בדף
+
+    [Parameter]
+    public EventCallback<string> MessegeToPageEC { get; set; } // יצירת פרמטר שיופעל כדי לשלוח לעמוד את ההודעה בעת לחיצה על כפתור
+
+    //יצירת מופע חדש של יוזר
+    User CurrentUser = new User();
+
+    //יצירת מופע חדש של משחק
+    Game UpdatedGame = new Game();
+
+
+
+    //שיטה מופעלת בלחיצת כפתור
+
+    //קריאה לקונטרולר לעדכון סטטוס המשחק האם פורסם
+
+    protected async Task OnValidSubmit()
+    {
+        //UpdatedGame.ID = GameIDFromPage;
+        //UpdatedGame.GameName = UpdatedGame.GameName;
+        //UpdatedGame.QTimeLimit = UpdatedGame.QTimeLimit;
+        await Makeupdates();
+    }
+
+    protected async Task Makeupdates()
+
+    {
+        //UpdatedGame.ID = GameIDFromPage.ID;
+        Console.WriteLine("המשחק מעודכן בנתונים חדשים");
+
+
+        var postRespone = await Http.PostAsJsonAsync("api/Games/Update/GameUpdate", GameIDFromPage);
+
+        if (postRespone.IsSuccessStatusCode == true)
+        {
+            Game updateGame = postRespone.Content.ReadFromJsonAsync<Game>().Result;
+
+            GameIDFromPage = new Game();
+            //שליחת ההודעה מהקומפוננטה לדף
+            await MessegeToPageEC.InvokeAsync("הגדרות שונו בהצלחה");
+        }
+        else
+        {
+
+            //שליחת ההודעה מהקומפוננטה לדף
+            await MessegeToPageEC.InvokeAsync("לא בוצעו שינויים");
+        }
+
+
+    }
+
+
+    //private void myFunc()
+    //{
+
+
+    //    if ()
+    //    {
+    //        //שליחת ההודעה מהקומפוננטה לדף
+    //        MessegeToPageEC.InvokeAsync("הגדרות שונו בהצלחה");
+    //    }
+    //    else
+    //    {
+    //        //שליחת ההודעה מהקומפוננטה לדף
+    //        MessegeToPageEC.InvokeAsync("לא בוצעו שינויים");
+    //    }
+
+    //}
+
+}
