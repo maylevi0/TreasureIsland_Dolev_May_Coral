@@ -50,11 +50,11 @@
 }
 
 @if (hideComp == true)
-{
-    <TreasureIsland_Dolev_May_Coral.Client.wwwroot.components.EditGameCompPopup GameIDFromPage="GametoUpdate" MessegeToPageEC="ActionComp">
+{<div style="position: absolute; right: 400px; backdrop-filter: grayscale()">
+   <EditSettingsGame GameFromPage="GametoUpdate" MessegeToPageEC="ActionComp"></EditSettingsGame>           
 
-    </TreasureIsland_Dolev_May_Coral.Client.wwwroot.components.EditGameCompPopup>
-       
+</div>
+  
     
 }
 
@@ -76,9 +76,9 @@
         <MudTd DataLabel="לצפייה"><MudButton EndIcon="@Icons.Material.Outlined.RemoveRedEye"></MudButton></MudTd>
         <MudTd DataLabel="קוד המשחק">@context.GameCode</MudTd>
         <MudTd DataLabel="מספר שאלות">@context.GameQuestions.Count</MudTd>
-        <MudTd DataLabel="הגדרות משחק"><MudButton Color="Color.Info" EndIcon="@Icons.Material.Outlined.Settings"></MudButton></MudTd>
-        <MudTd DataLabel="עריכה"><MudButton Color="Color.Info" OnClick="@(() => show2Component(context.ID))" EndIcon="@Icons.Material.Outlined.Edit"></MudButton></MudTd>
-        <MudTd DataLabel="מחיקה"><MudButton Color="Color.Primary" OnClick="@(() => DeleteGame(context.ID))" EndIcon="@Icons.Material.Outlined.Delete"></MudButton></MudTd>
+        <MudTd DataLabel="הגדרות משחק"><MudButton Color="Color.Info"OnClick="@(() => show2Component(context))" EndIcon="@Icons.Material.Outlined.Settings"></MudButton></MudTd>
+        <MudTd DataLabel="עריכה"><MudButton Color="Color.Info"  EndIcon="@Icons.Material.Outlined.Edit"></MudButton></MudTd>
+        <MudTd DataLabel="מחיקה"><MudButton Color="Color.Info" OnClick="@(() => DeleteGame(context.ID))" EndIcon="@Icons.Material.Outlined.Delete"></MudButton></MudTd>
         <MudTd DataLabel="פרסום">
             <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context))" Checked="@context.IsPublish" Color="Color.Primary"></MudCheckBox>
         </MudTd>
@@ -114,17 +114,24 @@
     //מצב מוסתר של קומפוננטה שינוי הגדרות משחק
     bool hideComp = false;
     // הופך את הקומפוננטה לנראה ממצב מוסתר
-    public void show2Component(int gameID)
+    public void show2Component(Game game)
     {
 
-        GametoUpdate.ID = gameID;
+        GametoUpdate = game;
+
 
         if (hideComp == false)
         {
 
             hideComp = true;
+            //GametoUpdate = new Game();
 
         }
+        else
+        {
+            hideComp = true;
+        }
+
 
     }
 

@@ -1,18 +1,21 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
-/**//*@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;700&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;700&display=swap');
 
 
 
 
 html, body {
     font-family: Arial, Helvetica, Arial, sans-serif;
-    background-color: saddlebrown;
-      font-family: 'Assistant', sans-serif;
+    background-color: white;
+    font-family: 'Assistant', sans-serif;
+    background-image: url('../Images/Picture2.png');
+   background-size:cover;
+   background-position: center;
 }
 
 
 a, .btn-link {
-    color: #0366d6;
+    color: #0366d6 ;
 }
 
 .btn-primary {
@@ -26,7 +29,7 @@ a, .btn-link {
 }
 
 .valid.modified:not([type=checkbox]) {
-    outline: 1px solid #26b050;
+    outline: 1px solid #602c12;
 }
 
 .invalid {
@@ -57,5 +60,12 @@ a, .btn-link {
     }
 
 p.mypClass{
+}
+
+.positioned{
+    position: relative;
+    top: 100px;
+    left: 100px;
 
 }
+

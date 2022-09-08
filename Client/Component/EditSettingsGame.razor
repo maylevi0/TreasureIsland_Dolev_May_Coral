@@ -3,19 +3,22 @@
 @inject HttpClient Http
 
 
-<EditForm Model="@GameIDFromPage" OnValidSubmit="OnValidSubmit">
+<EditForm Model="@GameFromPage" OnValidSubmit="OnValidSubmit">
     <MudText>
         הגדרות משחק
     </MudText>
     <DataAnnotationsValidator />
     <MudGrid>
-        <MudItem Style="width: 400px; height:300px ;backdrop-filter:grayscale()">
+        <MudItem Style="width: 400px; height: 300px">
             <MudCard>
                 <MudCardContent>
-                    <MudTextField Placeholder="@GameIDFromPage.GameName" Label="שם משחק" HelperText="2-25 תווים"
-                                  @bind-Value="GameIDFromPage.GameName" For="@(() => GameIDFromPage.GameName)" />
+                    <MudIconButton Style="align-items:end" Icon="@Icons.Material.Filled.Close" Color="Color.Default" />
 
-                    <MudSelect T="int" Label="זמן מענה לשאלה" @bind-Value="GameIDFromPage.QTimeLimit" For="@(() => UpdatedGame.QTimeLimit)" AnchorOrigin="Origin.BottomCenter">
+                    <MudTextField Label="שם משחק" HelperText="2-25 תווים"
+                                  @bind-Value="GameFromPage.GameName" For="@(() => GameFromPage.GameName)" />
+
+                    <MudSelect T="int" Label="זמן מענה לשאלה" Placeholder="@GameTime" @bind-Value="GameFromPage.QTimeLimit" For="@(() => GameFromPage.QTimeLimit)" AnchorOrigin="Origin.BottomCenter">
+
                         <MudSelectItem T="int" Value="20">20 שניות</MudSelectItem>
                         <MudSelectItem T="int" Value="30">30 שניות</MudSelectItem>
                         <MudSelectItem T="int" Value="40">40 שניות</MudSelectItem>
@@ -24,7 +27,7 @@
                     </MudSelect>
                 </MudCardContent>
                 <MudCardActions>
-                    <MudButton Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Submit" Color="Color.Primary"  Variant="Variant.Filled">שמירת שינויים</MudButton>
+                    <MudButton Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">שמירת שינויים</MudButton>
                 </MudCardActions>
             </MudCard>
         </MudItem>
@@ -32,14 +35,14 @@
     </MudGrid>
 </EditForm>
 
-<p>@GameIDFromPage.ID</p>
+<p>@UpdatedGame.GameName </p>
 
 @code {
 
 
 
     [Parameter]
-    public Game GameIDFromPage { get; set; } // פרמטר שמתקבל מהדף
+    public Game GameFromPage { get; set; } // פרמטר שמתקבל מהדף
 
     //[Parameter]
     //public RenderFragment ChildContent { get; set; } // להציג תוכן בדף
@@ -47,11 +50,26 @@
     [Parameter]
     public EventCallback<string> MessegeToPageEC { get; set; } // יצירת פרמטר שיופעל כדי לשלוח לעמוד את ההודעה בעת לחיצה על כפתור
 
+    //[Parameter]
+    //public EventCallback<bool> HideToPageEC { get; set; } // יצירת פרמטר שיופעל כדי לשלוח לעמוד את ההודעה בעת לחיצה על כפתור
+
+
     //יצירת מופע חדש של יוזר
-    User CurrentUser = new User();
+    //User CurrentUser = new User();
 
     //יצירת מופע חדש של משחק
     Game UpdatedGame = new Game();
+
+    string gameCurrentName = "";
+    string GameTime = "";
+
+    protected override void OnInitialized()
+    {
+        UpdatedGame = GameFromPage;
+
+        // gameCurrentName = UpdatedGame.GameName;
+        // GameTime = UpdatedGame.QTimeLimit + " שניות";
+    }
 
 
 
@@ -74,13 +92,13 @@
         Console.WriteLine("המשחק מעודכן בנתונים חדשים");
 
 
-        var postRespone = await Http.PostAsJsonAsync("api/Games/Update/GameUpdate", GameIDFromPage);
+        var postRespone = await Http.PostAsJsonAsync("api/Games/Update/GameUpdate", GameFromPage);
 
         if (postRespone.IsSuccessStatusCode == true)
         {
             Game updateGame = postRespone.Content.ReadFromJsonAsync<Game>().Result;
 
-            GameIDFromPage = new Game();
+            GameFromPage = new Game();
             //שליחת ההודעה מהקומפוננטה לדף
             await MessegeToPageEC.InvokeAsync("הגדרות שונו בהצלחה");
         }
@@ -89,10 +107,13 @@
 
             //שליחת ההודעה מהקומפוננטה לדף
             await MessegeToPageEC.InvokeAsync("לא בוצעו שינויים");
+
+
         }
 
 
     }
+
 
 
     //private void myFunc()
