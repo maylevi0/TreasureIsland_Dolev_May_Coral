@@ -12,7 +12,7 @@
         <MudItem Style="width: 400px; height: 300px">
             <MudCard>
                 <MudCardContent>
-                    <MudIconButton Style="align-items:end" Icon="@Icons.Material.Filled.Close" Color="Color.Default" />
+                    <MudIconButton Style="left:20px" Icon="@Icons.Material.Filled.Close" @onclick="ClosePopup" Color="Color.Default" />
 
                     <MudTextField Label="שם משחק" HelperText="2-25 תווים"
                                   @bind-Value="GameFromPage.GameName" For="@(() => GameFromPage.GameName)" />
@@ -50,8 +50,8 @@
     [Parameter]
     public EventCallback<string> MessegeToPageEC { get; set; } // יצירת פרמטר שיופעל כדי לשלוח לעמוד את ההודעה בעת לחיצה על כפתור
 
-    //[Parameter]
-    //public EventCallback<bool> HideToPageEC { get; set; } // יצירת פרמטר שיופעל כדי לשלוח לעמוד את ההודעה בעת לחיצה על כפתור
+    [Parameter]
+    public EventCallback<bool> HideToPageEC { get; set; } // יצירת פרמטר שיופעל כדי לשלוח לעמוד את ההודעה בעת לחיצה על כפתור
 
 
     //יצירת מופע חדש של יוזר
@@ -71,7 +71,12 @@
         // GameTime = UpdatedGame.QTimeLimit + " שניות";
     }
 
+    void ClosePopup()
+    {
+        MessegeToPageEC.InvokeAsync("לא בוצעו שינויים");
+        HideToPageEC.InvokeAsync(false);
 
+    }
 
     //שיטה מופעלת בלחיצת כפתור
 

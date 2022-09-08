@@ -51,7 +51,7 @@
 
 @if (hideComp == true)
 {<div style="position: absolute; right: 400px; backdrop-filter: grayscale()">
-   <EditSettingsGame GameFromPage="GametoUpdate" MessegeToPageEC="ActionComp"></EditSettingsGame>           
+   <EditSettingsGame GameFromPage="GametoUpdate" HideToPageEC="hideThecomp" MessegeToPageEC="ActionComp"></EditSettingsGame>           
 
 </div>
   
@@ -78,7 +78,7 @@
         <MudTd DataLabel="מספר שאלות">@context.GameQuestions.Count</MudTd>
         <MudTd DataLabel="הגדרות משחק"><MudButton Color="Color.Info"OnClick="@(() => show2Component(context))" EndIcon="@Icons.Material.Outlined.Settings"></MudButton></MudTd>
         <MudTd DataLabel="עריכה"><MudButton Color="Color.Info"  EndIcon="@Icons.Material.Outlined.Edit"></MudButton></MudTd>
-        <MudTd DataLabel="מחיקה"><MudButton Color="Color.Info" OnClick="@(() => DeleteGame(context.ID))" EndIcon="@Icons.Material.Outlined.Delete"></MudButton></MudTd>
+        <MudTd DataLabel="מחיקה"><MudButton Color="Color.Info" OnClick="@(() => DeleteGame(context))" EndIcon="@Icons.Material.Outlined.Delete"></MudButton></MudTd>
         <MudTd DataLabel="פרסום">
             <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context))" Checked="@context.IsPublish" Color="Color.Primary"></MudCheckBox>
         </MudTd>
@@ -117,12 +117,9 @@
     public void show2Component(Game game)
     {
 
-        GametoUpdate = game;
-
-
         if (hideComp == false)
         {
-
+            GametoUpdate = game;
             hideComp = true;
             //GametoUpdate = new Game();
 
@@ -132,8 +129,16 @@
             hideComp = true;
         }
 
+    }
+
+    // הופך את הקומפוננטה לנראה ממצב מוסתר
+    void hideThecomp(bool boolfromComp)
+    {
+
+         hideComp = boolfromComp;
 
     }
+
 
     //חיוי מהקומפוננטה שינוי הגדרות משחק
     async Task ActionComp(string TextFromComp)
@@ -297,10 +302,10 @@
         }
     }
 
-    protected async Task DeleteGame(int gameID) //שיטה למחיקת משחק
+    protected async Task DeleteGame(Game Game) //שיטה למחיקת משחק
 
     {
-        newGame.ID = gameID;
+        newGame = Game;
 
         var deleteResponse = await Http.DeleteAsync("api/Games/" + newGame.ID); //הנתיב של הקונטרולר מוצא לנו את המשחק שהמספר המזהה שלו נבחר או הוקלד
 
