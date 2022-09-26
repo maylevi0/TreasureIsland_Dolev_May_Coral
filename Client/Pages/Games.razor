@@ -51,7 +51,7 @@
 
 @if (hideComp == true)
 {<div style="position: absolute; right: 400px; backdrop-filter: grayscale()">
-   <EditSettingsGame GameFromPage="GametoUpdate" HideToPageEC="hideThecomp" MessegeToPageEC="ActionComp"></EditSettingsGame>           
+   <EditSettingsGame userId="userId" GameFromPage="GametoUpdate" HideToPageEC="hideThecomp" MessegeToPageEC="ActionComp"></EditSettingsGame>           
 
 </div>
   
@@ -92,85 +92,85 @@
 @code {
 
 
-    [Parameter]
-    public int userId { get; set; }
+        [Parameter]
+        public int userId { get; set; }
 
 
-    //משתנה לשינוי מצב הכפתור של צור משחק
-    bool IsButtonEabled = true;
+        //משתנה לשינוי מצב הכפתור של צור משחק
+        bool IsButtonEabled = true;
 
-    // חיווי למשתמש
-    string msg = "";
+        // חיווי למשתמש
+        string msg = "";
 
-    //יצירת מופע חדש של יוזר
-    User CurrentUser = new User();
+        //יצירת מופע חדש של יוזר
+        User CurrentUser = new User();
 
-    //יצירת מופע חדש של משחק
-    Game newGame = new Game();
+        //יצירת מופע חדש של משחק
+        Game newGame = new Game();
 
-    Game GametoUpdate = new Game();
+        Game GametoUpdate = new Game();
 
 
-    //מצב מוסתר של קומפוננטה שינוי הגדרות משחק
-    bool hideComp = false;
-    // הופך את הקומפוננטה לנראה ממצב מוסתר
-    public void show2Component(Game game)
-    {
-
-        if (hideComp == false)
+        //מצב מוסתר של קומפוננטה שינוי הגדרות משחק
+        bool hideComp = false;
+        // הופך את הקומפוננטה לנראה ממצב מוסתר
+        public void show2Component(Game game)
         {
-            GametoUpdate = game;
+
+            if (hideComp == false)
+            {
+                GametoUpdate = game;
+                hideComp = true;
+                //GametoUpdate = new Game();
+
+            }
+            else
+            {
+                hideComp = true;
+            }
+
+        }
+
+        // הופך את הקומפוננטה לנראה ממצב מוסתר
+        void hideThecomp(bool boolfromComp)
+        {
+
+            hideComp = boolfromComp;
+
+        }
+
+
+        //חיוי מהקומפוננטה שינוי הגדרות משחק
+        async Task ActionComp(string TextFromComp)
+        {
             hideComp = true;
-            //GametoUpdate = new Game();
-
+            msg = TextFromComp;
+            await RefreshTable();
+            if (TextFromComp== "הגדרות שונו בהצלחה")
+            {
+                hideComp = false;
+            }
         }
-        else
+
+
+
+        //מצב מוסתר של טופס צור משחק
+        bool status = false;
+        // הופך את הטופס לנראה ממצב מוסתר
+        public void showComponent()
         {
-            hideComp = true;
-        }
+            if (status == false)
+            {
+                status = true;
 
-    }
+            }
+            else
+            {
+                status = false;
+            }
 
-    // הופך את הקומפוננטה לנראה ממצב מוסתר
-    void hideThecomp(bool boolfromComp)
-    {
-
-         hideComp = boolfromComp;
-
-    }
-
-
-    //חיוי מהקומפוננטה שינוי הגדרות משחק
-    async Task ActionComp(string TextFromComp)
-    {
-        hideComp = true;
-        msg = TextFromComp;
-        await RefreshTable();
-        if (TextFromComp== "הגדרות שונו בהצלחה")
-        {
-            hideComp = false;
-        }
-    }
-
-
-
-    //מצב מוסתר של טופס צור משחק
-    bool status = false;
-    // הופך את הטופס לנראה ממצב מוסתר
-    public void showComponent()
-    {
-        if (status == false)
-        {
-            status = true;
 
         }
-        else
-        {
-            status = false;
-        }
-
-
-    }
 
 
 
@@ -202,7 +202,10 @@
     //קריאה לקונטרולר לעדכון סטטוס המשחק האם פורסם
 
     async Task PublishGame(Game selectedGame)
+
     {
+
+
         selectedGame.IsPublish = !selectedGame.IsPublish;
 
         Console.WriteLine("המשחק פורסם / לא פורסם");
@@ -210,15 +213,20 @@
         var postRespone = await Http.PostAsJsonAsync("api/Games/Update/Publish", selectedGame);
         if (postRespone.IsSuccessStatusCode == true)
         {
-            Game updateGame = postRespone.Content.ReadFromJsonAsync<Game>().Result;
+            var GetResponse = await Http.GetAsync("api/Games/" + userId);
+            if (GetResponse.IsSuccessStatusCode == true)
+            {
 
-            selectedGame = new Game();
-        }
-        else
-        {
-            msg = "משחק לא פורסם";
-        }
+                Game updateGame = postRespone.Content.ReadFromJsonAsync<Game>().Result;
 
+                selectedGame = new Game();
+            }
+
+            else
+            {
+                msg = "משחק לא פורסם";
+            }
+        }
 
     }
 
@@ -245,8 +253,6 @@
     // כפתור צור משחק- בלחיצה על כפתור של הטופס צריך להפעיל קריאה למאגר נתונים
     protected async Task OnValidSubmit()
     {
-
-
 
         //   מאפיינים של מודל משחק חדש צריכים להיות מאוכלסים
         newGame.UserID = userId;
@@ -311,23 +317,25 @@
 
         if (deleteResponse.IsSuccessStatusCode == true) //בדיקת תקינות
         {
+            var GetResponse = await Http.GetAsync("api/Games/" + userId);
+            if (GetResponse.IsSuccessStatusCode == true)
+            {
 
+                msg = "קריאה הצליחה אבל לא נמחק";
+                CurrentUser.UserGames.Remove(newGame);  //להסיר את המשחק
 
-            msg = "קריאה הצליחה אבל לא נמחק";
-            CurrentUser.UserGames.Remove(newGame);  //להסיר את המשחק
+                await RefreshTable(); // ריענון הטבלה
 
-            await RefreshTable(); // ריענון הטבלה
+                newGame = new Game();// איפוס המופע כדי להכינו לקבלת מידע חדש
+                msg = "אחרי המחיקה";
 
-            newGame = new Game();// איפוס המופע כדי להכינו לקבלת מידע חדש
-            msg = "אחרי המחיקה";
-
-        }
-        else
-        {
-            msg = "לא נמחק";
+            }
+            else
+            {
+                msg = "לא נמחק";
+            }
         }
     }
-
 }
 
 

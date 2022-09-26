@@ -1,0 +1,93 @@
+﻿@page "/EditQuestionsPage"
+@using TreasureIsland_Dolev_May_Coral.Shared.Entities
+@*@inject HttpClient Http
+@inject NavigationManager nav*@
+@using System.ComponentModel.DataAnnotations
+
+
+<EditForm Model="@CurrentQuestion" OnValidSubmit="OnValidSubmit">
+
+    <DataAnnotationsValidator />
+    <MudGrid>
+        <MudItem Style="width: 400px; height:300px">
+
+           
+                <MudText Style="color: saddlebrown">הוספת שאלה</MudText>        
+                <MudTextField Placeholder="תוכן השאלה..." Label="שם משחק" HelperText="2-25 תווים"
+                              @bind-Value="CurrentQuestion.QuestionTitle" For="@(() => CurrentQuestion.QuestionTitle)" />
+            
+        </MudItem>
+    </MudGrid>
+</EditForm>
+<br/>
+<br />
+<br />
+מסיחים
+
+<EditForm Model="@CurrentDistractor" OnValidSubmit="OnValidSubmit">
+
+    <DataAnnotationsValidator />
+    <MudGrid>
+        <MudItem Style="width: 400px; height:300px">
+            <MudText Style="color: saddlebrown"><b>תשובה נכונה</b></MudText>
+            <MudTextField Placeholder="תוכן תשובה נכונה" HelperText="2-25 תווים"
+                          @bind-Value="CurrentDistractor.DistractorContent" For="@(() => CurrentDistractor.DistractorContent)" />
+        </MudItem><br />
+        <MudItem Style="width: 400px; height:300px">
+            <MudText Style="color: saddlebrown"><b>תשובה לא נכונה</b></MudText>
+            <MudTextField Placeholder="תוכן תשובה לא נכונה" Label="שם משחק" HelperText="2-25 תווים"
+                          @bind-Value="CurrentDistractor.DistractorContent" For="@(() => CurrentDistractor.DistractorContent)" />
+        </MudItem>
+        <br />
+        <MudItem Style="width: 400px; height:300px;">
+            <MudTextField Placeholder="תוכן תשובה לא נכונה" Label="תשובה לא נכונה" HelperText="2-25 תווים"
+                          @bind-Value="CurrentDistractor.DistractorContent" For="@(() => CurrentDistractor.DistractorContent)" />
+        </MudItem>
+    </MudGrid>
+    <MudButton Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">שמירת שאלה</MudButton>
+
+</EditForm>
+
+
+
+@code {
+
+    [Parameter]
+    public int userId { get; set; }
+
+    Game CurrentGame = new Game();
+
+    Question CurrentQuestion = new Question();
+
+    Distractor CurrentDistractor = new Distractor();
+
+    // protected async Task OnValidSubmit()
+    void OnValidSubmit()
+    {
+
+        //מאפיינים של שאלה משחק חדש צריכים להיות מאוכלסים
+
+
+
+        //ואז קריאה לקונטרולר והוספת משחק
+
+        // var postRespone = await Http.PostAsJsonAsync("api/Games/", newGame);
+        //if (postRespone.IsSuccessStatusCode == true)
+        //{
+        //    Game AddGame = postRespone.Content.ReadFromJsonAsync<Game>().Result;
+
+
+        //איפוס המופע לאפשר יצירת מופע חדש
+
+
+
+        //msg = "לא נוצר משחק";
+
+        //}
+        //    else
+        //    {
+        //msg = "לא נוצר משחק";
+
+    }
+@*}*@
+}
