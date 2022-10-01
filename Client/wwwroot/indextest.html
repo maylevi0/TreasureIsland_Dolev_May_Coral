@@ -1,0 +1,117 @@
+﻿<!doctype html>
+<html lang="he">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>אי המטמון</title>
+    <meta name="description" content="name of game" />
+    <meta name="keywords" content="" />
+    <meta name="דולב קליינר, מאי לוי וקורל ששון" content="names" />
+
+    <!-- CSS -->
+    <link href="styles/myStyle.css" rel="stylesheet" />
+
+    <!-- Scripts -->
+    <!--jQuery library-->
+    <script src="jScripts/jquery-1.12.0.min.js"></script>
+    <!--הקוד שמפעיל את תפריט הניווט-->
+    <script src="jScripts/myScript.js"></script>
+    
+</head>
+
+<body>
+
+    <div id="container">
+        <header>
+            <a>
+                <img id="logo" src="photo/logo.png" /><!--הלוגו של המשחק שלכם-->
+                <p>אי המטמון</p>
+            </a>
+            <!--תפריט הניווט בראש העמוד-->
+            <nav>
+                <ul>
+                    <li><a class="about">אודות</a></li>
+                    <li><a class="howToPlay">איך משחקים?</a></li>
+                </ul>
+            </nav>
+        </header>
+
+
+        <div id="aboutDiv" class="popUp bounceInDown hide">
+            <div class="container">
+                <div class="center">
+
+
+                    <img src="photo/odot_window_background.jpg.png" width="600" height="439" />
+
+                    <div class="popUp">
+
+                        <p class="title"><b>אודות</b></p>
+                        <p>
+                            אפיון ופיתוח: מאי לוי, דולב קליינר וקורל ששון
+                            <br />
+                            אופיין ופותח במסגרת פרויקט בקורסים:
+                            <br />
+                            סביבות לימוד אינטראקטיביות 1
+                            <br />
+                            תכנות אינטראקטיבי 1
+                            <br />
+                            תשפ"ב
+                        </p>
+                        <a href="https://www.hit.ac.il/telem/overview" target="_blank">הפקולטה לטכנולוגיות למידה </a> <br />
+                        <a href="https://www.hit.ac.il/telem/overview">
+                            <img src="photo/HIT.png" width="141" height="71" />
+                        </a>
+                    </div>
+
+                    <div class="centered">
+
+                        <a class="closeAbout">X</a>
+                    </div>
+
+
+
+
+                </div>
+
+
+
+            </div>
+        </div>
+        <div id="howToPlayDiv" class="popUp bounceInDown hide">
+            <div class="container">
+                <div class="center">
+                    <div class="popUp">
+                        <p class="title"><b>איך משחקים?</b></p>
+                        <p>
+                            עליכם למצוא את האוצר באמצעות מענה על השאלות.
+
+                            <br />
+                            בכל שאלה עליכם לבחור תיבת מטמון עם התשובה הנכונה.
+                            <br />
+                            בכדי לבדוק אם תשובתכם נכונה עליכם ללחוץ
+                            <br />
+                            על כפתור 'לבדיקה'.
+                            <br />
+
+                        </p>
+                    </div>
+                    <img src="photo/odot_window_background.jpg.png" width="600" height="439" />
+
+                    <div class="centered">  <a class="closeHowToPlay">X</a></div>
+
+                </div>
+            </div>
+        </div>
+        <div id="gameArea" class="">
+            <!--src = הקישור של דף המשחק שלכם (לא קובץ האנימייט)-->
+            <iframe id="gameIframe" src="TreasureIsland.html" frameBorder="0" allowfullscreen="">Browser not compatible.</iframe>
+        </div>
+       
+    </div>
+
+    
+</body>
+
+</html>

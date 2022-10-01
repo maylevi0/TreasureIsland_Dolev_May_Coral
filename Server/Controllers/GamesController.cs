@@ -102,6 +102,8 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
                 {
                     return BadRequest("Game not publish");
                 }
+
+
             }
             else
             {
