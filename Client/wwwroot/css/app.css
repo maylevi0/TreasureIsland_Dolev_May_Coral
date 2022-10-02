@@ -9,8 +9,9 @@ html, body {
     background-color: white;
     font-family: 'Assistant', sans-serif;
     background-image: url('../Images/Picture2.png');
-   background-size:cover;
-   background-position: center;
+    background-size: cover;
+    
+    background-position: center;
 }
 
 

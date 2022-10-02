@@ -4446,7 +4446,8 @@ if (reversed == null) { reversed = false; }
 					//console.log(stage.getChildByName("Answer" + i).event);
 					Answer.x =200;
 					Answer.y = -50;
-					
+					Answer.width= "50px";
+					Answer.hight="100px";
 					///----------------------------------
 					//var Answer = new Question[RandQ][i][1](); //הצג תמונה
 					//var Answer = new bmp; //הצג תמונה
