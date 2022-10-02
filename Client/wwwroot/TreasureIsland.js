@@ -3796,7 +3796,7 @@ if (reversed == null) { reversed = false; }
 		var counter = 30; //משתנה לספירה לאחור
 		//console.log(counter);
 		
-		var counterNoMove = 30; // משתנה לספירת אי תזוזה
+		var counterNoMove = 60; // משתנה לספירת אי תזוזה
 		var TimerNoMove; //משתנה לספירת הזמן באי תזוזה
 		var timeTotal = 0; //משתנה לסכימת זמן המשק
 		var totalScore = 0; //משתנה לסכימת הציון
@@ -4342,25 +4342,20 @@ if (reversed == null) { reversed = false; }
 				Qtitle.x = 960;
 				Qtitle.y = 100;
 				Qtitle.font = "32px Assistant";
-				var pic = new(Question[RandQ][0][1]); //הצג תמונה
-		
-				/*var img = new Image();
-				img.src = gameArray[randomQuestionNum][0].questionImage;
-				var bmp = new createjs.Bitmap(img).set({
-					scaleX: 0.3,
-					scaleY: 0.3,
-				});		
-				*/
+				var pic = new createjs.Bitmap((gameArray[RandQ][0].questionImage)).set({
+						scaleX: 0.1,
+						scaleY: 0.1,
+					});
 		
 				pic.name = "pic"
-				pic.x = 500;
-				pic.y = 160;
+				pic.x = 420;
+				pic.y = 120;
 				pic.height = "60px";
 				pic.width = "40px";
 				//stage.addChild(pic).gotoAndStop(0);
 				//pic.addEventListener("mouseover", mouseover_picQuestion);
 				//pic.addEventListener("mouseout", mouseout_picQuestion); //מעבר עכבר על תמונה
-				stage.addChild(pic).gotoAndStop(0);
+				stage.addChild(pic);
 				var glassbtn = new lib.glassbtn();
 				glassbtn.name = "glassbtnQ";
 				glassbtn.cursor = "pointer";
@@ -4444,10 +4439,10 @@ if (reversed == null) { reversed = false; }
 					Answer.name = "Answer" + i;
 					//console.log("answer pic is: ");
 					//console.log(stage.getChildByName("Answer" + i).event);
-					Answer.x =200;
-					Answer.y = -50;
-					Answer.width= "50px";
-					Answer.hight="100px";
+					Answer.x = 150;
+					Answer.y = -70;
+					Answer.width = "50px";
+					Answer.hight = "100px";
 					///----------------------------------
 					//var Answer = new Question[RandQ][i][1](); //הצג תמונה
 					//var Answer = new bmp; //הצג תמונה
@@ -4765,11 +4760,11 @@ if (reversed == null) { reversed = false; }
 			if (glassOn == "true") {
 				if (picBig == 0) {
 					picIsBig = r;
-					stage.getChildByName("object" + r).getChildByName("Answer" + r).scaleX = 2.5;
-					stage.getChildByName("object" + r).getChildByName("Answer" + r).scaleY = 2.5;
+					stage.getChildByName("object" + r).getChildByName("Answer" + r).scaleX = 0.3;
+					stage.getChildByName("object" + r).getChildByName("Answer" + r).scaleY = 0.3;
 		
-					stage.getChildByName("object" + r).getChildByName("Answer" + r).x -= 300;
-					stage.getChildByName("object" + r).getChildByName("Answer" + r).y += 10;
+					//stage.getChildByName("object" + r).getChildByName("Answer" + r).x -= 300;
+					//stage.getChildByName("object" + r).getChildByName("Answer" + r).y += 10;
 					stage.getChildByName("object" + r).gotoAndStop(4); //שינוי תיבת האוצר להגדלה
 					/*	
 				stage.getChildByName("object" + r).getChildByName("Answer" + r).setChildIndex = function(child,0) {
@@ -4795,11 +4790,11 @@ if (reversed == null) { reversed = false; }
 		
 				} else {
 					if (picBig == 1) {
-						stage.getChildByName("object" + r).getChildByName("Answer" + r).scaleX = 1;
-						stage.getChildByName("object" + r).getChildByName("Answer" + r).scaleY = 1;
-						stage.getChildByName("object" + r).getChildByName("Answer" + r).x += 300;
-						stage.getChildByName("object" + r).getChildByName("Answer" + r).y -= 10;
-						stage.getChildByName("object" + r).gotoAndStop(0);
+						stage.getChildByName("object" + r).getChildByName("Answer" + r).scaleX = 0.1;
+						stage.getChildByName("object" + r).getChildByName("Answer" + r).scaleY = 0.1;
+						//stage.getChildByName("object" + r).getChildByName("Answer" + r).x += 300;
+						//stage.getChildByName("object" + r).getChildByName("Answer" + r).y -= 10;
+						//stage.getChildByName("object" + r).gotoAndStop(0);
 						picBig = 0;
 						picIsBig = 0;
 		
@@ -4811,19 +4806,19 @@ if (reversed == null) { reversed = false; }
 		
 				if (picBig == 1) {
 					//	stage.getChildByName("pic").gotoAndStop(0);
-					stage.getChildByName("pic").scaleX = 1;
-					stage.getChildByName("pic").scaleY = 1;
-					stage.getChildByName("pic").y -= 30;
-					stage.getChildByName("pic").x -= 20;
+					stage.getChildByName("pic").scaleX = 0.1;
+					stage.getChildByName("pic").scaleY = 0.1;
+					//stage.getChildByName("pic").y -= 30;
+					//stage.getChildByName("pic").x -= 20;
 		
 					picBig = 0;
 		
 				} else {
 					//stage.getChildByName("pic").gotoAndStop(1);
-					stage.getChildByName("pic").scaleX = 2;
-					stage.getChildByName("pic").scaleY = 2;
-					stage.getChildByName("pic").y += 30;
-					stage.getChildByName("pic").x += 20;
+					stage.getChildByName("pic").scaleX = 0.3;
+					stage.getChildByName("pic").scaleY = 0.3;
+					//stage.getChildByName("pic").y += 30;
+					//stage.getChildByName("pic").x += 20;
 					picBig = 1;
 				}
 			}
@@ -5162,7 +5157,7 @@ if (reversed == null) { reversed = false; }
 		//פונקציה לניקוי הבמה עבור השאלה הבאה
 		function clean() {
 			clearTimeout(TimerNoMove); //תעצור את הטיימר של אי תזוזה	
-			counterNoMove = 30;
+			counterNoMove = 60;
 		
 			stage.removeChild(stage.getChildByName("checkbtn")); //מחיקת כפתור לבדיקה
 			stage.removeChild(stage.getChildByName("Qtitle")); //מחיקת גזע השאלה
@@ -5324,6 +5319,7 @@ if (reversed == null) { reversed = false; }
 		
 		function ending() {
 		
+			clearTimeout(TimerNoMove); //תעצור את הטיימר
 		
 		
 			//----------------------	///חישוב הציון
@@ -5606,7 +5602,7 @@ if (reversed == null) { reversed = false; }
 			timer; //משתנה לספירת הזמן בכל שאלה
 			//counter = ; //משתנה לספירה לאחור
 			counter = 30;
-			counterNoMove = 30; // משתנה לספירת אי תזוזה
+			counterNoMove = 60; // משתנה לספירת אי תזוזה
 			TimerNoMove; //משתנה לספירת הזמן באי תזוזה
 			timeTotal = 0; //משתנה לסכימת זמן המשק
 			totalScore = 0; //משתנה לסכימת הציון
