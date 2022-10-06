@@ -14,7 +14,7 @@
                 <MudCardContent>
                     <MudIconButton Style="align-items:end" Icon="@Icons.Material.Filled.Close" Color="Color.Default" />
 
-                    <MudTextField  Label="שם משחק" HelperText="2-25 תווים"
+                    <MudTextField Label="שם משחק" HelperText="2-25 תווים"
                                   @bind-Value="UpdatedGame.GameName" For="@(() => UpdatedGame.GameName)" />
 
                     <MudSelect T="int" Label="זמן מענה לשאלה" Placeholder="@GameTime" @bind-Value="UpdatedGame.QTimeLimit" For="@(() => UpdatedGame.QTimeLimit)" AnchorOrigin="Origin.BottomCenter">
@@ -27,7 +27,7 @@
                     </MudSelect>
                 </MudCardContent>
                 <MudCardActions>
-                    <MudButton Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Submit" Color="Color.Primary"  Variant="Variant.Filled">שמירת שינויים</MudButton>
+                    <MudButton Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">שמירת שינויים</MudButton>
                 </MudCardActions>
             </MudCard>
         </MudItem>

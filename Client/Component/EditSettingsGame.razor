@@ -2,38 +2,37 @@
 @using TreasureIsland_Dolev_May_Coral.Shared.Entities
 @inject HttpClient Http
 
+    <EditForm Model="@GameFromPage" OnValidSubmit="OnValidSubmit">
+        <MudText>
+            הגדרות משחק
+        </MudText>
+        <DataAnnotationsValidator />
+        <MudGrid>
+            <MudItem Style="width: 400px; height: 300px">
+                <MudCard>
+                    <MudCardContent>
+                        <MudIconButton Style="left:20px" Icon="@Icons.Material.Filled.Close" @onclick="ClosePopup" Color="Color.Default" />
 
-<EditForm Model="@GameFromPage" OnValidSubmit="OnValidSubmit">
-    <MudText>
-        הגדרות משחק
-    </MudText>
-    <DataAnnotationsValidator />
-    <MudGrid>
-        <MudItem Style="width: 400px; height: 300px">
-            <MudCard>
-                <MudCardContent>
-                    <MudIconButton Style="left:20px" Icon="@Icons.Material.Filled.Close" @onclick="ClosePopup" Color="Color.Default" />
+                        <MudTextField Variant="Variant.Outlined" Label="שם משחק" HelperText="2-25 תווים"
+                                      @bind-Value="GameFromPage.GameName" For="@(() => GameFromPage.GameName)" />
 
-                    <MudTextField Label="שם משחק" HelperText="2-25 תווים"
-                                  @bind-Value="GameFromPage.GameName" For="@(() => GameFromPage.GameName)" />
+                        <MudSelect T="int"  Variant="Variant.Outlined" Label="זמן מענה לשאלה" Placeholder="@GameTime" @bind-Value="GameFromPage.QTimeLimit" For="@(() => GameFromPage.QTimeLimit)" AnchorOrigin="Origin.BottomCenter">
 
-                    <MudSelect T="int" Label="זמן מענה לשאלה" Placeholder="@GameTime" @bind-Value="GameFromPage.QTimeLimit" For="@(() => GameFromPage.QTimeLimit)" AnchorOrigin="Origin.BottomCenter">
+                            <MudSelectItem T="int" Value="20">20 שניות</MudSelectItem>
+                            <MudSelectItem T="int" Value="30">30 שניות</MudSelectItem>
+                            <MudSelectItem T="int" Value="40">40 שניות</MudSelectItem>
+                            <MudSelectItem T="int" Value="50">50 שניות</MudSelectItem>
+                            <MudSelectItem T="int" Value="60">60 שניות</MudSelectItem>
+                        </MudSelect>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">שמירת שינויים</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
 
-                        <MudSelectItem T="int" Value="20">20 שניות</MudSelectItem>
-                        <MudSelectItem T="int" Value="30">30 שניות</MudSelectItem>
-                        <MudSelectItem T="int" Value="40">40 שניות</MudSelectItem>
-                        <MudSelectItem T="int" Value="50">50 שניות</MudSelectItem>
-                        <MudSelectItem T="int" Value="60">60 שניות</MudSelectItem>
-                    </MudSelect>
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">שמירת שינויים</MudButton>
-                </MudCardActions>
-            </MudCard>
-        </MudItem>
-
-    </MudGrid>
-</EditForm>
+        </MudGrid>
+    </EditForm>
 
 <p>@UpdatedGame.GameName </p>
 
@@ -75,6 +74,7 @@
 
     void ClosePopup()
     {
+
         MessegeToPageEC.InvokeAsync("לא בוצעו שינויים");
         HideToPageEC.InvokeAsync(false);
 
@@ -125,21 +125,6 @@
     }
 
 
-    //private void myFunc()
-    //{
 
-
-    //    if ()
-    //    {
-    //        //שליחת ההודעה מהקומפוננטה לדף
-    //        MessegeToPageEC.InvokeAsync("הגדרות שונו בהצלחה");
-    //    }
-    //    else
-    //    {
-    //        //שליחת ההודעה מהקומפוננטה לדף
-    //        MessegeToPageEC.InvokeAsync("לא בוצעו שינויים");
-    //    }
-
-    //}
 
 }

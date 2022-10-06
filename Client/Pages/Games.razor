@@ -3,6 +3,7 @@
 @inject HttpClient Http
 @inject NavigationManager nav
 @using System.ComponentModel.DataAnnotations
+@inject IDialogService DialogService
 
 <h1 style="color:saddlebrown; text-align:center"><b>המשחקים שלי</b></h1>
 <br />
@@ -17,7 +18,7 @@
 @if (status == true)
 
 {
-     <EditForm Model="@newGame" OnValidSubmit="OnValidSubmit">
+    <EditForm Model="@newGame" OnValidSubmit="OnValidSubmit">
 
         <DataAnnotationsValidator />
         <MudGrid>
@@ -26,10 +27,10 @@
                     <MudCardContent>
                         <MudText Style="color: saddlebrown">יצירת משחק חדש</MudText>
                         <MudIconButton Style="align-items:end" @onclick="showComponent" Icon="@Icons.Material.Filled.Close" Color="Color.Default" />
-                        <MudTextField Placeholder="הקלד שם למשחק..." Label="שם משחק" HelperText="2-25 תווים" @onkeydown="statusButton" @onkeyup="statusButton"
+                        <MudTextField Variant="Variant.Outlined" Placeholder="הקלד שם למשחק..." Label="שם משחק" HelperText="2-25 תווים" @onkeydown="statusButton" @onkeyup="statusButton"
                                       @bind-Value="newGame.GameName" For="@(() => newGame.GameName)" />
 
-                        <MudSelect T="int" Label="זמן מענה לשאלה" @bind-Value="newGame.QTimeLimit" For="@(() => newGame.QTimeLimit)" AnchorOrigin="Origin.BottomCenter">
+                        <MudSelect Variant="Variant.Outlined" T="int" Label="זמן מענה לשאלה" @bind-Value="newGame.QTimeLimit" For="@(() => newGame.QTimeLimit)" AnchorOrigin="Origin.BottomCenter">
                             <MudSelectItem T="int" Value="20">20 שניות</MudSelectItem>
                             <MudSelectItem T="int" Value="30">30 שניות</MudSelectItem>
                             <MudSelectItem T="int" Value="40">40 שניות</MudSelectItem>
@@ -48,14 +49,16 @@
 
 }
 
+
+
 @if (hideComp == true)
 {<div style="position: absolute; right: 400px; backdrop-filter: grayscale()">
-   <EditSettingsGame userId="userId" GameFromPage="GametoUpdate" HideToPageEC="hideThecomp" MessegeToPageEC="ActionComp"></EditSettingsGame>           
+        <EditSettingsGame userId="userId" GameFromPage="GametoUpdate" HideToPageEC="hideThecomp" MessegeToPageEC="ActionComp"></EditSettingsGame>
 
-</div>
-  
-    
+    </div>
+
 }
+
 
 <MudTable Items="@CurrentUser.UserGames" Hover="true">
     <HeaderContent>
@@ -75,8 +78,8 @@
         <MudTd DataLabel="לצפייה"><MudButton EndIcon="@Icons.Material.Outlined.RemoveRedEye"></MudButton></MudTd>
         <MudTd DataLabel="קוד המשחק">@context.GameCode</MudTd>
         <MudTd DataLabel="מספר שאלות">@context.GameQuestions.Count</MudTd>
-        <MudTd DataLabel="הגדרות משחק"><MudButton Color="Color.Info"OnClick="@(() => show2Component(context))" EndIcon="@Icons.Material.Outlined.Settings"></MudButton></MudTd>
-        <MudTd DataLabel="עריכה"><MudButton Color="Color.Info"  EndIcon="@Icons.Material.Outlined.Edit"></MudButton></MudTd>
+        <MudTd DataLabel="הגדרות משחק"><MudButton Color="Color.Info" OnClick="@(() => show2Component(context))" EndIcon="@Icons.Material.Outlined.Settings"></MudButton></MudTd>
+        <MudTd DataLabel="עריכה"><MudButton Color="Color.Info" EndIcon="@Icons.Material.Outlined.Edit"></MudButton></MudTd>
         <MudTd DataLabel="מחיקה"><MudButton Color="Color.Info" OnClick="@(() => DeleteGame(context))" EndIcon="@Icons.Material.Outlined.Delete"></MudButton></MudTd>
         <MudTd DataLabel="פרסום">
             <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context))" Checked="@context.IsPublish" Color="Color.Primary"></MudCheckBox>
@@ -91,85 +94,84 @@
 @code {
 
 
-        [Parameter]
-        public int userId { get; set; }
+    [Parameter]
+    public int userId { get; set; }
 
 
-        //משתנה לשינוי מצב הכפתור של צור משחק
-        bool IsButtonEabled = true;
+    //משתנה לשינוי מצב הכפתור של צור משחק
+    bool IsButtonEabled = true;
 
-        // חיווי למשתמש
-        string msg = "";
+    // חיווי למשתמש
+    string msg = "";
 
-        //יצירת מופע חדש של יוזר
-        User CurrentUser = new User();
+    //יצירת מופע חדש של יוזר
+    User CurrentUser = new User();
 
-        //יצירת מופע חדש של משחק
-        Game newGame = new Game();
+    //יצירת מופע חדש של משחק
+    Game newGame = new Game();
 
-        Game GametoUpdate = new Game();
+    Game GametoUpdate = new Game();
 
+    //מצב מוסתר של קומפוננטה שינוי הגדרות משחק
+    bool hideComp = false;
+    // הופך את הקומפוננטה לנראה ממצב מוסתר
+    public void show2Component(Game game)
+    {
 
-        //מצב מוסתר של קומפוננטה שינוי הגדרות משחק
-        bool hideComp = false;
-        // הופך את הקומפוננטה לנראה ממצב מוסתר
-        public void show2Component(Game game)
+        if (hideComp == false)
         {
-
-            if (hideComp == false)
-            {
-                GametoUpdate = game;
-                hideComp = true;
-                //GametoUpdate = new Game();
-
-            }
-            else
-            {
-                hideComp = true;
-            }
+            GametoUpdate = game;
+            hideComp = true;
+            //GametoUpdate = new Game();
 
         }
-
-        // הופך את הקומפוננטה לנראה ממצב מוסתר
-        void hideThecomp(bool boolfromComp)
-        {
-
-            hideComp = boolfromComp;
-
-        }
-
-
-        //חיוי מהקומפוננטה שינוי הגדרות משחק
-        async Task ActionComp(string TextFromComp)
+        else
         {
             hideComp = true;
-            msg = TextFromComp;
-            await RefreshTable();
-            if (TextFromComp== "הגדרות שונו בהצלחה")
-            {
-                hideComp = false;
-            }
         }
 
+    }
+
+    // הופך את הקומפוננטה לנראה ממצב מוסתר
+    void hideThecomp(bool boolfromComp)
+    {
+
+        hideComp = boolfromComp;
+
+    }
 
 
-        //מצב מוסתר של טופס צור משחק
-        bool status = false;
-        // הופך את הטופס לנראה ממצב מוסתר
-        public void showComponent()
+    //חיוי מהקומפוננטה שינוי הגדרות משחק
+    async Task ActionComp(string TextFromComp)
+    {
+        hideComp = true;
+        msg = TextFromComp;
+        await RefreshTable();
+        if (TextFromComp == "הגדרות שונו בהצלחה")
         {
-            if (status == false)
-            {
-                status = true;
+            hideComp = false;
+        }
+    }
 
-            }
-            else
-            {
-                status = false;
-            }
 
+
+    //מצב מוסתר של טופס צור משחק
+    bool status = false;
+    // הופך את הטופס לנראה ממצב מוסתר
+    public void showComponent()
+    {
+        if (status == false)
+        {
+            status = true;
 
         }
+        else
+        {
+            status = false;
+        }
+
+
+    }
 
 
 
@@ -312,7 +314,7 @@
     {
         newGame = Game;
 
-        var deleteResponse = await Http.DeleteAsync("api/Games/" + newGame.ID); //הנתיב של הקונטרולר מוצא לנו את המשחק שהמספר המזהה שלו נבחר או הוקלד
+        var deleteResponse = await Http.DeleteAsync("api/Games/" + newGame.UserID.ToString() + "/" + newGame.ID); //הנתיב של הקונטרולר מוצא לנו את המשחק שהמספר המזהה שלו נבחר או הוקלד
 
         if (deleteResponse.IsSuccessStatusCode == true) //בדיקת תקינות
         {

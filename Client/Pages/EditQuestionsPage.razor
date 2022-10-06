@@ -13,7 +13,7 @@
 
 
             <MudText Style="color: saddlebrown">הוספת שאלה</MudText>
-            <MudTextField Placeholder="תוכן השאלה..." Label="שם משחק" HelperText="2-25 תווים"
+            <MudTextField Variant="Variant.Outlined" Placeholder="תוכן השאלה..." Label="שם משחק" HelperText="2-25 תווים"
                           @bind-Value="CurrentQuestion.QuestionTitle" For="@(() => CurrentQuestion.QuestionTitle)" />
 
         </MudItem>
@@ -30,17 +30,17 @@
     <MudGrid>
         <MudItem Style="width: 400px; height:300px">
             <MudText Style="color: saddlebrown"><b>תשובה נכונה</b></MudText>
-            <MudTextField Placeholder="תוכן תשובה נכונה" HelperText="2-25 תווים"
+            <MudTextField Variant="Variant.Outlined" Placeholder="תוכן תשובה נכונה" HelperText="2-25 תווים"
                           @bind-Value="CurrentDistractor.DistractorContent" For="@(() => CurrentDistractor.DistractorContent)" />
         </MudItem><br />
         <MudItem Style="width: 400px; height:300px">
             <MudText Style="color: saddlebrown"><b>תשובה לא נכונה</b></MudText>
-            <MudTextField Placeholder="תוכן תשובה לא נכונה" Label="שם משחק" HelperText="2-25 תווים"
+            <MudTextField Variant="Variant.Outlined" Placeholder="תוכן תשובה לא נכונה" Label="שם משחק" HelperText="2-25 תווים"
                           @bind-Value="CurrentDistractor.DistractorContent" For="@(() => CurrentDistractor.DistractorContent)" />
         </MudItem>
         <br />
         <MudItem Style="width: 400px; height:300px;">
-            <MudTextField Placeholder="תוכן תשובה לא נכונה" Label="תשובה לא נכונה" HelperText="2-25 תווים"
+            <MudTextField Variant="Variant.Outlined" Placeholder="תוכן תשובה לא נכונה" Label="תשובה לא נכונה" HelperText="2-25 תווים"
                           @bind-Value="CurrentDistractor.DistractorContent" For="@(() => CurrentDistractor.DistractorContent)" />
         </MudItem>
     </MudGrid>

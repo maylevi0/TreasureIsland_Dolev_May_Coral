@@ -21,7 +21,7 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
         public GamesController(DataContext context, FileStorage fileStorage)
         {
             _context = context;
-           _fileStorage = fileStorage;
+            _fileStorage = fileStorage;
         }
 
 
@@ -87,14 +87,15 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
             }
         }
 
+
         //שליפת משחק על פי קוד
         [HttpGet("byCode/{gameCodeFromClient}")]
         public async Task<IActionResult> GetGameByCode(int gameCodeFromClient)
         {
             Game gameFromDB = await _context.Games.Include(gq => gq.GameQuestions).ThenInclude(qd => qd.QuestionDistractors).FirstOrDefaultAsync(g => g.GameCode == gameCodeFromClient);
-            if(gameFromDB != null)
+            if (gameFromDB != null)
             {
-                if(gameFromDB.IsPublish == true)
+                if (gameFromDB.IsPublish == true)
                 {
                     return Ok(gameFromDB);
                 }
@@ -153,20 +154,29 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
         }
 
         //מחיקת משחק
-        [HttpDelete("{gameID}")]
-        public async Task<IActionResult> DeleteGame(int gameID)
+
+        [HttpDelete("{userID}/{gameID}")]
+        public async Task<IActionResult> DeleteGame(int userID, int gameID)
         {
-            Game game = await _context.Games.FirstOrDefaultAsync(w => w.ID == gameID);
-            if (game != null)
+            string sessionContent = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(sessionContent) == false)
             {
-                _context.Games.Remove(game);
-                await _context.SaveChangesAsync();
-                return Ok(true);
+                int sessionId = Convert.ToInt32(sessionContent);
+
+                if (sessionId == userID)
+                {
+                    Game GameFromDB = await _context.Games.FirstOrDefaultAsync(g => g.ID == gameID);
+                    if (GameFromDB != null)
+                    {
+                        _context.Games.Remove(GameFromDB);
+                        await _context.SaveChangesAsync();
+                        return Ok(true);
+                    }
+                    return BadRequest("no such game...");
+                }
+                return BadRequest("User not login");
             }
-            else
-            {
-                return BadRequest("לא קיים משחק למחיקה");
-            }
+            return BadRequest("Empty session");
         }
 
         //שמירת תמונה
@@ -178,16 +188,21 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
             return Ok(url);
         }
 
-        //מחיקת תמונה
-        [HttpPost("deleteImages")]
-        public async Task<IActionResult> DeleteImages([FromBody] List<string> images)
-        {
-            foreach (string img in images)
+            //מחיקת תמונה
+            [HttpPost("deleteImages")]
+            public async Task<IActionResult> DeleteImages([FromBody] List<string> images)
             {
-                await _fileStorage.DeleteFile(img, "uploadedFiles");
+                foreach (string img in images)
+                {
+                    await _fileStorage.DeleteFile(img, "uploadedFiles");
+                }
+                return Ok("deleted");
             }
-            return Ok("deleted");
-        }
 
-    }
+
+
+
+
+        
+    }   
 }
