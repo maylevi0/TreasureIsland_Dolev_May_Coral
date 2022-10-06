@@ -1,8 +1,9 @@
 ﻿@page "/EditQuestionsPage"
 @using TreasureIsland_Dolev_May_Coral.Shared.Entities
-@*@inject HttpClient Http
-    @inject NavigationManager nav*@
+@inject HttpClient Http
+@inject NavigationManager nav
 @using System.ComponentModel.DataAnnotations
+
 
 
 <EditForm Model="@CurrentQuestion" OnValidSubmit="OnValidSubmit">
@@ -18,102 +19,169 @@
 
         </MudItem>
     </MudGrid>
-</EditForm>
-<br />
-<br />
-<br />
-מסיחים
 
-<EditForm Model="@CurrentDistractor" OnValidSubmit="OnValidSubmit">
-
-    <DataAnnotationsValidator />
-    <MudGrid>
-        <MudItem Style="width: 400px; height:300px">
-            <MudText Style="color: saddlebrown"><b>תשובה נכונה</b></MudText>
-            <MudTextField Variant="Variant.Outlined" Placeholder="תוכן תשובה נכונה" HelperText="2-25 תווים"
-                          @bind-Value="CurrentDistractor.DistractorContent" For="@(() => CurrentDistractor.DistractorContent)" />
-        </MudItem><br />
-        <MudItem Style="width: 400px; height:300px">
-            <MudText Style="color: saddlebrown"><b>תשובה לא נכונה</b></MudText>
-            <MudTextField Variant="Variant.Outlined" Placeholder="תוכן תשובה לא נכונה" Label="שם משחק" HelperText="2-25 תווים"
-                          @bind-Value="CurrentDistractor.DistractorContent" For="@(() => CurrentDistractor.DistractorContent)" />
-        </MudItem>
-        <br />
-        <MudItem Style="width: 400px; height:300px;">
-            <MudTextField Variant="Variant.Outlined" Placeholder="תוכן תשובה לא נכונה" Label="תשובה לא נכונה" HelperText="2-25 תווים"
-                          @bind-Value="CurrentDistractor.DistractorContent" For="@(() => CurrentDistractor.DistractorContent)" />
-        </MudItem>
-    </MudGrid>
-    <MudButton Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">שמירת שאלה</MudButton>
-
-</EditForm>
-
-
-@*<MudTable Items="@CurrentUser.UserGames" Hover="true">
-    <HeaderContent>
-
-        <MudTh>שם המשחק</MudTh>
-        <MudTh>לצפייה</MudTh>
-        <MudTh>קוד משחק</MudTh>
-        <MudTh>מספר שאלות</MudTh>
-        <MudTh><MudTooltip Text="בהגדרות ניתן לשנות את שם המשחק וזמן מענה לשאלה">הגדרות משחק<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
-        <MudTh><MudTooltip Text="בעריכה ניתן לערוך את השאלה ואפשרויות המענה">עריכה<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
-        <MudTh>מחיקה</MudTh>
-        <MudTh><MudTooltip Text="נדרשות מינימום 10 שאלות לפרסום המשחק">פרסום<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
-
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="שם המשחק">@context.GameName</MudTd>
-        <MudTd DataLabel="לצפייה"><MudButton EndIcon="@Icons.Material.Outlined.RemoveRedEye"></MudButton></MudTd>
-        <MudTd DataLabel="קוד המשחק">@context.GameCode</MudTd>
-        <MudTd DataLabel="מספר שאלות">@context.GameQuestions.Count</MudTd>
-        <MudTd DataLabel="הגדרות משחק"><MudButton Color="Color.Info" OnClick="@(() => show2Component(context))" EndIcon="@Icons.Material.Outlined.Settings"></MudButton></MudTd>
-        <MudTd DataLabel="עריכה"><MudButton Color="Color.Info" EndIcon="@Icons.Material.Outlined.Edit"></MudButton></MudTd>
-        <MudTd DataLabel="מחיקה"><MudButton Color="Color.Info" OnClick="@(() => DeleteGame(context))" EndIcon="@Icons.Material.Outlined.Delete"></MudButton></MudTd>
-        <MudTd DataLabel="פרסום">
-            <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context))" Checked="@context.IsPublish" Color="Color.Primary"></MudCheckBox>
-        </MudTd>
-    </RowTemplate>
-</MudTable>*@
-
-@code {
-
-    [Parameter]
-    public int userId { get; set; }
-
-    Game CurrentGame = new Game();
-
-    Question CurrentQuestion = new Question();
-
-    Distractor CurrentDistractor = new Distractor();
-
-    // protected async Task OnValidSubmit()
-    void OnValidSubmit()
+    <InputFile id="FileInputID" OnChange="UploadFile" accept=".jpg, .jpeg, .png" hidden />
+    @if (!QuestionImg)
     {
-
-        //מאפיינים של שאלה משחק חדש צריכים להיות מאוכלסים
-
-
-
-        //ואז קריאה לקונטרולר והוספת משחק
-
-        // var postRespone = await Http.PostAsJsonAsync("api/Games/", newGame);
-        //if (postRespone.IsSuccessStatusCode == true)
-        //{
-        //    Game AddGame = postRespone.Content.ReadFromJsonAsync<Game>().Result;
-
-
-        //איפוס המופע לאפשר יצירת מופע חדש
-
-
-
-        //msg = "לא נוצר משחק";
-
-        //}
-        //    else
-        //    {
-        //msg = "לא נוצר משחק";
-
+        <MudButton Class="btnDesign" id="questimgBTN"
+                   Variant="Variant.Filled"
+                   EndIcon="@Icons.Material.Outlined.Image"
+                   Color="Color.Primary"
+                   for="FileInputID"
+                   HtmlTag="label">
+            להוספת תמונה
+        </MudButton>
     }
-    @*}*@
-}
+    else
+    {
+        @*//עדכון תמונה*@
+        <MudTooltip Text="ערוך את התמונה" Arrow="true" Placement="Placement.Top" Color="Color.Primary">
+            <MudButton id="imgUpload" for="FileInputID" @onclick="DeleteImageEdit" HtmlTag="label">
+                <img src="@myFileImage" width="60" />
+            </MudButton>
+        </MudTooltip>
+
+        @*//מחיקת תמונה
+        <MudIcon Class="deleteImgBTNfirst" Icon="@Icons.Filled.Cancel" Color="Color.Primary" Variant="Variant.Filled" @onclick="DeleteImage"></MudIcon>*@
+    }
+
+
+
+</EditForm>
+    <br />
+    <br />
+    <br />
+    @*מסיחים*@
+
+    <EditForm Model="@CurrentDistractor" OnValidSubmit="OnValidSubmit">
+
+        <DataAnnotationsValidator />
+        <MudGrid>
+            <MudItem Style="width: 400px; height:300px">
+                <MudText Style="color: saddlebrown"><b>תשובה נכונה</b></MudText>
+                <MudTextField Variant="Variant.Outlined" Placeholder="תוכן תשובה נכונה" HelperText="2-25 תווים"
+                              @bind-Value="CurrentDistractor.DistractorContent" For="@(() => CurrentDistractor.DistractorContent)" />
+            </MudItem><br />
+            <MudItem Style="width: 400px; height:300px">
+                <MudText Style="color: saddlebrown"><b>תשובה לא נכונה</b></MudText>
+                <MudTextField Variant="Variant.Outlined" Placeholder="תוכן תשובה לא נכונה" Label="שם משחק" HelperText="2-25 תווים"
+                              @bind-Value="CurrentDistractor.DistractorContent" For="@(() => CurrentDistractor.DistractorContent)" />
+            </MudItem>
+            <br />
+            <MudItem Style="width: 400px; height:300px;">
+                <MudTextField Variant="Variant.Outlined" Placeholder="תוכן תשובה לא נכונה" Label="תשובה לא נכונה" HelperText="2-25 תווים"
+                              @bind-Value="CurrentDistractor.DistractorContent" For="@(() => CurrentDistractor.DistractorContent)" />
+            </MudItem>
+        </MudGrid>
+        <MudButton Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">שמירת שאלה</MudButton>
+
+    </EditForm>
+
+
+    @*<MudTable Items="@CurrentUser.UserGames" Hover="true">
+            <HeaderContent>
+
+                <MudTh>שם המשחק</MudTh>
+                <MudTh>לצפייה</MudTh>
+                <MudTh>קוד משחק</MudTh>
+                <MudTh>מספר שאלות</MudTh>
+                <MudTh><MudTooltip Text="בהגדרות ניתן לשנות את שם המשחק וזמן מענה לשאלה">הגדרות משחק<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
+                <MudTh><MudTooltip Text="בעריכה ניתן לערוך את השאלה ואפשרויות המענה">עריכה<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
+                <MudTh>מחיקה</MudTh>
+                <MudTh><MudTooltip Text="נדרשות מינימום 10 שאלות לפרסום המשחק">פרסום<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
+
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="שם המשחק">@context.GameName</MudTd>
+                <MudTd DataLabel="לצפייה"><MudButton EndIcon="@Icons.Material.Outlined.RemoveRedEye"></MudButton></MudTd>
+                <MudTd DataLabel="קוד המשחק">@context.GameCode</MudTd>
+                <MudTd DataLabel="מספר שאלות">@context.GameQuestions.Count</MudTd>
+                <MudTd DataLabel="הגדרות משחק"><MudButton Color="Color.Info" OnClick="@(() => show2Component(context))" EndIcon="@Icons.Material.Outlined.Settings"></MudButton></MudTd>
+                <MudTd DataLabel="עריכה"><MudButton Color="Color.Info" EndIcon="@Icons.Material.Outlined.Edit"></MudButton></MudTd>
+                <MudTd DataLabel="מחיקה"><MudButton Color="Color.Info" OnClick="@(() => DeleteGame(context))" EndIcon="@Icons.Material.Outlined.Delete"></MudButton></MudTd>
+                <MudTd DataLabel="פרסום">
+                    <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context))" Checked="@context.IsPublish" Color="Color.Primary"></MudCheckBox>
+                </MudTd>
+            </RowTemplate>
+        </MudTable>*@
+
+
+
+    @code {
+
+        [Parameter]
+        public int userId { get; set; }
+
+        [Parameter]
+        public string creatORedit { get; set; }//פרמטר לנתב שיציג האם אנחנו בעריכה או יצירה
+
+
+        Game CurrentGame = new Game();
+
+        Question CurrentQuestion = new Question();
+
+        List<Question> MyQuestions = new List<Question>(); //רשימה של שאלות, כך רשומה תייצג שאלה אחת
+
+        List<string> emptyTable = new List<string>() { "לא קיימות שאלות" };// ישמש כמודל לטבלה שלהשאלות כשהיא ריקה
+
+
+
+        Distractor CurrentDistractor = new Distractor();
+        bool QuestionImg = false;
+        string myFileImage = "";// יכיל תמונה בגזע השאלה
+        List<string> QusPicsToDelet = new List<string>();
+
+        [Parameter]
+        public bool isEditMood { get; set; }
+
+
+        //IsPicture = new List<bool>() { false, false, false, false, false, false };
+
+
+
+        //במצב של עריכת תמונה אני לא רוצה לרוקן את כל המופע ולעדכן שאינו תמונה אלא רק להוסיף את התמונה המיועדת למחיקה למשתנה וזוהי מטרת הפונקצייה
+        void DeleteImageEdit()
+        {
+            QusPicsToDelet.Add(myFileImage);
+            Console.WriteLine("התמונה נמצאת ברשימה המיועדת למחיקה" + myFileImage);
+        }
+
+
+
+        
+
+        //string CheckQues;//ישמור את הטקסט של השאלה הנוכחית שעלתה בלחיצה על עריכה. ישמש בבדיקה של יציאה מהעמוד ללא שמירה
+        //string CheackImgQues = "";// ישמור את המחרוזת של התמונה של השאלה הנוכחית שעלתה בלחיצה על עריכה, ישמש בבדיקה של יצירה מעמוד ללא שמירה
+        //List<string> curAnsList = new List<string>(); //ישמור את השאלה הנוכחית שעלתה בלחיצה על עריכה. ישמש בבדיקה של יציאה מהעמוד ללא שמירה
+
+
+        // protected async Task OnValidSubmit()
+        void OnValidSubmit()
+        {
+
+            //מאפיינים של שאלה משחק חדש צריכים להיות מאוכלסים
+
+
+
+            //ואז קריאה לקונטרולר והוספת משחק
+
+            // var postRespone = await Http.PostAsJsonAsync("api/Games/", newGame);
+            //if (postRespone.IsSuccessStatusCode == true)
+            //{
+            //    Game AddGame = postRespone.Content.ReadFromJsonAsync<Game>().Result;
+
+
+            //איפוס המופע לאפשר יצירת מופע חדש
+
+
+
+            //msg = "לא נוצר משחק";
+
+            //}
+            //    else
+            //    {
+            //msg = "לא נוצר משחק";
+
+        }
+        @*}*@
+    }
