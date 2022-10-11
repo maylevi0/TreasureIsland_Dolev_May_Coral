@@ -79,7 +79,7 @@
         <MudTd DataLabel="קוד המשחק">@context.GameCode</MudTd>
         <MudTd DataLabel="מספר שאלות">@context.GameQuestions.Count</MudTd>
         <MudTd DataLabel="הגדרות משחק"><MudButton Color="Color.Info" OnClick="@(() => show2Component(context))" EndIcon="@Icons.Material.Outlined.Settings"></MudButton></MudTd>
-        <MudTd DataLabel="עריכה"><MudButton Color="Color.Info" EndIcon="@Icons.Material.Outlined.Edit"></MudButton></MudTd>
+        <MudTd DataLabel="עריכה"><MudButton Color="Color.Info" OnClick="@(()=>GotoEditPage(context))" EndIcon="@Icons.Material.Outlined.Edit"></MudButton></MudTd>
         <MudTd DataLabel="מחיקה"><MudButton Color="Color.Info" OnClick="@(() => DeleteGame(context))" EndIcon="@Icons.Material.Outlined.Delete"></MudButton></MudTd>
         <MudTd DataLabel="פרסום">
             <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context))" Checked="@context.IsPublish" Color="Color.Primary"></MudCheckBox>
@@ -322,7 +322,7 @@
             if (GetResponse.IsSuccessStatusCode == true)
             {
 
-                msg = "קריאה הצליחה אבל לא נמחק";
+
                 CurrentUser.UserGames.Remove(newGame);  //להסיר את המשחק
 
                 await RefreshTable(); // ריענון הטבלה
@@ -336,6 +336,26 @@
                 msg = "לא נמחק";
             }
         }
+    }
+
+    //מעבר לעמוד עריכת משחק דרך כפתור עריכה
+    protected async Task GotoEditPage(Game Game)
+    {
+       var gameId = Game.ID; 
+        var getResponse = await Http.GetAsync("api/Games/bygameID/" + gameId);
+
+        if (getResponse.IsSuccessStatusCode)
+        {
+            Game gametoEditPage = getResponse.Content.ReadFromJsonAsync<Game>().Result;
+
+            nav.NavigateTo("./EditQuestionsPage/" + gametoEditPage.ID + "/" + gametoEditPage.UserID);
+        }
+        else
+        {
+            msg = "התרחשה תקלת שרת";
+        }
+
+
     }
 }
 

@@ -70,3 +70,12 @@ p.mypClass{
 
 }
 
+.tableofQ {
+    width: 40%;
+    display: inline-block;
+    right:700px;
+    top: 50px;
+    vertical-align: top;
+    position: absolute;
+}
+

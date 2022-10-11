@@ -112,6 +112,22 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
             }
         }
 
+        // שליפת תוכן משחק מכפתור עריכה
+
+        [HttpGet("bygameID/{gameId}")]
+        public async Task<IActionResult> GetgamecontentbyId(int gameId)
+        {
+            Game gameFromDB = await _context.Games.Include(g => g.GameQuestions).ThenInclude(q => q.QuestionDistractors).FirstOrDefaultAsync(g => g.ID == gameId);
+            if (gameFromDB != null)
+            {
+                return Ok(gameFromDB);
+            }
+            else
+            {
+                return BadRequest("Game not found");
+            }
+        }
+
         //קוד משחק יצירת משחק חדש
 
         [HttpPost]
@@ -201,6 +217,55 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
 
 
 
+        // הוספת שאלות עריכה ועדכון
+        [HttpPost("editQuestion/{userID}/{gameId}")]
+        public async Task<IActionResult> EditContent(Question QuestionToUpdate, int userID, int gameID)
+        {
+            string sessionContent = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(sessionContent) == false)
+            {
+                int sessionId = Convert.ToInt32(sessionContent);
+                if (sessionId == userID)
+                {
+                    if (QuestionToUpdate.GameID == 0)
+                    {
+                        QuestionToUpdate.GameID = gameID;
+                        _context.Questions.Add(QuestionToUpdate);
+                        await _context.SaveChangesAsync();
+                        return Ok(QuestionToUpdate);
+                    }
+                    Question questionFromDB = await _context.Questions.FirstOrDefaultAsync(q => q.ID == QuestionToUpdate.ID);
+
+                    if (questionFromDB != null)
+                    {
+                        questionFromDB.QuestionTitle = QuestionToUpdate.QuestionTitle;
+                        questionFromDB.QuestionImage = QuestionToUpdate.QuestionImage;
+                        questionFromDB.QuestionDistractors = QuestionToUpdate.QuestionDistractors;
+
+                        await _context.SaveChangesAsync();
+                        return Ok(questionFromDB);
+                    }
+                    else
+                    {
+                        return BadRequest("no game found");
+                    }
+                }
+                else
+                {
+                    return BadRequest("User not login");
+                }
+            }
+            else
+            {
+                return BadRequest("Empty session");
+            }
+
+        }
+
+
+
+
+    
 
 
         
