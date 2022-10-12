@@ -263,11 +263,33 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
         }
 
 
+        [HttpDelete("DeleteQ/{userID}/{questionID}")]
+        public async Task<IActionResult> DeleteQ(int userID, int questionID)
+        {
+            string sessionContent = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(sessionContent) == false)
+            {
+                int sessionId = Convert.ToInt32(sessionContent);
+
+                if (sessionId == userID)
+                {
+                    Question QuestionFromDB = await _context.Questions.FirstOrDefaultAsync(q => q.ID == questionID);
+                    if (QuestionFromDB != null)
+                    {
+                        _context.Questions.Remove(QuestionFromDB);
+                        await _context.SaveChangesAsync();
+                        return Ok(true);
+                    }
+                    return BadRequest("no such game...");
+                }
+                return BadRequest("User not login");
+            }
+            return BadRequest("Empty session");
+        }
 
 
-    
 
 
-        
+
     }   
 }

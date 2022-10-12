@@ -10,26 +10,148 @@
 
     <DataAnnotationsValidator />
     <MudItem>
+        <MudText Style="color: saddlebrown">
+            השאלה:
+            <MudText Style="color:black; font-size:small"> 3-50 תווים</MudText>
+        </MudText>
         <MudItem Style="width: 500px">
-            <MudText Style="color: saddlebrown">השאלה:</MudText> <MudText Style="color:black; font-size:small"> 3-50 תווים</MudText>
-            <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Placeholder="תוכן השאלה..." @bind-Value="CurrentQuestion.QuestionTitle" For="@(() => CurrentQuestion.QuestionTitle)" />
-            <MudText Style="font-size:small">ניתן להוסיף</MudText>
-            <MudButton EndIcon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudButton>
-            <InputFile id="FileInputID" OnChange="UploadFile" accept=".jpg, .jpeg, .png" hidden />
-            <img src="@CurrentQuestion.QuestionImage" width="30" />
+            <MudItem>
+                <MudTextField Variant="Variant.Outlined" Counter="50" MaxLength="50" Margin="Margin.Dense" Placeholder="תוכן השאלה..." @bind-Value="CurrentQuestion.QuestionTitle" For="@(() => CurrentQuestion.QuestionTitle)"></MudTextField>
+                <MudText Style="font-size:small">ניתן להוסיף</MudText>
+                <MudButton EndIcon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudButton>
+                <InputFile id="FileInputID" OnChange="UploadFile" accept=".jpg, .jpeg, .png" hidden />
+                <img src="@CurrentQuestion.QuestionImage" width="30" />
+
+            </MudItem>
         </MudItem>
+
+        @*@if (CurrentQuestion.QuestionTitle == null)
+        {
+            //אם תוכן השאלה ריק אז...
+            @if (CurrentQuestion.QuestionImage == null)
+            { //אם תוכן התמונה ריק אז...
+                <MudItem Style="width: 500px">
+                    <MudItem>
+                        <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Placeholder="תוכן השאלה..." @bind-Value="CurrentQuestion.QuestionTitle" For="@(() => CurrentQuestion.QuestionTitle)"></MudTextField>
+                        <MudText Style="font-size:small">ניתן להוסיף</MudText>
+                        <MudButton EndIcon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudButton>
+                        <InputFile id="FileInputID" OnChange="UploadFile" accept=".jpg, .jpeg, .png" hidden />
+                    </MudItem>
+                </MudItem>
+
+            }
+            else
+            {// תוכן התמונה מלא אבל תוכן השאלה ריק
+                <MudItem Style="width: 500px">
+                    <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Placeholder="תוכן השאלה..." @bind-Value="CurrentQuestion.QuestionTitle" For="@(() => CurrentQuestion.QuestionTitle)"></MudTextField>
+                    <MudButton EndIcon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" for="CleanFuncQuestionImage" HtmlTag="label"></MudButton>
+                    <img src="@CurrentQuestion.QuestionImage" width="30" />
+                </MudItem>
+
+            }
+        }
+        else
+        {
+            @if (CurrentQuestion.QuestionImage == null)
+            {
+                //תוכן התמונה ריק // תוכן הטקסט מלא
+                  <MudItem style="width: 500px">
+                      <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Placeholder="תוכן השאלה..." @bind-Value="CurrentQuestion.QuestionTitle" For="@(() => CurrentQuestion.QuestionTitle)" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Close" OnAdornmentClick="CleanFuncQuestion"></MudTextField>
+                      <MudButton EndIcon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudButton>
+
+                  </MudItem>
+            }
+            else
+            { // תוכן הטקסט מלא
+              //תוכן התמונה מלא
+                    <MudItem style="width: 500px">
+                          <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Placeholder="תוכן השאלה..." @bind-Value="CurrentQuestion.QuestionTitle" For="@(() => CurrentQuestion.QuestionTitle)" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Close" OnAdornmentClick="CleanFuncQuestion"></MudTextField>
+                           <MudButton EndIcon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" for="CleanFuncQuestionImage" HtmlTag="label"></MudButton>
+                               <img src="@CurrentQuestion.QuestionImage" width="30" />
+
+                    </MudItem>
+            }
+        }*@
+
+
         <MudItem Style="width: 300px">
+
             <MudText Style="color: saddlebrown"><b>תשובה נכונה</b></MudText>
-            <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Placeholder="תוכן תשובה נכונה" HelperText="2-25 תווים"
-                          @bind-Value="CurrentDistractor.DistractorContent" For="@(() => CurrentDistractor.DistractorContent)" />
+
+            <InputFile id="imgFileCorrectAnswer" OnChange="UploadFileforCorrectAnswer" accept=".jpg, .jpeg, .png" hidden />
+
+            @if (CorrectAnswer.IsImage == false)
+            {
+                //האם תיבת טקסט ריק אז אפשר להכניס תוכן לתיבה
+                <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Placeholder="תוכן תשובה נכונה" HelperText="2-25 תווים"
+                              @bind-Value="CorrectAnswer.DistractorContent" For="@(() => CorrectAnswer.DistractorContent)" />
+                @if (string.IsNullOrEmpty(CorrectAnswer.DistractorContent) == false)
+                {
+                    //כפתור העלאת תמונה מושבת
+                    <MudButton EndIcon="@Icons.Material.Filled.AddPhotoAlternate" Disabled="true" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudButton>
+                }
+                else
+                {
+                    //כפתור העלאת תמונה פעיל
+                    <MudButton EndIcon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="imgFileCorrectAnswer" HtmlTag="label"></MudButton>
+                }
+
+            }
+            else
+            {
+                //התוכן של המסיח הוא תמונה
+                //אז תיבת הטקסט אינה פעילה
+                //מוצג תוכן התמונה והכפתור
+
+                <MudTextField Disabled="true" Variant="Variant.Outlined" Margin="Margin.Dense" Counter="25" MaxLength="25" Placeholder="תוכן תשובה נכונה"
+                              For="@(() => CorrectAnswer.DistractorContent)" />
+                <MudButton EndIcon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="imgFileCorrectAnswer" HtmlTag="label"></MudButton>
+
+                <img src="@CorrectAnswer.DistractorContent" width="30" />
+            }
+
         </MudItem>
 
         <MudText Style="color: saddlebrown"><b>תשובה לא נכונה</b></MudText>
         <MudItem Style="width: 300px">
             @foreach (Distractor a in myDistractorList)
             {
-                <MudTextField @bind-Value="a.DistractorContent" Margin="Margin.Dense" Placeholder="תוכן תשובה לא נכונה" Label="תשובה לא נכונה" Variant="Variant.Outlined"></MudTextField>
+
+                int place = myDistractorList.IndexOf(a);
+
+                <InputFile id="@("imgFile" + place.ToString())" OnChange="((e) => UploadFileDistractor(e, place))" accept=".jpg, .jpeg, .png" hidden />
+
+                @if (a.IsImage == false)
+                {
+                    //אם המסיח אינו מכיל תמונה אז...
+                    <MudTextField @bind-Value="a.DistractorContent" Margin="Margin.Dense" Counter="25" MaxLength="25" Placeholder="תוכן תשובה לא נכונה" Label="תשובה לא נכונה" Variant="Variant.Outlined"></MudTextField>
+                    @if (string.IsNullOrEmpty(a.DistractorContent) == false)
+                    {
+                        //האם התוכן של המסיח הוא מלא אז....
+                        // מוסיפים כפתור להעלאת תמונה במצב מושבת
+                        <MudButton EndIcon="@Icons.Material.Filled.AddPhotoAlternate" Disabled="true" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudButton>
+                    }
+                    else
+                    {
+                        // מוסיפים כתפור תמונה שהוא כן פעיל
+
+                        <MudButton EndIcon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="@("imgFile" + place.ToString())" HtmlTag="label"></MudButton>
+
+                    }
+                }
+                else
+                {
+                    //תיבת טקסט הינה מושבתת כי יש תמונה בתוכן של המסיח
+                    <MudTextField Disabled="true" Margin="Margin.Dense" Placeholder="תוכן תשובה לא נכונה" Label="תשובה לא נכונה" Counter="25" MaxLength="25" Variant="Variant.Outlined" T="string"></MudTextField>
+                    <MudButton EndIcon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="@("imgFile" + place.ToString())" HtmlTag="label"></MudButton>
+                    // <img src="@a.DistractorContent" width="30" />
+
+                    <img src="@myDistractorList[place].DistractorContent" width="30" />
+
+                }
+
             }
+
         </MudItem>
 
     </MudItem>
@@ -49,7 +171,7 @@
     <RowTemplate>
         <MudTd DataLabel="שאלה"><MudTooltip Text="@context.QuestionTitle">@context.QuestionTitle</MudTooltip></MudTd>
         <MudTd DataLabel="כמות תשובות">@context.QuestionDistractors.Count</MudTd>
-        <MudTd DataLabel="עריכה"><MudButton @onclick="() => EditQustionFunc(context.GameID)" EndIcon="@Icons.Material.Outlined.Edit"></MudButton></MudTd>
+        <MudTd DataLabel="עריכה"><MudButton @onclick="() => EditQustionFunc(context.ID)" EndIcon="@Icons.Material.Outlined.Edit"></MudButton></MudTd>
         <MudTd DataLabel="מחיקה"> <MudButton @onclick="() => DeleteQustionFunc(context)" EndIcon="@Icons.Material.Outlined.Delete"></MudButton></MudTd>
     </RowTemplate>
 </MudTable>
@@ -100,12 +222,15 @@
 
             CurrentGame.GameName = CurrentGame.GameName;//כותרת שם המשחק
 
-            // CurrentQuestion.QuestionDistractors = new List<Distractor>();
-            for (int i = 0; i <=4; i++)
+            CurrentQuestion.QuestionDistractors = new List<Distractor>(); // אתחול הרשימה
+
+            for (int i = 0; i <= 4; i++)
             {
                 Distractor CurrentDistractor = new Distractor();
                 myDistractorList.Add(CurrentDistractor);
             }
+
+
 
 
             msg = "קריאה הצליחה";
@@ -134,12 +259,72 @@
     protected async Task EditQustionFunc(int QtoEditID)
 
     {
+        //איפוס
+        //myDistractorList = new List<Distractor>();
+        //CurrentQuestion.QuestionDistractors = new List<Distractor>(); // אתחול הרשימה
+        CorrectAnswer = new Distractor();
 
+
+        //נקרא לקונטרולר ונבקש את התוכן מהשאלה כולל מסיחים
+        var GetResponse = await Http.GetAsync("api/Questions/editQ/" + QtoEditID);
+        if (GetResponse.IsSuccessStatusCode == true)
+        {
+            //נכניס את השאלה שהתקבלה מהבסיס נתונים למופע של השאלה
+            CurrentQuestion = GetResponse.Content.ReadFromJsonAsync<Question>().Result;
+
+            foreach (Distractor a in CurrentQuestion.QuestionDistractors)
+            {
+                int index = CurrentQuestion.QuestionDistractors.IndexOf(a);
+
+                if (a.IsCorrect == true)
+                {
+                    Console.WriteLine("תוכן של תשובה נכונה  "+a.DistractorContent);
+                    CorrectAnswer = a;
+                }
+                else
+                {
+                    myDistractorList[index] = CurrentQuestion.QuestionDistractors[index];
+                    Console.WriteLine("אינקס של תשובה שגויה" + index);
+                    Console.WriteLine("תוכן של תשובה שגויה" + a.DistractorContent);
+
+                    // myDistractorList.Add(a);
+
+                }
+
+            }
+
+            Console.WriteLine("השאלה נקלטה");
+            StateHasChanged();
+
+        }
+        else
+        {
+            string error = GetResponse.Content.ReadAsStringAsync().Result;
+            Console.WriteLine(error);
+
+        }
     }
 
     protected async Task DeleteQustionFunc(Question Qtodelet)
     {
+        Console.WriteLine(Qtodelet.ID);
 
+        var deleteRespone = await Http.DeleteAsync("api/Games/DeleteQ/" + CurrentGame.UserID.ToString() + "/" + Qtodelet.ID);
+        if (deleteRespone.IsSuccessStatusCode == true)
+        {
+            Console.WriteLine("שאלה נמחקה");
+            CurrentGame.GameQuestions.Remove(Qtodelet);
+            Console.WriteLine("הרשימה התעדכנה");
+        }
+        else
+        {
+            string error = deleteRespone.Content.ReadAsStringAsync().Result;
+            Console.WriteLine(error);
+
+        }
+
+        //בסגירת הפופאפ שהשאלה תתאפס
+        CurrentQuestion = new Question();
     }
 
     string myFileImage;
@@ -173,19 +358,87 @@
         }
     }
 
+
+    string myFileImageCorrectAnswer;
+
+    //פונקציה העלאת תמונה למסיח נכון
+    private async Task UploadFileforCorrectAnswer(InputFileChangeEventArgs e)
+    {
+
+        var imageFiles = e.GetMultipleFiles();
+        foreach (var file in imageFiles)
+        {
+            if (file.Size <= maxFileSize)
+            {
+                var buffer = new byte[file.Size];
+                await file.OpenReadStream(maxFileSize).ReadAsync(buffer);
+                var imageBase64 = Convert.ToBase64String(buffer);
+                var saveResponse = await Http.PostAsJsonAsync("api/Games/upload", imageBase64);
+
+                if (saveResponse.IsSuccessStatusCode == true)
+                {
+                    string resizeUrl = saveResponse.Content.ReadAsStringAsync().Result;
+                    myFileImageCorrectAnswer = resizeUrl;
+                    Console.WriteLine(resizeUrl);
+                    CorrectAnswer.DistractorContent = myFileImage;
+                    CorrectAnswer.IsImage = true;
+                }
+            }
+        }
+
+    }
+
+    //העלאת תמונה למסיחים השגויים
+    string myFileImageWorngAnswer;
+
+    private async Task UploadFileDistractor(InputFileChangeEventArgs e, int Place)
+    {
+        var imageFiles = e.GetMultipleFiles();
+        foreach (var file in imageFiles)
+        {
+            if (file.Size <= maxFileSize)
+            {
+                var buffer = new byte[file.Size];
+                await file.OpenReadStream(maxFileSize).ReadAsync(buffer);
+                var imageBase64 = Convert.ToBase64String(buffer);
+                var saveResponse = await Http.PostAsJsonAsync("api/Games/upload", imageBase64);
+
+                if (saveResponse.IsSuccessStatusCode == true)
+                {
+                    string resizeUrl = saveResponse.Content.ReadAsStringAsync().Result;
+                    myFileImageWorngAnswer = resizeUrl;
+                    Console.WriteLine(resizeUrl);
+                    myDistractorList[Place].DistractorContent = myFileImageWorngAnswer;
+                    myDistractorList[Place].IsImage = true;
+                }
+            }
+        }
+
+    }
+
+    // פונקציה שמופעלת בלחיצה על שמירת שאלה
     protected async Task OnValidSubmit()
     {
         CorrectAnswer.IsCorrect = true;
+        CorrectAnswer.QuestionID = CurrentQuestion.ID;
 
         CurrentQuestion.QuestionDistractors.Add(CorrectAnswer); //הוספת התשובה הנכונה לרשימה
 
-        CurrentQuestion.QuestionDistractors = myDistractorList; // הוספת המסיחים לרשימה
+
+        foreach (Distractor d in myDistractorList)
+        {
+            if (string.IsNullOrEmpty(d.DistractorContent) == false) { //תנאי שבודק האם המסיח ריק ורק אז מכניס את המסיח לרישמה
+                d.QuestionID = CurrentQuestion.ID;
+                CurrentQuestion.QuestionDistractors.Add(d); //בלולאה הוספת המסיחים לרשימה
+            }
+        }
 
 
         var postRespone = await Http.PostAsJsonAsync("api/Games/editQuestion/" + userId + "/" + gameID, CurrentQuestion);
 
         if (postRespone.IsSuccessStatusCode == true)
         {
+            Console.WriteLine("הקריאה הצליחה");
             Game updateGame = postRespone.Content.ReadFromJsonAsync<Game>().Result;
 
             msg = "נשמר בהצלחה";
@@ -194,6 +447,7 @@
             if (GetResponse.IsSuccessStatusCode == true)
             {
                 CurrentGame = GetResponse.Content.ReadFromJsonAsync<Game>().Result;
+                // לעדכן טבלה
             }
             else
             {
@@ -219,10 +473,17 @@
         await OnInitializedAsync();
     }
 
-    //העלאת תמונה למסיחי השאלה שגויים
-    private async Task UploadFileForDistractors(InputFileChangeEventArgs e)
-    {
 
+
+    //פונקציה למחיקת תוכן השאלה דרך תיבת טקסט
+    void CleanFuncQuestion()
+    {
+        CurrentQuestion.QuestionTitle = "";
+    }
+
+    void CleanFuncQuestionImage()
+    {
+        CurrentQuestion.QuestionImage = "";
     }
 
 
