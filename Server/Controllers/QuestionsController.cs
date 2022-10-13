@@ -40,7 +40,6 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
         [HttpPost("SaveQuestion")]
         public async Task<IActionResult> SaveQuestion(Question QuestionFromUser)
         {
-            Console.WriteLine("reahced to controller");
             Game GameFromDB = await _context.Games.Include(g => g.GameQuestions).Where(g => g.ID == QuestionFromUser.GameID).FirstOrDefaultAsync();
             if (GameFromDB != null)
             {

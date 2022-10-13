@@ -221,23 +221,29 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
         [HttpPost("editQuestion/{userID}/{gameId}")]
         public async Task<IActionResult> EditContent(Question QuestionToUpdate, int userID, int gameID)
         {
+            
             string sessionContent = HttpContext.Session.GetString("UserId");
+
             if (string.IsNullOrEmpty(sessionContent) == false)
-            {
+            { 
                 int sessionId = Convert.ToInt32(sessionContent);
                 if (sessionId == userID)
                 {
+
                     if (QuestionToUpdate.GameID == 0)
                     {
+
                         QuestionToUpdate.GameID = gameID;
                         _context.Questions.Add(QuestionToUpdate);
                         await _context.SaveChangesAsync();
                         return Ok(QuestionToUpdate);
                     }
+
                     Question questionFromDB = await _context.Questions.FirstOrDefaultAsync(q => q.ID == QuestionToUpdate.ID);
 
                     if (questionFromDB != null)
                     {
+                        
                         questionFromDB.QuestionTitle = QuestionToUpdate.QuestionTitle;
                         questionFromDB.QuestionImage = QuestionToUpdate.QuestionImage;
                         questionFromDB.QuestionDistractors = QuestionToUpdate.QuestionDistractors;
