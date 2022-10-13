@@ -341,7 +341,7 @@
     //מעבר לעמוד עריכת משחק דרך כפתור עריכה
     protected async Task GotoEditPage(Game Game)
     {
-       var gameId = Game.ID; 
+        var gameId = Game.ID;
         var getResponse = await Http.GetAsync("api/Games/bygameID/" + gameId);
 
         if (getResponse.IsSuccessStatusCode)
