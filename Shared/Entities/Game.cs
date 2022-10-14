@@ -15,6 +15,8 @@ namespace TreasureIsland_Dolev_May_Coral.Shared.Entities
         public int GameCode { get; set; }
         public bool IsPublish { get; set; }
         [Range(20, 60, ErrorMessage = " יש לבחור ערך בין 20 ל- 60 שניות")]
+        [Required(ErrorMessage = "יש לבחור ערך בין 20 ל - 60 שניות")]
+
         public int QTimeLimit { get; set; }
 
         public int UserID { get; set; }

@@ -1,0 +1,102 @@
+﻿
+@using TreasureIsland_Dolev_May_Coral.Shared.Entities
+@inject HttpClient Http
+<MudDialog>
+    <DialogContent>
+        <MudText></MudText>
+        <EditForm Model="@UpdatedGame" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+            <MudGrid>
+                <MudItem Style="width: 400px; height: 300px">
+
+                    <MudCardContent>
+                        <MudTextField Variant="Variant.Outlined" Label="שם משחק" MaxLength="25" Counter="25"
+                                      @bind-Value="UpdatedGame.GameName" For="@(() => UpdatedGame.GameName)" />
+
+                        <MudSelect T="int" Variant="Variant.Outlined" Label="זמן מענה לשאלה" Placeholder="@GameTime" @bind-Value="UpdatedGame.QTimeLimit" For="@(() => UpdatedGame.QTimeLimit)" AnchorOrigin="Origin.BottomCenter">
+
+                            <MudSelectItem T="int" Value="20">20 שניות</MudSelectItem>
+                            <MudSelectItem T="int" Value="30">30 שניות</MudSelectItem>
+                            <MudSelectItem T="int" Value="40">40 שניות</MudSelectItem>
+                            <MudSelectItem T="int" Value="50">50 שניות</MudSelectItem>
+                            <MudSelectItem T="int" Value="60">60 שניות</MudSelectItem>
+                        </MudSelect>
+                        <MudButton Style="background-color:saddlebrown; color:azure" OnClick="OnValidSubmit">שמירת שינויים</MudButton>
+                    </MudCardContent>
+                </MudItem>
+            </MudGrid>
+                    </EditForm>
+    </DialogContent>
+    <DialogActions>
+        <MudItem>
+            <MudButton OnClick="Cancel">ביטול</MudButton>
+        </MudItem>
+
+    </DialogActions>
+</MudDialog>
+@code {
+
+
+    [Parameter]
+    public int userId { get; set; }
+
+    [Parameter]
+    public Game GameFromPage { get; set; } // פרמטר שמתקבל מהדף
+
+    [Parameter]
+    public Game GameTOPage { get; set; } // פרמטר שנשלח חזרה לדף
+
+
+
+    //יצירת מופע חדש של משחק
+    Game UpdatedGame = new Game();
+
+    string gameCurrentName = "";
+
+    string GameTime ="";
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    // void OnValidSubmit() => MudDialog.Close(DialogResult.Ok(true));
+    private void Cancel()
+    {
+        GameTOPage = GameFromPage;
+        MudDialog.Cancel();
+    }
+
+
+
+    protected override void OnInitialized()
+    {
+        UpdatedGame = GameFromPage;
+        GameTOPage = GameFromPage;
+
+    }
+
+    void OnValidSubmit()
+    {
+        //GameTOPage = UpdatedGame;
+        if (UpdatedGame.GameName != GameTOPage.GameName || UpdatedGame.QTimeLimit != GameTOPage.QTimeLimit)
+        {
+
+            Console.WriteLine("נכנס לתנאי בדיאלוג ");
+            UpdatedGame = GameFromPage;
+            //שליחת המשחק מהקומפוננטה לדף עם השינויים
+            //MudDialog.Close(DialogResult.Ok(GameTOPage));
+            MudDialog.Close(DialogResult.Ok(true));
+
+        }
+        else
+        {
+            Console.WriteLine("נכנס ל ELSE");
+
+            GameTOPage = GameFromPage;
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+
+
+    }
+
+
+
+    }

@@ -4,61 +4,16 @@
 @inject NavigationManager nav
 @using System.ComponentModel.DataAnnotations
 @inject IDialogService DialogService
+@inject IDialogService Dialog
 
 <h1 style="color:saddlebrown; text-align:center"><b>המשחקים שלי</b></h1>
 <br />
 
 <MudItem>
-    <MudButton EndIcon="@Icons.Material.Outlined.Add" Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Button" Color="Color.Primary" OnClick="showComponent">יצירת משחק חדש</MudButton>
+    <MudButton EndIcon="@Icons.Material.Outlined.Add" Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Button" Color="Color.Primary" OnClick="@(() => OpenDialogCreateGAme(userId,MyDialog))">יצירת משחק חדש</MudButton>
 </MudItem>
 
-
 <br />
-<br />
-@if (status == true)
-
-{
-    <EditForm Model="@newGame" OnValidSubmit="OnValidSubmit">
-
-        <DataAnnotationsValidator />
-        <MudGrid>
-            <MudItem Style="width: 400px; height:300px">
-                <MudCard>
-                    <MudCardContent>
-                        <MudText Style="color: saddlebrown">יצירת משחק חדש</MudText>
-                        <MudIconButton Style="align-items:end" @onclick="showComponent" Icon="@Icons.Material.Filled.Close" Color="Color.Default" />
-                        <MudTextField Variant="Variant.Outlined" Placeholder="הקלד שם למשחק..." Label="שם משחק" HelperText="2-25 תווים" @onkeydown="statusButton" @onkeyup="statusButton"
-                                      @bind-Value="newGame.GameName" For="@(() => newGame.GameName)" />
-
-                        <MudSelect Variant="Variant.Outlined" T="int" Label="זמן מענה לשאלה" @bind-Value="newGame.QTimeLimit" For="@(() => newGame.QTimeLimit)" AnchorOrigin="Origin.BottomCenter">
-                            <MudSelectItem T="int" Value="20">20 שניות</MudSelectItem>
-                            <MudSelectItem T="int" Value="30">30 שניות</MudSelectItem>
-                            <MudSelectItem T="int" Value="40">40 שניות</MudSelectItem>
-                            <MudSelectItem T="int" Value="50">50 שניות</MudSelectItem>
-                            <MudSelectItem T="int" Value="60">60 שניות</MudSelectItem>
-                        </MudSelect>
-                    </MudCardContent>
-                    <MudCardActions>
-                        <MudButton Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Submit" Color="Color.Primary" Disabled="IsButtonEabled" Variant="Variant.Filled">צור משחק</MudButton>
-                    </MudCardActions>
-                </MudCard>
-            </MudItem>
-
-        </MudGrid>
-    </EditForm>
-
-}
-
-
-
-@if (hideComp == true)
-{<div style="position: absolute; right: 400px; backdrop-filter: grayscale()">
-        <EditSettingsGame userId="userId" GameFromPage="GametoUpdate" HideToPageEC="hideThecomp" MessegeToPageEC="ActionComp"></EditSettingsGame>
-
-    </div>
-
-}
-
 
 <MudTable Items="@CurrentUser.UserGames" Hover="true">
     <HeaderContent>
@@ -78,7 +33,7 @@
         <MudTd DataLabel="לצפייה"><MudButton EndIcon="@Icons.Material.Outlined.RemoveRedEye"></MudButton></MudTd>
         <MudTd DataLabel="קוד המשחק">@context.GameCode</MudTd>
         <MudTd DataLabel="מספר שאלות">@context.GameQuestions.Count</MudTd>
-        <MudTd DataLabel="הגדרות משחק"><MudButton Color="Color.Info" OnClick="@(() => show2Component(context))" EndIcon="@Icons.Material.Outlined.Settings"></MudButton></MudTd>
+        <MudTd DataLabel="הגדרות משחק"><MudButton Color="Color.Info" OnClick="@(() => OpenDialogSettings(context.ID,maxWidth))" EndIcon="@Icons.Material.Outlined.Settings"></MudButton></MudTd>
         <MudTd DataLabel="עריכה"><MudButton Color="Color.Info" OnClick="@(()=>GotoEditPage(context))" EndIcon="@Icons.Material.Outlined.Edit"></MudButton></MudTd>
         <MudTd DataLabel="מחיקה"><MudButton Color="Color.Info" OnClick="@(() => DeleteGame(context))" EndIcon="@Icons.Material.Outlined.Delete"></MudButton></MudTd>
         <MudTd DataLabel="פרסום">
@@ -87,12 +42,93 @@
     </RowTemplate>
 </MudTable>
 
-
 <p>@msg</p>
 
 
 @code {
 
+    DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true, DisableBackdropClick = true };
+
+    async Task OpenDialogSettings(int gameID, DialogOptions options)
+    {
+        Game GametoUpdateinDialog = CurrentUser.UserGames.FirstOrDefault(q => q.ID == gameID);//שולפת את המשחק מתוך הטבלה
+
+        Game game = new Game();
+        game.GameName = GametoUpdateinDialog.GameName;
+        game.QTimeLimit = GametoUpdateinDialog.QTimeLimit;
+
+        var parameters = new DialogParameters();
+
+        // GametoUpdate = game;
+
+        parameters.Add("GameFromPage", GametoUpdateinDialog); //שולח את המשחק
+
+        var dialog = DialogService.Show<SttingGameDialog>("הגדרות משחק", parameters, options);
+
+        var result = await dialog.Result;
+
+        if (result.Cancelled == false)
+        {
+            //המשתמש לחץ על שמירת שינויים אז נעדכן את הבסיס נתונים
+
+            Console.WriteLine("יש לשמור שינויים");
+
+            var GetResponse = await Http.GetAsync("api/Games/" + userId);
+            if (GetResponse.IsSuccessStatusCode == true)
+            {
+                var postRespone = await Http.PostAsJsonAsync("api/Games/Update/GameUpdate", GametoUpdateinDialog);
+
+                if (postRespone.IsSuccessStatusCode == true)
+                {
+                    GametoUpdateinDialog = postRespone.Content.ReadFromJsonAsync<Game>().Result;
+                    GametoUpdateinDialog = new Game();
+                }
+                else
+                {
+                    //שליחת ההודעה מהקומפוננטה לדף
+                    Console.WriteLine(" לא בוצעו שינויים קריאה שגויה");
+                }
+            }
+        }
+        else
+        {
+            GametoUpdateinDialog.GameName = game.GameName;
+            GametoUpdateinDialog.QTimeLimit = game.QTimeLimit;
+
+            Console.WriteLine(" לא בוצעו שינויים החלון נסגר");
+        }
+        GametoUpdateinDialog = new Game(); //איפוס המופע
+        game = new Game(); //איפוע המופע המקומי
+    }
+
+    DialogOptions MyDialog = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true, DisableBackdropClick = true };
+
+    async Task OpenDialogCreateGAme(int userId, DialogOptions options)
+    {
+        var parameters = new DialogParameters();
+
+        // GametoUpdate = game;
+
+        parameters.Add("userId", userId); //שולח המשתמש
+
+        var dialog = DialogService.Show<CreateGameDialog>("הגדרות משחק", parameters, options);
+
+        var result = await dialog.Result;
+
+        if (result.Cancelled == false)
+        {
+            Console.WriteLine("התבצעו שינויים");
+            await RefreshTable(); //רענון הטבלה
+
+        }
+        else
+        {
+            Console.WriteLine("לא היו שינויים סגירת חלון ");
+
+        }
+        newGame = new Game(); // המופעאיפוס
+
+    }
 
     [Parameter]
     public int userId { get; set; }
@@ -111,68 +147,6 @@
     Game newGame = new Game();
 
     Game GametoUpdate = new Game();
-
-    //מצב מוסתר של קומפוננטה שינוי הגדרות משחק
-    bool hideComp = false;
-    // הופך את הקומפוננטה לנראה ממצב מוסתר
-    public void show2Component(Game game)
-    {
-
-        if (hideComp == false)
-        {
-            GametoUpdate = game;
-            hideComp = true;
-            //GametoUpdate = new Game();
-
-        }
-        else
-        {
-            hideComp = true;
-        }
-
-    }
-
-    // הופך את הקומפוננטה לנראה ממצב מוסתר
-    void hideThecomp(bool boolfromComp)
-    {
-
-        hideComp = boolfromComp;
-
-    }
-
-
-    //חיוי מהקומפוננטה שינוי הגדרות משחק
-    async Task ActionComp(string TextFromComp)
-    {
-        hideComp = true;
-        msg = TextFromComp;
-        await RefreshTable();
-        if (TextFromComp == "הגדרות שונו בהצלחה")
-        {
-            hideComp = false;
-        }
-    }
-
-
-
-    //מצב מוסתר של טופס צור משחק
-    bool status = false;
-    // הופך את הטופס לנראה ממצב מוסתר
-    public void showComponent()
-    {
-        if (status == false)
-        {
-            status = true;
-
-        }
-        else
-        {
-            status = false;
-        }
-
-
-    }
-
 
 
     //קריאה למאגר נותנים הצגת המשחקים של היוזר
@@ -206,7 +180,6 @@
 
     {
 
-
         selectedGame.IsPublish = !selectedGame.IsPublish;
 
         Console.WriteLine("המשחק פורסם / לא פורסם");
@@ -231,60 +204,9 @@
 
     }
 
-    void statusButton()
-    {
-        StateHasChanged();
-        if (string.IsNullOrEmpty(newGame.GameName) == false)
-        {
-
-            IsButtonEabled = true;
-            StateHasChanged();
-
-        }
-        else
-        {
-
-            IsButtonEabled = false;
-            StateHasChanged();
-
-        }
-
-    }
-
-    // כפתור צור משחק- בלחיצה על כפתור של הטופס צריך להפעיל קריאה למאגר נתונים
-    protected async Task OnValidSubmit()
-    {
-
-        //   מאפיינים של מודל משחק חדש צריכים להיות מאוכלסים
-        newGame.UserID = userId;
-        // newGame.IsPublish = false;
-        //newGame.GameCode =;
-
-        //ואז קריאה לקונטרולר והוספת משחק
-
-        var postRespone = await Http.PostAsJsonAsync("api/Games/", newGame);
-        if (postRespone.IsSuccessStatusCode == true)
-        {
-            Game AddGame = postRespone.Content.ReadFromJsonAsync<Game>().Result;
 
 
-            //איפוס המופע לאפשר יצירת מופע חדש
-            newGame = new Game();
 
-            msg = " נוצר משחק";
-
-            // CurrentUser = new User();
-
-            await RefreshTable();
-
-
-        }
-        else
-        {
-            msg = "לא נוצר משחק";
-
-        }
-    }
 
     //קריאה לרענון הטבלה
     async Task RefreshTable()
