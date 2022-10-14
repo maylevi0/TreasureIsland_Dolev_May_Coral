@@ -7,11 +7,21 @@
     <h3 style="color:saddlebrown; text-align:center"><b>כניסת עורך</b></h3><br />
 
                                                                            <MudItem Style="width: 400px; height: 300px">
-                                                    
-                                                                               <MudTextField Label="כתובת מייל" Placeholder="הזינו כתובת מייל" @bind-Value="inputMail" @onkeypress="ChangeButton" Variant="Variant.Outlined"></MudTextField>   
-                                                                                   <p style="color:red">@msg</p>
-                                                                                   <br />
-                                                                                   <MudButton Style="background-color: saddlebrown" Variant="Variant.Filled" Color="Color.Primary" @onclick="loginUser" Disabled="IsButtonEabled">כניסה</MudButton>
+
+                                                                               <MudTextField Label="כתובת מייל" Placeholder="הזינו כתובת מייל" @bind-Value="inputMail" @onkeyup="ChangeButton" Variant="Variant.Outlined"></MudTextField>
+                                                                               <p style="color:red">@msg</p>
+                                                                               <br />
+                                                                               @if (IsButtonEabled == true)
+                                                                               {
+                                                                                   <MudButton Style="background-color: saddlebrown" Variant="Variant.Filled" Color="Color.Primary" @onclick="loginUser" Disabled="true">כניסה</MudButton>
+
+                                                                               }
+                                                                               else
+                                                                               {
+                                                                                   <MudButton Style="background-color: saddlebrown" Variant="Variant.Filled" Color="Color.Primary" @onclick="loginUser">כניסה</MudButton>
+
+                                                                               }
+
                                                                            </MudItem>
 
 
@@ -72,12 +82,16 @@
                         msg = "התרחשה תקלת שרת";
                     }
                 }
+
             }
         }
         else
         {
             msg = "יש להקליד כתובת מייל";
         }
+
+        inputMail = "";
+
     }
 
 
