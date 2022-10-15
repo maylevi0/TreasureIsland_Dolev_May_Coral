@@ -71,9 +71,9 @@ p.mypClass{
 }
 
 .tableofQ {
-    width: 40%;
+    width: 35%;
     display: inline-block;
-    right:700px;
+    right:750px;
     top: 50px;
     vertical-align: top;
     position: absolute;

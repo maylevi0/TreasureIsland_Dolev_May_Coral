@@ -8,13 +8,12 @@
 
 <h1 style="color:saddlebrown; text-align:center"><b>המשחקים שלי</b></h1>
 <br />
-
+<MudText style="color:saddlebrown; text-align:center">סה"כ משחקים: @CurrentUseUserGames</MudText>
 <MudItem>
     <MudButton EndIcon="@Icons.Material.Outlined.Add" Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Button" Color="Color.Primary" OnClick="@(() => OpenDialogCreateGAme(userId,MyDialog))">יצירת משחק חדש</MudButton>
 </MudItem>
 
 <br />
-
 <MudTable Items="@CurrentUser.UserGames" Hover="true">
     <HeaderContent>
 
@@ -36,9 +35,20 @@
         <MudTd DataLabel="הגדרות משחק"><MudButton Color="Color.Info" OnClick="@(() => OpenDialogSettings(context.ID,maxWidth))" EndIcon="@Icons.Material.Outlined.Settings"></MudButton></MudTd>
         <MudTd DataLabel="עריכה"><MudButton Color="Color.Info" OnClick="@(()=>GotoEditPage(context))" EndIcon="@Icons.Material.Outlined.Edit"></MudButton></MudTd>
         <MudTd DataLabel="מחיקה"><MudButton Color="Color.Info" OnClick="@(() => DeleteGame(context,MyDIalogDeleteGame))" EndIcon="@Icons.Material.Outlined.Delete"></MudButton></MudTd>
-        <MudTd DataLabel="פרסום">
-            <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context,MyDialogPublish))" Checked="@context.IsPublish" Color="Color.Primary"></MudCheckBox>
-        </MudTd>
+        @if (context.GameQuestions.Count>=10)
+        {
+            <MudTd DataLabel="פרסום">
+                <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context,MyDialogPublish))" Checked="@context.IsPublish" Color="Color.Primary"></MudCheckBox>
+            </MudTd>
+        }
+        else
+        {
+            <MudTd DataLabel="פרסום">
+                <MudTooltip Text="המשחק לא עומד בתנאי הפרסום, לפחות 10 שאלות">
+                    <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context,MyDialogPublish))" Checked="@context.IsPublish" Disabled="true" Color="Color.Primary"></MudCheckBox>
+                </MudTooltip>
+                    </MudTd>
+        }
     </RowTemplate>
 </MudTable>
 
@@ -150,6 +160,7 @@
 
     Game GametoUpdate = new Game();
 
+    string CurrentUseUserGames = "";
 
     //קריאה למאגר נותנים הצגת המשחקים של היוזר
     protected async override Task OnInitializedAsync()
@@ -158,6 +169,7 @@
         if (GetResponse.IsSuccessStatusCode == true)
         {
             CurrentUser = GetResponse.Content.ReadFromJsonAsync<User>().Result;
+            CurrentUseUserGames = CurrentUser.UserGames.Count.ToString();
         }
         else
         {
@@ -183,7 +195,7 @@
     {
         var parameters = new DialogParameters();
 
-        parameters.Add("GameFromPage",selectedGame); //שולח מופע של משחק
+        parameters.Add("GameFromPage", selectedGame); //שולח מופע של משחק
 
         var dialog = DialogService.Show<GameIsPublishedDialog>("פרסום המשחק", parameters, options);
 
@@ -288,6 +300,7 @@
 
                     newGame = new Game();// איפוס המופע כדי להכינו לקבלת מידע חדש
                     msg = "אחרי המחיקה";
+                    CurrentUseUserGames = CurrentUser.UserGames.Count.ToString();
 
                 }
                 else
