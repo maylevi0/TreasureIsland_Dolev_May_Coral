@@ -27,15 +27,14 @@
                 }
                 <InputFile id="FileInputID" OnChange="UploadFile" accept=".jpg, .jpeg, .png" hidden />
                 <img src="@CurrentQuestion.QuestionImage" width="30" />
-                @if (Xbuttonhidden2 == false )
+                @if (Xbuttonhidden2 == false)
                 {
                     <MudText Style="font-size:small">ניתן להוסיף</MudText>
-                    <MudButton EndIcon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudButton>                
+                    <MudButton EndIcon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudButton>
                 }
                 else
                 {
                     <MudButton EndIcon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="CleanFuncQuestionImage" HtmlTag="label"></MudButton>
-
                 }
 
 
@@ -46,7 +45,7 @@
 
 
 
-        <MudItem Style="width: 300px"> 
+        <MudItem Style="width: 300px">
 
             <MudText Style="color: saddlebrown"><b>תשובה נכונה</b></MudText>
 
@@ -55,7 +54,7 @@
             @if (CorrectAnswer.IsImage == false)
             {
                 //האם תיבת טקסט ריק אז אפשר להכניס תוכן לתיבה
-                <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Placeholder="תוכן תשובה נכונה" HelperText="2-25 תווים"
+                <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Counter="25" MaxLength="25" Placeholder="תוכן תשובה נכונה"
                               @bind-Value="CorrectAnswer.DistractorContent" For="@(() => CorrectAnswer.DistractorContent)" />
                 @if (string.IsNullOrEmpty(CorrectAnswer.DistractorContent) == false)
                 {
@@ -67,19 +66,28 @@
                     //כפתור העלאת תמונה פעיל
                     <MudButton EndIcon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="imgFileCorrectAnswer" HtmlTag="label"></MudButton>
                 }
-
             }
             else
             {
                 //התוכן של המסיח הוא תמונה
                 //אז תיבת הטקסט אינה פעילה
                 //מוצג תוכן התמונה והכפתור
+                if (CorrectAnswer.IsImage == true)
+                {
+                    <MudTooltip Text="כדי להוסיף טקסט עליך למחוק את התמונה">
+                        <MudTextField Disabled="true" Variant="Variant.Outlined" Margin="Margin.Dense" Counter="25" MaxLength="25" Placeholder="תוכן תשובה נכונה"
+                                      For="@(() => CorrectAnswer.DistractorContent)" />
+                    </MudTooltip>
+                    <img src="@CorrectAnswer.DistractorContent" width="30" />
+                    <MudButton EndIcon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="CleanFuncDistractorCorrectImage" HtmlTag="label"></MudButton>
+                }
+                else
+                {
+                    <MudTextField Disabled="true" Variant="Variant.Outlined" Margin="Margin.Dense" Counter="25" MaxLength="25" Placeholder="תוכן תשובה נכונה"
+                                  For="@(() => CorrectAnswer.DistractorContent)" />
+                    <MudButton EndIcon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="imgFileCorrectAnswer" HtmlTag="label"></MudButton>
+                }
 
-                <MudTextField Disabled="true" Variant="Variant.Outlined" Margin="Margin.Dense" Counter="25" MaxLength="25" Placeholder="תוכן תשובה נכונה"
-                              For="@(() => CorrectAnswer.DistractorContent)" />
-                <MudButton EndIcon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="imgFileCorrectAnswer" HtmlTag="label"></MudButton>
-
-                <img src="@CorrectAnswer.DistractorContent" width="30" />
             }
 
         </MudItem>
@@ -113,12 +121,20 @@
                 }
                 else
                 {
-                    //תיבת טקסט הינה מושבתת כי יש תמונה בתוכן של המסיח
-                    <MudTextField Disabled="true" Margin="Margin.Dense" Placeholder="תוכן תשובה לא נכונה" Label="תשובה לא נכונה" Counter="25" MaxLength="25" Variant="Variant.Outlined" T="string"></MudTextField>
-                    <MudButton EndIcon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="@("imgFile" + place.ToString())" HtmlTag="label"></MudButton>
-                    // <img src="@a.DistractorContent" width="30" />
+                    if (a.IsImage == true)
+                    {
 
-                    <img src="@myDistractorList[place].DistractorContent" width="30" />
+                        //תיבת טקסט הינה מושבתת כי יש תמונה בתוכן של המסיח
+                        <MudTooltip Text="כדי להוסיף טקסט עליך למחוק את התמונה"><MudTextField Disabled="true" Margin="Margin.Dense" Placeholder="תוכן תשובה לא נכונה" Label="תשובה לא נכונה" Counter="25" MaxLength="25" Variant="Variant.Outlined" T="string"></MudTextField></MudTooltip>
+                        <img src="@myDistractorList[place].DistractorContent" width="30" />
+                        <MudButton EndIcon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="(() => CleanFuncDistractorImage(place))" HtmlTag="label"></MudButton>
+                    }
+                    else
+                    {
+                        //תיבת טקסט הינה מושבתת כי יש תמונה בתוכן של המסיח
+                        <MudTextField Disabled="true" Margin="Margin.Dense" Placeholder="תוכן תשובה לא נכונה" Label="תשובה לא נכונה" Counter="25" MaxLength="25" Variant="Variant.Outlined" T="string"></MudTextField>
+                        <MudButton EndIcon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="@("imgFile" + place.ToString())" HtmlTag="label"></MudButton>
+                    }
 
                 }
 
@@ -127,28 +143,35 @@
         </MudItem>
 
     </MudItem>
-    <MudButton Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">שמירת שאלה</MudButton>
-
-
+    @if (string.IsNullOrEmpty(CorrectAnswer.DistractorContent) == false && string.IsNullOrEmpty(myDistractorList[0].DistractorContent) == false && string.IsNullOrEmpty(CurrentQuestion.QuestionTitle)== false)
+    {
+        <MudButton Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">שמירת שאלה</MudButton>
+    }
+    else
+    {
+        <MudTooltip Text="לא ניתן לשמור את השאלה. יש להוסיף שאלה בגזע השאלה ו-2 מסיחים.">
+            <MudButton Style="background-color:saddlebrown; color:azure" Disabled="true" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">שמירת שאלה</MudButton>
+        </MudTooltip>
+    }
 </EditForm>
 
-
-<MudTable class="tableofQ"  style="height:600px;overflow-y:scroll" Items="@CurrentGame.GameQuestions" Hover="true">
-
-    <HeaderContent>
-        <MudTh>שאלה</MudTh>
-        <MudTh>כמות תשובות</MudTh>
-        <MudTh>עריכה</MudTh>
-        <MudTh>מחיקה</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="שאלה"><MudTooltip Text="@context.QuestionTitle">@context.QuestionTitle</MudTooltip></MudTd>
-        <MudTd DataLabel="כמות תשובות">@context.QuestionDistractors.Count</MudTd>
-        <MudTd DataLabel="עריכה"><MudButton @onclick="() => EditQustionFunc(context.ID)" EndIcon="@Icons.Material.Outlined.Edit"></MudButton></MudTd>
-        <MudTd DataLabel="מחיקה"> <MudButton @onclick="() => DeleteQustionFunc(context)" EndIcon="@Icons.Material.Outlined.Delete"></MudButton></MudTd>
-    </RowTemplate>
-
-</MudTable>
+    <MudTable class="tableofQ" style="height:700px;overflow-y:scroll" Items="@CurrentGame.GameQuestions" Hover="true">
+        <ToolBarContent>
+            <MudText Style="color:saddlebrown" Typo="Typo.h6">מאגר שאלות (@CurrentGame.GameQuestions.Count)</MudText>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>שאלה</MudTh>
+            <MudTh>כמות תשובות</MudTh>
+            <MudTh>עריכה</MudTh>
+            <MudTh>מחיקה</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="שאלה"><MudTooltip Text="@context.QuestionTitle">@context.QuestionTitle</MudTooltip></MudTd>
+            <MudTd DataLabel="כמות תשובות">@context.QuestionDistractors.Count</MudTd>
+            <MudTd DataLabel="עריכה"><MudButton @onclick="() => EditQustionFunc(context.ID)" EndIcon="@Icons.Material.Outlined.Edit"></MudButton></MudTd>
+            <MudTd DataLabel="מחיקה"> <MudButton @onclick="() => DeleteQustionFunc(context)" EndIcon="@Icons.Material.Outlined.Delete"></MudButton></MudTd>
+        </RowTemplate>
+    </MudTable>
 
 <br />
 <p>@msg</p>
@@ -206,8 +229,6 @@
                 myDistractorList.Add(CurrentDistractor);
             }
 
-
-
             Console.WriteLine("קריאה הצליחה  OnInitializedAsync");
 
         }
@@ -257,7 +278,7 @@
             CurrentQuestion = GetResponse.Content.ReadFromJsonAsync<Question>().Result;
 
 
-            if (CurrentQuestion.QuestionImage!=null)
+            if (CurrentQuestion.QuestionImage != null)
             {
                 Xbuttonhidden2 = true;
             }
@@ -499,6 +520,23 @@
         CurrentQuestion.QuestionImage = "";
         Xbuttonhidden2 = false;
         myFileImage = "";
+
+        StateHasChanged();
+
+    }
+
+    void CleanFuncDistractorCorrectImage()
+    {
+        CorrectAnswer.DistractorContent = "";
+        CorrectAnswer.IsImage = false;
+        StateHasChanged();
+
+    }
+
+    void CleanFuncDistractorImage(int Place)
+    {
+        myDistractorList[Place].DistractorContent = "";
+        myDistractorList[Place].IsImage = false;
 
         StateHasChanged();
 
