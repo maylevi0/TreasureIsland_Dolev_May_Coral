@@ -3,9 +3,10 @@
 
 <MudDialog>
     <DialogContent>
-        @if (UpdatedGame.IsPublish == true)
+        @if (GameFromPage.IsPublish == false)
         {<MudText>
                 המשחק "@gameCurrentName" פורסם בהצלחה.
+        <br/>
                 הקוד למשחק הוא: @GameCode
             </MudText>
         }
@@ -46,20 +47,21 @@
 
     protected override void OnInitialized()
     {
-        UpdatedGame = GameFromPage;
 
-        gameCurrentName = UpdatedGame.GameName;
-        GameCode = UpdatedGame.GameCode.ToString(); ;
+        gameCurrentName = GameFromPage.GameName;
+        GameCode = GameFromPage.GameCode.ToString(); ;
+        Console.WriteLine("gameCurrentName : " + gameCurrentName);
+        Console.WriteLine("GameCode : " + GameCode);
     }
 
     private void Cancel()
     {
-        //if (GameFromPage.IsPublish==true) { 
-
-        //}
-        //else{   
-
-        //}
+        if (GameFromPage.IsPublish == false)
+        {
+            GameFromPage.IsPublish = true;
+        }
+        else {
+        GameFromPage.IsPublish = false; }
         MudDialog.Cancel();
 
     }

@@ -181,7 +181,23 @@
     async Task PublishGame(Game selectedGame, DialogOptions options)
 
     {
+        var parameters = new DialogParameters();
 
+        parameters.Add("GameFromPage",selectedGame); //שולח מופע של משחק
+
+        var dialog = DialogService.Show<GameIsPublishedDialog>("פרסום המשחק", parameters, options);
+
+        var result = await dialog.Result;
+
+        if (result.Cancelled == false)
+        {
+            Console.WriteLine("התבצעו שינויים");
+        }
+        else
+        {
+            Console.WriteLine("לא היו שינויים סגירת חלון ");
+            selectedGame.IsPublish = selectedGame.IsPublish;
+        }
 
         selectedGame.IsPublish = !selectedGame.IsPublish;
 
@@ -205,13 +221,7 @@
             }
         }
 
-        var parameters = new DialogParameters();
 
-        parameters.Add("GameFromPage", selectedGame); //שולח מופע של משחק
-
-        var dialog = DialogService.Show<GameIsPublishedDialog>("פרסום המשחק", parameters, options);
-
-        var result = await dialog.Result;
 
     }
 
