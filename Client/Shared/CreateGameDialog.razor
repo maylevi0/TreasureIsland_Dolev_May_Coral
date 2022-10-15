@@ -1,6 +1,7 @@
 ﻿
 @using TreasureIsland_Dolev_May_Coral.Shared.Entities
 @inject HttpClient Http
+@inject NavigationManager nav
 
 <MudDialog>
     <DialogContent>
@@ -28,7 +29,7 @@
                     }
                 </MudItem>
             </MudGrid>
-          
+
         </EditForm>
     </DialogContent>
     <DialogActions>
@@ -69,6 +70,21 @@
             Console.WriteLine("נכנס לתנאי בדיאלוג ");
 
             Game AddGame = postRespone.Content.ReadFromJsonAsync<Game>().Result;
+
+
+            var gameId = AddGame.ID;
+            var getResponse = await Http.GetAsync("api/Games/bygameID/" + gameId);
+
+            if (getResponse.IsSuccessStatusCode)
+            {
+                Game gametoEditPage = getResponse.Content.ReadFromJsonAsync<Game>().Result;
+
+                nav.NavigateTo("./EditQuestionsPage/" + gametoEditPage.ID + "/" + gametoEditPage.UserID);
+            }
+            else
+            {
+                nav.NavigateTo("./Games/" + userId);
+            }
 
             //איפוס המופע לאפשר יצירת מופע חדש
             newGame = new Game();

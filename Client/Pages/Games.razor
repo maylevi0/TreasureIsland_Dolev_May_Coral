@@ -35,7 +35,7 @@
         <MudTd DataLabel="מספר שאלות">@context.GameQuestions.Count</MudTd>
         <MudTd DataLabel="הגדרות משחק"><MudButton Color="Color.Info" OnClick="@(() => OpenDialogSettings(context.ID,maxWidth))" EndIcon="@Icons.Material.Outlined.Settings"></MudButton></MudTd>
         <MudTd DataLabel="עריכה"><MudButton Color="Color.Info" OnClick="@(()=>GotoEditPage(context))" EndIcon="@Icons.Material.Outlined.Edit"></MudButton></MudTd>
-        <MudTd DataLabel="מחיקה"><MudButton Color="Color.Info" OnClick="@(() => DeleteGame(context))" EndIcon="@Icons.Material.Outlined.Delete"></MudButton></MudTd>
+        <MudTd DataLabel="מחיקה"><MudButton Color="Color.Info" OnClick="@(() => DeleteGame(context,MyDIalogDeleteGame))" EndIcon="@Icons.Material.Outlined.Delete"></MudButton></MudTd>
         <MudTd DataLabel="פרסום">
             <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context,MyDialogPublish))" Checked="@context.IsPublish" Color="Color.Primary"></MudCheckBox>
         </MudTd>
@@ -127,6 +127,7 @@
             Console.WriteLine("לא היו שינויים סגירת חלון ");
 
         }
+
         newGame = new Game(); // המופעאיפוס
 
     }
@@ -170,7 +171,6 @@
                 msg = "התרחשה תקלת שרת";
             }
         }
-
     }
 
 
@@ -252,33 +252,57 @@
         }
     }
 
-    protected async Task DeleteGame(Game Game) //שיטה למחיקת משחק
+
+    DialogOptions MyDIalogDeleteGame = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true, DisableBackdropClick = true };
+
+
+    protected async Task DeleteGame(Game Game, DialogOptions options) //שיטה למחיקת משחק
 
     {
-        newGame = Game;
+        var parameters = new DialogParameters();
 
-        var deleteResponse = await Http.DeleteAsync("api/Games/" + newGame.UserID.ToString() + "/" + newGame.ID); //הנתיב של הקונטרולר מוצא לנו את המשחק שהמספר המזהה שלו נבחר או הוקלד
+        parameters.Add("GameFromPage", Game); //שולח מופע של משחק
 
-        if (deleteResponse.IsSuccessStatusCode == true) //בדיקת תקינות
+        var dialog = DialogService.Show<DeleteGameDialog>("מחיקת המשחק", parameters, options);
+
+        var result = await dialog.Result;
+
+        if (result.Cancelled == false)
         {
-            var GetResponse = await Http.GetAsync("api/Games/" + userId);
-            if (GetResponse.IsSuccessStatusCode == true)
+            Console.WriteLine("התבצעו שינויים");
+
+            newGame = Game;
+
+            var deleteResponse = await Http.DeleteAsync("api/Games/" + newGame.UserID.ToString() + "/" + newGame.ID); //הנתיב של הקונטרולר מוצא לנו את המשחק שהמספר המזהה שלו נבחר או הוקלד
+
+            if (deleteResponse.IsSuccessStatusCode == true) //בדיקת תקינות
             {
+                var GetResponse = await Http.GetAsync("api/Games/" + userId);
+                if (GetResponse.IsSuccessStatusCode == true)
+                {
 
 
-                CurrentUser.UserGames.Remove(newGame);  //להסיר את המשחק
+                    CurrentUser.UserGames.Remove(newGame);  //להסיר את המשחק
 
-                await RefreshTable(); // ריענון הטבלה
+                    await RefreshTable(); // ריענון הטבלה
 
-                newGame = new Game();// איפוס המופע כדי להכינו לקבלת מידע חדש
-                msg = "אחרי המחיקה";
+                    newGame = new Game();// איפוס המופע כדי להכינו לקבלת מידע חדש
+                    msg = "אחרי המחיקה";
 
-            }
-            else
-            {
-                msg = "לא נמחק";
+                }
+                else
+                {
+                    msg = "לא נמחק";
+                }
             }
         }
+        else
+        {
+            Console.WriteLine("לא היו שינויים סגירת חלון ");
+            msg = "לא נמחק";
+
+        }
+
     }
 
     //מעבר לעמוד עריכת משחק דרך כפתור עריכה

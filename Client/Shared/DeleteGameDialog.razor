@@ -1,0 +1,57 @@
+﻿@using TreasureIsland_Dolev_May_Coral.Shared.Entities
+@inject HttpClient Http
+
+
+
+<MudDialog>
+    <DialogContent>
+      <MudText>
+    האם ברצונך למחוק את המשחק "@gameCurrentName" לצמיתות?
+    <br />
+    פעולה זו אינה ניתנת לשחזור.
+</MudText> 
+    </DialogContent>
+    <DialogActions>
+        <MudButton Style="background-color:saddlebrown; color:azure" @onclick="OkFunc" Color="Color.Primary" Variant="Variant.Filled">מחיקה</MudButton>
+
+        <MudButton OnClick="Cancel">חזרה לרשימת המשחקים</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+
+
+    [Parameter]
+    public int userId { get; set; }
+
+    [Parameter]
+    public Game GameFromPage { get; set; } // פרמטר שמתקבל מהדף
+
+    //יצירת מופע חדש של משחק
+    Game UpdatedGame = new Game(); //מופע מקומי של המשחק
+
+    string gameCurrentName = "";
+
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    protected override void OnInitialized()
+    {
+
+        gameCurrentName = GameFromPage.GameName;
+    }
+
+    private void Cancel()
+    {
+        
+        MudDialog.Cancel();
+
+    }
+
+    private void OkFunc()
+    {
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+}
