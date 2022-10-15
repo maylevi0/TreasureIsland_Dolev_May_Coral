@@ -239,7 +239,7 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
                         return Ok(QuestionToUpdate);
                     }
 
-                    Question questionFromDB = await _context.Questions.FirstOrDefaultAsync(q => q.ID == QuestionToUpdate.ID);
+                    Question questionFromDB = await _context.Questions.Include(qD => qD.QuestionDistractors).FirstOrDefaultAsync(q => q.ID == QuestionToUpdate.ID);
 
                     if (questionFromDB != null)
                     {

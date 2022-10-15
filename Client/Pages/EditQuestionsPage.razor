@@ -133,7 +133,8 @@
 </EditForm>
 
 
-<MudTable class="tableofQ" Items="@CurrentGame.GameQuestions" Hover="true">
+<MudTable class="tableofQ"  style="height:600px;overflow-y:scroll" Items="@CurrentGame.GameQuestions" Hover="true">
+
     <HeaderContent>
         <MudTh>שאלה</MudTh>
         <MudTh>כמות תשובות</MudTh>
@@ -146,6 +147,7 @@
         <MudTd DataLabel="עריכה"><MudButton @onclick="() => EditQustionFunc(context.ID)" EndIcon="@Icons.Material.Outlined.Edit"></MudButton></MudTd>
         <MudTd DataLabel="מחיקה"> <MudButton @onclick="() => DeleteQustionFunc(context)" EndIcon="@Icons.Material.Outlined.Delete"></MudButton></MudTd>
     </RowTemplate>
+
 </MudTable>
 
 <br />
@@ -180,7 +182,6 @@
     protected async override Task OnInitializedAsync()
     {
         Xbuttonhidden2 = false; // איפוס משתנה איקס לתמונה בגזע השאלה
-
 
         CurrentGame.ID = gameID;
 
@@ -236,7 +237,14 @@
     {
 
         //איפוס
-        // myDistractorList = new List<Distractor>();
+        myDistractorList = new List<Distractor>();
+
+        for (int i = 0; i <= 4; i++)
+        {
+            Distractor CurrentDistractor = new Distractor();
+            myDistractorList.Add(CurrentDistractor);
+        }
+
         //CurrentQuestion.QuestionDistractors = new List<Distractor>(); // אתחול הרשימה
         CorrectAnswer = new Distractor();
 
@@ -404,43 +412,35 @@
     // פונקציה שמופעלת בלחיצה על שמירת שאלה
     protected async Task OnValidSubmit()
     {
-        Console.WriteLine("CurrentQuestion " + CurrentQuestion);
-        if (EditQBool == false)
-        {
-            CorrectAnswer.IsCorrect = true;
-            CorrectAnswer.QuestionID = CurrentQuestion.ID;
-            CurrentQuestion.QuestionDistractors.Add(CorrectAnswer); //הוספת התשובה הנכונה לרשימה
+        CurrentQuestion.QuestionDistractors = new List<Distractor>();
 
-            foreach (Distractor d in myDistractorList)
-            {
-                if (string.IsNullOrEmpty(d.DistractorContent) == false)
-                { //תנאי שבודק האם המסיח ריק ורק אז מכניס את המסיח לרישמה
-                    d.QuestionID = CurrentQuestion.ID;
-                    CurrentQuestion.QuestionDistractors.Add(d); //בלולאה הוספת המסיחים לרשימה
-                }
-            }
-        }
-        else
+        Console.WriteLine("CurrentQuestion.QuestionDistractors.count " + CurrentQuestion.QuestionDistractors.Count);
+
+        CorrectAnswer.IsCorrect = true;
+        CorrectAnswer.QuestionID = CurrentQuestion.ID;
+        CurrentQuestion.QuestionDistractors.Add(CorrectAnswer); //הוספת התשובה הנכונה לרשימה
+
+        foreach (Distractor d in myDistractorList)
         {
-            // צריך פונקציה שמוסיפה מסיחים חדשים לאחר שליפת שאלה ולחיצת שמור
-            foreach (Distractor d in myDistractorList)
-            {
-                if (string.IsNullOrEmpty(d.DistractorContent) == false)
-                { //תנאי שבודק האם המסיח ריק ורק אז מכניס את המסיח לרישמה
-                                  
-                       //דלק על המסיחים הקיימים ושלח למאגר נתונים מסיחים חדשים שנוספו
-                   
-                }
+
+            if (string.IsNullOrEmpty(d.DistractorContent) == false)
+            { //תנאי שבודק האם המסיח ריק ורק אז מכניס את המסיח לרישמה
+                d.QuestionID = CurrentQuestion.ID;
+                CurrentQuestion.QuestionDistractors.Add(d); //בלולאה הוספת המסיחים לרשימה
             }
+
         }
+
+        Console.WriteLine("CurrentQuestion.QuestionDistractors.count " + CurrentQuestion.QuestionDistractors.Count);
+        Console.WriteLine("myDistractorList.Count" + myDistractorList.Count);
 
         var postRespone = await Http.PostAsJsonAsync("api/Games/editQuestion/" + userId + "/" + gameID, CurrentQuestion);
 
         if (postRespone.IsSuccessStatusCode == true)
         {
 
-            Game updateGame = postRespone.Content.ReadFromJsonAsync<Game>().Result;
-            Console.WriteLine(" OnValidSubmit הקריאה הצליחה השאלה נשמרה");
+            Question updateQuestion = postRespone.Content.ReadFromJsonAsync<Question>().Result;
+            Console.WriteLine(" updateQuestion" + updateQuestion.QuestionDistractors.Count);
 
 
             var GetResponse = await Http.GetAsync("api/Games/bygameID/" + gameID);
@@ -474,7 +474,7 @@
 
         }
 
-        EditQBool = false;
+        // EditQBool = false;
         CurrentQuestion = new Question();
         myDistractorList = new List<Distractor>();
         CorrectAnswer = new Distractor();

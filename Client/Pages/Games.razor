@@ -37,10 +37,11 @@
         <MudTd DataLabel="עריכה"><MudButton Color="Color.Info" OnClick="@(()=>GotoEditPage(context))" EndIcon="@Icons.Material.Outlined.Edit"></MudButton></MudTd>
         <MudTd DataLabel="מחיקה"><MudButton Color="Color.Info" OnClick="@(() => DeleteGame(context))" EndIcon="@Icons.Material.Outlined.Delete"></MudButton></MudTd>
         <MudTd DataLabel="פרסום">
-            <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context))" Checked="@context.IsPublish" Color="Color.Primary"></MudCheckBox>
+            <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context,MyDialogPublish))" Checked="@context.IsPublish" Color="Color.Primary"></MudCheckBox>
         </MudTd>
     </RowTemplate>
 </MudTable>
+
 
 <p>@msg</p>
 
@@ -173,12 +174,14 @@
     }
 
 
+    DialogOptions MyDialogPublish = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true, DisableBackdropClick = true };
 
     //קריאה לקונטרולר לעדכון סטטוס המשחק האם פורסם
 
-    async Task PublishGame(Game selectedGame)
+    async Task PublishGame(Game selectedGame, DialogOptions options)
 
     {
+
 
         selectedGame.IsPublish = !selectedGame.IsPublish;
 
@@ -201,6 +204,14 @@
                 msg = "משחק לא פורסם";
             }
         }
+
+        var parameters = new DialogParameters();
+
+        parameters.Add("GameFromPage", selectedGame); //שולח מופע של משחק
+
+        var dialog = DialogService.Show<GameIsPublishedDialog>("פרסום המשחק", parameters, options);
+
+        var result = await dialog.Result;
 
     }
 
