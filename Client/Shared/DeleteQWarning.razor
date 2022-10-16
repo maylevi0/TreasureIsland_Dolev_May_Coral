@@ -1,0 +1,48 @@
+﻿@using TreasureIsland_Dolev_May_Coral.Shared.Entities
+@inject HttpClient Http
+
+
+
+<MudDialog>
+    <DialogContent>
+        <MudText>
+            שימו לב - במידה ובמאגר השאלות יש פחות מ - 10 שאלות
+            <br />
+            לא ניתן יהיה לפרסם את המשחק.
+        </MudText>
+        <MudText>
+            האם  למחוק את השאלה "@QuestionString..."?
+        </MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Style="background-color:saddlebrown; color:azure" @onclick="OkFunc" Color="Color.Primary" Variant="Variant.Filled">מחיקה</MudButton>
+        <MudButton OnClick="Cancel">חזרה לעריכת המשחק</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [Parameter]
+    public Question QtoDialog { get; set; } //נשלח מהדף את השאלה
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    string QuestionString = "";
+
+    protected override void OnInitialized()
+    {
+        QuestionString = QtoDialog.QuestionTitle; // הכנסת תוכן השאלה אל המשתנה בעמוד הזה
+
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void OkFunc()
+    {
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+}

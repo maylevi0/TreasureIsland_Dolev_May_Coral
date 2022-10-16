@@ -213,8 +213,6 @@
 
         selectedGame.IsPublish = !selectedGame.IsPublish;
 
-        Console.WriteLine("המשחק פורסם / לא פורסם");
-
         var postRespone = await Http.PostAsJsonAsync("api/Games/Update/Publish", selectedGame);
         if (postRespone.IsSuccessStatusCode == true)
         {

@@ -10,290 +10,299 @@
         <MudIcon Size="Size.Small" Icon=@Icons.Filled.SubdirectoryArrowRight></MudIcon>חזרה לרשימת המשחקים
     </MudText>
 </MudTooltip>
-@if (Qcount < 10)
-{<MudItem Style="color:red">
-     <MudText  Style="font-size:small"> <MudIcon Size="Size.Small" Icon="@Icons.Filled.Info" />לא ניתן לפרסם את המשחק</MudText>
+
+
+@if (Qcount >= 10)
+{ //גדול מ10 ניתן לפרסום
+<MudItem>
+    <MudText Style="font-size:small">לפרסום המשחק הנוכחי:</MudText>
+    <MudButton Style="background-color:darkorange" Variant="Variant.Filled" OnClick="(() => PublishGame(MyDialogPublish))">פרסום משחק</MudButton>
+</MudItem>
+        <MudItem Style="color:green">
+        <MudText Style="font-size:small"> <MudIcon Size="Size.Small" Icon="@Icons.Filled.Info" />המשחק ניתן לפרסום</MudText>
     </MudItem>
 }
 else
 {
-    <MudItem Style="color:green">
-        <MudText Style="font-size:small"> <MudIcon Size="Size.Small" Icon="@Icons.Filled.Info" />המשחק ניתן לפרסום</MudText>
-    </MudItem>
- }
-
-    <br />
-    <h1 style="color: saddlebrown">עריכת המשחק: <b style="color: black">@CurrentGame.GameName</b></h1>
-
-    <EditForm Model="@CurrentQuestion" OnValidSubmit="OnValidSubmit">
-
-        <DataAnnotationsValidator />
+    @if (Qcount > 0)
+    {
+        //כפתור כבוי
         <MudItem>
-            <MudText Style="color: saddlebrown">
-                השאלה:
-                <MudText Style="color:black; font-size:small"> 3-50 תווים</MudText>
-            </MudText>
-            <MudItem Style="width: 500px">
-                <MudItem>
-                    @if (CurrentQuestion.QuestionTitle == null || CurrentQuestion.QuestionTitle == "")
-                    {
-                        <MudTextField Variant="Variant.Outlined" Counter="50" MaxLength="50" Margin="Margin.Dense" Placeholder="תוכן השאלה..." @bind-Value="CurrentQuestion.QuestionTitle" For="@(() => CurrentQuestion.QuestionTitle)"></MudTextField>
-                    }
-                    else
-                    {
-                        <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Placeholder="תוכן השאלה..." @bind-Value="CurrentQuestion.QuestionTitle" For="@(() => CurrentQuestion.QuestionTitle)" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Close" OnAdornmentClick="CleanFuncQuestion"></MudTextField>
+            <MudButton Style="background-color:darkorange" Variant="Variant.Filled" Disabled="true">פרסום משחק</MudButton>
+        </MudItem>
+        <MudItem Style="color:red">
+            <MudText Style="font-size:small"> <MudIcon Size="Size.Small" Icon="@Icons.Filled.Info" />לא ניתן לפרסם את המשחק</MudText>
+        </MudItem>
+    }
+    // else קטן מאפס כפתור מוסתר
+}
 
-                    }
-                    <InputFile id="FileInputID" OnChange="UploadFile" accept=".jpg, .jpeg, .png" hidden />
-                    <img src="@CurrentQuestion.QuestionImage" width="30" />
-                    @if (Xbuttonhidden2 == false)
-                    {
-                        <MudText Style="font-size:small">ניתן להוסיף</MudText>
-                        <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudIconButton>
-                    }
-                    else
-                    {
-                        <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="CleanFuncQuestionImage" HtmlTag="label"></MudIconButton>
-                    }
+<br />
+<h1 style="color: saddlebrown">עריכת המשחק: <b style="color: black">@CurrentGame.GameName</b></h1>
 
+<EditForm Model="@CurrentQuestion" OnValidSubmit="OnValidSubmit">
 
-
-
-                </MudItem>
-            </MudItem>
-
-
-            <MudText>אפשרויות מענה: </MudText><MudText Style="font-size:smaller">(@DistractorsonScreen מתוך 6)</MudText>
-            <MudItem Style="width: 350px">
-
-                <MudText Style="color: forestgreen; font-size:medium"><b>תשובה נכונה</b></MudText>
-
-                <InputFile id="imgFileCorrectAnswer" OnChange="UploadFileforCorrectAnswer" accept=".jpg, .jpeg, .png" hidden />
-
-                @if (CorrectAnswer.IsImage == false)
+    <DataAnnotationsValidator />
+    <MudItem>
+        <MudText Style="color: saddlebrown">
+            השאלה:
+            <MudText Style="color:black; font-size:small"> 3-50 תווים</MudText>
+        </MudText>
+        <MudItem Style="width: 500px">
+            <MudItem>
+                @if (CurrentQuestion.QuestionTitle == null || CurrentQuestion.QuestionTitle == "")
                 {
+                    <MudTextField Variant="Variant.Outlined" Counter="50" MaxLength="50" Margin="Margin.Dense" Placeholder="תוכן השאלה..." @bind-Value="CurrentQuestion.QuestionTitle" For="@(() => CurrentQuestion.QuestionTitle)"></MudTextField>
+                }
+                else
+                {
+                    <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Placeholder="תוכן השאלה..." @bind-Value="CurrentQuestion.QuestionTitle" For="@(() => CurrentQuestion.QuestionTitle)" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Close" OnAdornmentClick="CleanFuncQuestion"></MudTextField>
 
-                    @if (string.IsNullOrEmpty(CorrectAnswer.DistractorContent) == false)
+                }
+                <InputFile id="FileInputID" OnChange="UploadFile" accept=".jpg, .jpeg, .png" hidden />
+                <img src="@CurrentQuestion.QuestionImage" width="30" />
+                @if (Xbuttonhidden2 == false)
+                {
+                    <MudText Style="font-size:small">ניתן להוסיף</MudText>
+                    <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudIconButton>
+                }
+                else
+                {
+                    <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="CleanFuncQuestionImage" HtmlTag="label"></MudIconButton>
+                }
+
+
+
+
+            </MudItem>
+        </MudItem>
+
+
+        <MudText>אפשרויות מענה: </MudText><MudText Style="font-size:smaller">(@DistractorsonScreen מתוך 6)</MudText>
+        <MudItem Style="width: 350px">
+
+            <MudText Style="color: forestgreen; font-size:medium"><b>תשובה נכונה</b></MudText>
+
+            <InputFile id="imgFileCorrectAnswer" OnChange="UploadFileforCorrectAnswer" accept=".jpg, .jpeg, .png" hidden />
+
+            @if (CorrectAnswer.IsImage == false)
+            {
+
+                @if (string.IsNullOrEmpty(CorrectAnswer.DistractorContent) == false)
+                {
+                    // תיבת טקסט מלא
+                    <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Counter="25" MaxLength="25" Placeholder="תוכן תשובה נכונה"
+                                  @bind-Value="CorrectAnswer.DistractorContent" For="@(() => CorrectAnswer.DistractorContent)" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Close" OnAdornmentClick="CleanFuncDistractorCorrectImage" />
+
+                    //כפתור העלאת תמונה מושבת
+                    <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Disabled="true" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudIconButton>
+                }
+                else
+                {
+                    //האם תיבת טקסט ריק אז אפשר להכניס תוכן לתיבה
+                    <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Counter="25" MaxLength="25" Placeholder="תוכן תשובה נכונה"
+                                  @bind-Value="CorrectAnswer.DistractorContent" For="@(() => CorrectAnswer.DistractorContent)" />
+                    //כפתור העלאת תמונה פעיל
+                    <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="imgFileCorrectAnswer" HtmlTag="label"></MudIconButton>
+                }
+            }
+            else
+            {
+                //התוכן של המסיח הוא תמונה
+                //אז תיבת הטקסט אינה פעילה
+                //מוצג תוכן התמונה והכפתור
+                if (CorrectAnswer.IsImage == true)
+                {
+                    <MudTooltip Text="כדי להוסיף טקסט עליך למחוק את התמונה">
+                        <MudTextField Disabled="true" Variant="Variant.Outlined" Margin="Margin.Dense" Counter="25" MaxLength="25" Placeholder="תוכן תשובה נכונה"
+                                      For="@(() => CorrectAnswer.DistractorContent)" />
+                    </MudTooltip>
+                    <img src="@CorrectAnswer.DistractorContent" width="30" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="CleanFuncDistractorCorrectImage" HtmlTag="label"></MudIconButton>
+                }
+                else
+                {
+                    <MudTextField Disabled="true" Variant="Variant.Outlined" Margin="Margin.Dense" Counter="25" MaxLength="25" Placeholder="תוכן תשובה נכונה"
+                                  For="@(() => CorrectAnswer.DistractorContent)" />
+                    <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="imgFileCorrectAnswer" HtmlTag="label"></MudIconButton>
+                }
+
+            }
+
+        </MudItem>
+
+        <MudText Style="color: saddlebrown; font-size: medium"><b>תשובה לא נכונה</b></MudText>
+        <MudItem Style="width: 350px">
+            @foreach (Distractor a in myDistractorList)
+            {
+
+                int place = myDistractorList.IndexOf(a);
+
+                <InputFile id="@("imgFile" + place.ToString())" OnChange="((e) => UploadFileDistractor(e, place))" accept=".jpg, .jpeg, .png" hidden />
+
+                @if (a.IsImage == false)
+                {
+                    //אם המסיח אינו מכיל תמונה אז...
+                    @if (string.IsNullOrEmpty(a.DistractorContent) == false)
                     {
-                        // תיבת טקסט מלא
-                        <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Counter="25" MaxLength="25" Placeholder="תוכן תשובה נכונה"
-                                      @bind-Value="CorrectAnswer.DistractorContent" For="@(() => CorrectAnswer.DistractorContent)" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Close" OnAdornmentClick="CleanFuncDistractorCorrectImage" />
+                        //האם התוכן של המסיח הוא מלא אז....
 
-                        //כפתור העלאת תמונה מושבת
+                        <MudTextField @bind-Value="a.DistractorContent" Margin="Margin.Dense" Counter="25" MaxLength="25" Label="תשובה לא נכונה" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Close" OnAdornmentClick="(() => CleanFuncDistractorImage(place))"></MudTextField>
+
+                        // מוסיפים כפתור להעלאת תמונה במצב מושבת
                         <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Disabled="true" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudIconButton>
                     }
                     else
                     {
-                        //האם תיבת טקסט ריק אז אפשר להכניס תוכן לתיבה
-                        <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Counter="25" MaxLength="25" Placeholder="תוכן תשובה נכונה"
-                                      @bind-Value="CorrectAnswer.DistractorContent" For="@(() => CorrectAnswer.DistractorContent)" />
-                        //כפתור העלאת תמונה פעיל
-                        <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="imgFileCorrectAnswer" HtmlTag="label"></MudIconButton>
+                        // מוסיפים כתפור תמונה שהוא כן פעיל
+                        <MudTextField @bind-Value="a.DistractorContent" Margin="Margin.Dense" Counter="25" MaxLength="25" Placeholder="תוכן תשובה לא נכונה" Variant="Variant.Outlined"></MudTextField>
+
+                        <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="@("imgFile" + place.ToString())" HtmlTag="label"></MudIconButton>
+
                     }
                 }
                 else
                 {
-                    //התוכן של המסיח הוא תמונה
-                    //אז תיבת הטקסט אינה פעילה
-                    //מוצג תוכן התמונה והכפתור
-                    if (CorrectAnswer.IsImage == true)
+                    if (a.IsImage == true)
                     {
+
+                        //תיבת טקסט הינה מושבתת כי יש תמונה בתוכן של המסיח
                         <MudTooltip Text="כדי להוסיף טקסט עליך למחוק את התמונה">
-                            <MudTextField Disabled="true" Variant="Variant.Outlined" Margin="Margin.Dense" Counter="25" MaxLength="25" Placeholder="תוכן תשובה נכונה"
-                                          For="@(() => CorrectAnswer.DistractorContent)" />
+                            <MudTextField Disabled="true" Placeholder="" Counter="25" MaxLength="25" Variant="Variant.Outlined" Margin="Margin.Dense" T="string"></MudTextField>
                         </MudTooltip>
-                        <img src="@CorrectAnswer.DistractorContent" width="30" />
-                        <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="CleanFuncDistractorCorrectImage" HtmlTag="label"></MudIconButton>
+                        <img src="@myDistractorList[place].DistractorContent" width="30" />
+                        <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="(() => CleanFuncDistractorImage(place))" HtmlTag="label"></MudIconButton>
                     }
                     else
                     {
-                        <MudTextField Disabled="true" Variant="Variant.Outlined" Margin="Margin.Dense" Counter="25" MaxLength="25" Placeholder="תוכן תשובה נכונה"
-                                      For="@(() => CorrectAnswer.DistractorContent)" />
-                        <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="imgFileCorrectAnswer" HtmlTag="label"></MudIconButton>
+                        //תיבת טקסט הינה מושבתת כי יש תמונה בתוכן של המסיח
+                        <MudTextField Disabled="true" Margin="Margin.Dense" Placeholder="" Counter="25" MaxLength="25" Variant="Variant.Outlined" T="string"></MudTextField>
+                        <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="@("imgFile" + place.ToString())" HtmlTag="label"></MudIconButton>
                     }
 
                 }
 
-            </MudItem>
-
-            <MudText Style="color: saddlebrown; font-size: medium"><b>תשובה לא נכונה</b></MudText>
-            <MudItem Style="width: 350px">
-                @foreach (Distractor a in myDistractorList)
-                {
-
-                    int place = myDistractorList.IndexOf(a);
-
-                    <InputFile id="@("imgFile" + place.ToString())" OnChange="((e) => UploadFileDistractor(e, place))" accept=".jpg, .jpeg, .png" hidden />
-
-                    @if (a.IsImage == false)
-                    {
-                        //אם המסיח אינו מכיל תמונה אז...
-                        @if (string.IsNullOrEmpty(a.DistractorContent) == false)
-                        {
-                            //האם התוכן של המסיח הוא מלא אז....
-
-                            <MudTextField @bind-Value="a.DistractorContent" Margin="Margin.Dense" Counter="25" MaxLength="25" Label="תשובה לא נכונה" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Close" OnAdornmentClick="(() => CleanFuncDistractorImage(place))"></MudTextField>
-
-                            // מוסיפים כפתור להעלאת תמונה במצב מושבת
-                            <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Disabled="true" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudIconButton>
-                        }
-                        else
-                        {
-                            // מוסיפים כתפור תמונה שהוא כן פעיל
-                            <MudTextField @bind-Value="a.DistractorContent" Margin="Margin.Dense" Counter="25" MaxLength="25" Placeholder="תוכן תשובה לא נכונה" Variant="Variant.Outlined"></MudTextField>
-
-                            <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="@("imgFile" + place.ToString())" HtmlTag="label"></MudIconButton>
-
-                        }
-                    }
-                    else
-                    {
-                        if (a.IsImage == true)
-                        {
-
-                            //תיבת טקסט הינה מושבתת כי יש תמונה בתוכן של המסיח
-                            <MudTooltip Text="כדי להוסיף טקסט עליך למחוק את התמונה">
-                                <MudTextField Disabled="true" Placeholder="" Counter="25" MaxLength="25" Variant="Variant.Outlined" Margin="Margin.Dense" T="string"></MudTextField>
-                            </MudTooltip>
-                            <img src="@myDistractorList[place].DistractorContent" width="30" />
-                            <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="(() => CleanFuncDistractorImage(place))" HtmlTag="label"></MudIconButton>
-                        }
-                        else
-                        {
-                            //תיבת טקסט הינה מושבתת כי יש תמונה בתוכן של המסיח
-                            <MudTextField Disabled="true" Margin="Margin.Dense" Placeholder="" Counter="25" MaxLength="25" Variant="Variant.Outlined" T="string"></MudTextField>
-                            <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="@("imgFile" + place.ToString())" HtmlTag="label"></MudIconButton>
-                        }
-
-                    }
-
-                }
-
-            </MudItem>
+            }
 
         </MudItem>
-        @if (string.IsNullOrEmpty(CorrectAnswer.DistractorContent) == false && string.IsNullOrEmpty(myDistractorList[0].DistractorContent) == false && string.IsNullOrEmpty(CurrentQuestion.QuestionTitle) == false)
+
+    </MudItem>
+    @if (string.IsNullOrEmpty(CorrectAnswer.DistractorContent) == false && string.IsNullOrEmpty(myDistractorList[0].DistractorContent) == false && string.IsNullOrEmpty(CurrentQuestion.QuestionTitle) == false)
+    {
+        <MudButton Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">שמירת שאלה</MudButton>
+    }
+    else
+    {
+        <MudTooltip Text="לא ניתן לשמור את השאלה. יש להוסיף שאלה בגזע השאלה ו-2 מסיחים.">
+            <MudButton Style="background-color:saddlebrown; color:azure" Disabled="true" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">שמירת שאלה</MudButton>
+        </MudTooltip>
+    }
+</EditForm>
+
+<MudTable  FixedHeader="true" Dense="true" style="height:600px; overflow-y: scroll;" class="tableofQ" Items="@CurrentGame.GameQuestions" Hover="true">
+    <ToolBarContent>
+        <MudText Style="color:saddlebrown" Typo="Typo.h6">מאגר שאלות (@CurrentGame.GameQuestions.Count)</MudText>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>שאלה</MudTh>
+        <MudTh>כמות תשובות</MudTh>
+        <MudTh>עריכה</MudTh>
+        <MudTh>מחיקה</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="שאלה"><MudTooltip Text="@context.QuestionTitle">@context.QuestionTitle</MudTooltip></MudTd>
+        <MudTd DataLabel="כמות תשובות">@context.QuestionDistractors.Count</MudTd>
+        <MudTd DataLabel="עריכה"><MudIconButton @onclick="() => EditQustionFunc(context.ID)" Icon="@Icons.Material.Outlined.Edit"></MudIconButton></MudTd>
+        <MudTd DataLabel="מחיקה"> <MudIconButton @onclick="() => DeleteQustionFunc(context,MyDialogDeleteQuestion)" Icon="@Icons.Material.Outlined.Delete"></MudIconButton></MudTd>
+        <MudDivider />
+    </RowTemplate>
+</MudTable>
+
+<br />
+<p>@msg</p>
+
+@code {
+    DialogOptions MyDialogPublish = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true, DisableBackdropClick = true };
+    async Task PublishGame(DialogOptions options)
+    {
+
+        var parameters = new DialogParameters();
+
+        parameters.Add("GameFromPage", CurrentGame); //שולח מופע של משחק
+
+        Console.WriteLine("לפני הפופאפ " + CurrentGame.IsPublish);
+        var dialog = DialogService.Show<GameIsPublishedDialogAtEditPage>("פרסום המשחק", parameters, options);
+
+        var result = await dialog.Result;
+
+        if (result.Cancelled == false)
         {
-            <MudButton Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">שמירת שאלה</MudButton>
+
+            Console.WriteLine("המשחק פורסם, סגירת חלון והמשך עריכת שאלות");
         }
         else
         {
-            <MudTooltip Text="לא ניתן לשמור את השאלה. יש להוסיף שאלה בגזע השאלה ו-2 מסיחים.">
-                <MudButton Style="background-color:saddlebrown; color:azure" Disabled="true" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">שמירת שאלה</MudButton>
-            </MudTooltip>
-        }
-    </EditForm>
 
-    <MudTable style="height: 600px; overflow-y: scroll;" class="tableofQ" FixedHeader="true" Dense="true" Items="@CurrentGame.GameQuestions" Hover="true">
-        <ToolBarContent>
-            <MudText Style="color:saddlebrown" Typo="Typo.h6">מאגר שאלות (@CurrentGame.GameQuestions.Count)</MudText>
-        </ToolBarContent>
-        <HeaderContent>
-            <MudTh>שאלה</MudTh>
-            <MudTh>כמות תשובות</MudTh>
-            <MudTh>עריכה</MudTh>
-            <MudTh>מחיקה</MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="שאלה"><MudTooltip Text="@context.QuestionTitle">@context.QuestionTitle</MudTooltip></MudTd>
-            <MudTd DataLabel="כמות תשובות">@context.QuestionDistractors.Count</MudTd>
-            <MudTd DataLabel="עריכה"><MudIconButton @onclick="() => EditQustionFunc(context.ID)" Icon="@Icons.Material.Outlined.Edit"></MudIconButton></MudTd>
-            <MudTd DataLabel="מחיקה"> <MudIconButton @onclick="() => DeleteQustionFunc(context,MyDialogDeleteQuestion)" Icon="@Icons.Material.Outlined.Delete"></MudIconButton></MudTd>
-            <MudDivider />
-        </RowTemplate>
-    </MudTable>
-
-    <br />
-    <p>@msg</p>
-
-    @code {
-
-        bool fixedheader = true;
-
-        [Parameter]
-        public int userId { get; set; } // פרמטר יוזר
-
-        [Parameter]
-        public int gameID { get; set; }//פרמטר מספר מזהה משחק
-
-        Game CurrentGame = new Game(); //מופע של המשחק הנוכחי
-
-        Question CurrentQuestion = new Question(); // מופע של שאלה נוכחית
-
-        List<Question> currentgameQuestions = new List<Question>(); // רשימת שאלות של המשחק הנוכחי
-
-        Distractor CurrentDistractor = new Distractor(); // מסיח נוכחי
-
-        Distractor CorrectAnswer = new Distractor();
-
-        List<Distractor> myDistractorList = new List<Distractor>(); // רשימת מסיחים
-
-        List<string> QTable = new List<string>();
-
-        int DistractorsonScreen = 0; //משתנה לספירת מסיחים על המסך לפני שמירה
-        int Qcount = 0; // משתנה לספירת שאלות - תנאי לפרסום
-
-        // חיווי למשתמש
-        string msg = "";
-
-        protected async override Task OnInitializedAsync()
-        {
-            Xbuttonhidden2 = false; // איפוס משתנה איקס לתמונה בגזע השאלה
-
-            CurrentGame.ID = gameID;
-
-            var getResponse = await Http.GetAsync("api/Games/bygameID/" + CurrentGame.ID);
-
-
-            if (getResponse.IsSuccessStatusCode == true)
-            {
-
-                // הכלה של פרטי הקריאה מהדטה בייס למופע של המשחק בעמוד זה
-                CurrentGame = getResponse.Content.ReadFromJsonAsync<Game>().Result;
-
-                currentgameQuestions = CurrentGame.GameQuestions;
-
-                CurrentGame.GameName = CurrentGame.GameName;//כותרת שם המשחק
-
-                CurrentQuestion.QuestionDistractors = new List<Distractor>(); // אתחול הרשימה
-
-                for (int i = 0; i <= 4; i++)
-                {
-                    Distractor CurrentDistractor = new Distractor();
-                    myDistractorList.Add(CurrentDistractor);
-                }
-
-                Console.WriteLine("קריאה הצליחה  OnInitializedAsync");
-
-            }
-            else
-            {
-                string error = getResponse.Content.ReadAsStringAsync().Result;
-                if (error == "game not found" || error == "empty Session")
-                {
-                    nav.NavigateTo("./");
-                }
-                else
-                {
-                    Console.WriteLine("התרחשה תקלת שרת");
-                }
-
-            }
-
-            DistractorsonScreen = CurrentQuestion.QuestionDistractors.Count;
-            Qcount = CurrentGame.GameQuestions.Count;
+            Console.WriteLine("המשחק פורסם והמשתמש רוצה לשחק!");
+            // nav.NavigateTo("");
         }
 
+        CurrentGame.IsPublish = true;
 
-        //עריכת שאלה כפתור עריכה
-        bool EditQBool = false;
+        Console.WriteLine("אחרי הפופאפ " + CurrentGame.IsPublish);
 
-        protected async Task EditQustionFunc(int QtoEditID)
+        //עדכון בקונטרולר
 
+    }
+
+    bool fixedheader = true;
+
+    [Parameter]
+    public int userId { get; set; } // פרמטר יוזר
+
+    [Parameter]
+    public int gameID { get; set; }//פרמטר מספר מזהה משחק
+
+    Game CurrentGame = new Game(); //מופע של המשחק הנוכחי
+
+    Question CurrentQuestion = new Question(); // מופע של שאלה נוכחית
+
+    List<Question> currentgameQuestions = new List<Question>(); // רשימת שאלות של המשחק הנוכחי
+
+    Distractor CurrentDistractor = new Distractor(); // מסיח נוכחי
+
+    Distractor CorrectAnswer = new Distractor();
+
+    List<Distractor> myDistractorList = new List<Distractor>(); // רשימת מסיחים
+
+    List<string> QTable = new List<string>();
+
+    int DistractorsonScreen = 0; //משתנה לספירת מסיחים על המסך לפני שמירה
+    int Qcount = 0; // משתנה לספירת שאלות - תנאי לפרסום
+
+    // חיווי למשתמש
+    string msg = "";
+
+    protected async override Task OnInitializedAsync()
+    {
+        Xbuttonhidden2 = false; // איפוס משתנה איקס לתמונה בגזע השאלה
+
+        CurrentGame.ID = gameID;
+
+        var getResponse = await Http.GetAsync("api/Games/bygameID/" + CurrentGame.ID);
+
+
+        if (getResponse.IsSuccessStatusCode == true)
         {
 
-            //איפוס
-            myDistractorList = new List<Distractor>();
+            // הכלה של פרטי הקריאה מהדטה בייס למופע של המשחק בעמוד זה
+            CurrentGame = getResponse.Content.ReadFromJsonAsync<Game>().Result;
+
+            currentgameQuestions = CurrentGame.GameQuestions;
+
+            CurrentGame.GameName = CurrentGame.GameName;//כותרת שם המשחק
+
+            CurrentQuestion.QuestionDistractors = new List<Distractor>(); // אתחול הרשימה
 
             for (int i = 0; i <= 4; i++)
             {
@@ -301,59 +310,132 @@ else
                 myDistractorList.Add(CurrentDistractor);
             }
 
-            //CurrentQuestion.QuestionDistractors = new List<Distractor>(); // אתחול הרשימה
-            CorrectAnswer = new Distractor();
+            Console.WriteLine("קריאה הצליחה  OnInitializedAsync");
 
-
-            //נקרא לקונטרולר ונבקש את התוכן מהשאלה כולל מסיחים
-            var GetResponse = await Http.GetAsync("api/Questions/editQ/" + QtoEditID);
-            if (GetResponse.IsSuccessStatusCode == true)
+        }
+        else
+        {
+            string error = getResponse.Content.ReadAsStringAsync().Result;
+            if (error == "game not found" || error == "empty Session")
             {
-                //נכניס את השאלה שהתקבלה מהבסיס נתונים למופע של השאלה
-                CurrentQuestion = GetResponse.Content.ReadFromJsonAsync<Question>().Result;
-
-
-                if (CurrentQuestion.QuestionImage != null)
-                {
-                    Xbuttonhidden2 = true;
-                }
-
-                foreach (Distractor a in CurrentQuestion.QuestionDistractors)
-                {
-                    int index = CurrentQuestion.QuestionDistractors.IndexOf(a);
-
-                    if (a.IsCorrect == true)
-                    {
-                        CorrectAnswer = a;
-                    }
-                    else
-                    {
-                        myDistractorList[index - 1] = CurrentQuestion.QuestionDistractors[index];
-
-                    }
-
-                }
-
-                DistractorsonScreen = CurrentQuestion.QuestionDistractors.Count;
-                Console.WriteLine("השאלה נשלפה בהצלחה");
-                //EditQBool = true;
-                StateHasChanged();
-
+                nav.NavigateTo("./");
             }
             else
             {
-                string error = GetResponse.Content.ReadAsStringAsync().Result;
-                Console.WriteLine(error);
-
+                Console.WriteLine("התרחשה תקלת שרת");
             }
 
         }
 
-        DialogOptions MyDialogDeleteQuestion = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true, DisableBackdropClick = true };
+        DistractorsonScreen = CurrentQuestion.QuestionDistractors.Count;
+        Qcount = CurrentGame.GameQuestions.Count;
+    }
 
-        protected async Task DeleteQustionFunc(Question Qtodelet, DialogOptions options)
+
+    //עריכת שאלה כפתור עריכה
+    bool EditQBool = false;
+
+    protected async Task EditQustionFunc(int QtoEditID)
+
+    {
+
+        //איפוס
+        myDistractorList = new List<Distractor>();
+
+        for (int i = 0; i <= 4; i++)
         {
+            Distractor CurrentDistractor = new Distractor();
+            myDistractorList.Add(CurrentDistractor);
+        }
 
+        //CurrentQuestion.QuestionDistractors = new List<Distractor>(); // אתחול הרשימה
+        CorrectAnswer = new Distractor();
+
+
+        //נקרא לקונטרולר ונבקש את התוכן מהשאלה כולל מסיחים
+        var GetResponse = await Http.GetAsync("api/Questions/editQ/" + QtoEditID);
+        if (GetResponse.IsSuccessStatusCode == true)
+        {
+            //נכניס את השאלה שהתקבלה מהבסיס נתונים למופע של השאלה
+            CurrentQuestion = GetResponse.Content.ReadFromJsonAsync<Question>().Result;
+
+
+            if (CurrentQuestion.QuestionImage != null)
+            {
+                Xbuttonhidden2 = true;
+            }
+
+            foreach (Distractor a in CurrentQuestion.QuestionDistractors)
+            {
+                int index = CurrentQuestion.QuestionDistractors.IndexOf(a);
+
+                if (a.IsCorrect == true)
+                {
+                    CorrectAnswer = a;
+                }
+                else
+                {
+                    myDistractorList[index - 1] = CurrentQuestion.QuestionDistractors[index];
+
+                }
+
+            }
+
+            DistractorsonScreen = CurrentQuestion.QuestionDistractors.Count;
+            Console.WriteLine("השאלה נשלפה בהצלחה");
+            //EditQBool = true;
+            StateHasChanged();
+
+        }
+        else
+        {
+            string error = GetResponse.Content.ReadAsStringAsync().Result;
+            Console.WriteLine(error);
+
+        }
+
+    }
+
+    DialogOptions MyDialogDeleteQuestion = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true, DisableBackdropClick = true };
+
+    protected async Task DeleteQustionFunc(Question Qtodelet, DialogOptions options)
+    {
+        //בדיקה האם מספר השאלות במשחק עומד בתנאי לפרסום 
+        int Qnumber = CurrentGame.GameQuestions.Count;
+
+        if (Qnumber == 10) { //אם מספר השאלות כרגע הוא 10 אז תציג הודעה לגבי פרסום משחק
+            var parameters = new DialogParameters();
+            parameters.Add("QtoDialog", Qtodelet); //שולח מופע של משחק
+            var dialog = DialogService.Show<DeleteQWarning>("מחיקת שאלה", parameters, options);
+
+            var result = await dialog.Result;
+            if (result.Cancelled == false)
+            {
+                Console.WriteLine(Qtodelet.ID);
+
+                var deleteRespone = await Http.DeleteAsync("api/Games/DeleteQ/" + CurrentGame.UserID.ToString() + "/" + Qtodelet.ID);
+                if (deleteRespone.IsSuccessStatusCode == true)
+                {
+                    Console.WriteLine("שאלה נמחקה");
+                    CurrentGame.GameQuestions.Remove(Qtodelet);
+                    Console.WriteLine("הרשימה התעדכנה");
+                }
+                else
+                {
+                    string error = deleteRespone.Content.ReadAsStringAsync().Result;
+                    Console.WriteLine(error);
+
+                }
+
+                //בסגירת הפופאפ שהשאלה תתאפס
+                CurrentQuestion = new Question();
+                myDistractorList = new List<Distractor>();
+                CorrectAnswer = new Distractor();
+                await OnInitializedAsync();
+            }
+        }
+        else
+        { //אם מספר השאלות כרגע הוא לא עשר אז תמחוק שאלה פופ אפ רגיל
             var dialog = DialogService.Show<DeleteQDialog>("מחיקת שאלה", options);
 
             var result = await dialog.Result;
@@ -377,222 +459,221 @@ else
                 }
 
                 //בסגירת הפופאפ שהשאלה תתאפס
-
                 CurrentQuestion = new Question();
                 myDistractorList = new List<Distractor>();
                 CorrectAnswer = new Distractor();
                 await OnInitializedAsync();
             }
-
         }
+    }
 
-        string myFileImage;
-        long maxFileSize = 4194304;
-        string msg1;
-        List<string> DeletedImages = new List<string>();
-        List<string> DeletedImagesforans = new List<string>();
+    string myFileImage;
+    long maxFileSize = 4194304;
+    string msg1;
+    List<string> DeletedImages = new List<string>();
+    List<string> DeletedImagesforans = new List<string>();
 
-        //העלאת תמונה לגזע השאלה
-        private async Task UploadFile(InputFileChangeEventArgs e)
+    //העלאת תמונה לגזע השאלה
+    private async Task UploadFile(InputFileChangeEventArgs e)
+    {
+        Xbuttonhidden2 = true;
+
+        var imageFiles = e.GetMultipleFiles();
+        foreach (var file in imageFiles)
         {
-            Xbuttonhidden2 = true;
-
-            var imageFiles = e.GetMultipleFiles();
-            foreach (var file in imageFiles)
+            if (file.Size <= maxFileSize)
             {
-                if (file.Size <= maxFileSize)
+                var buffer = new byte[file.Size];
+                await file.OpenReadStream(maxFileSize).ReadAsync(buffer);
+                var imageBase64 = Convert.ToBase64String(buffer);
+                var saveResponse = await Http.PostAsJsonAsync("api/Games/upload", imageBase64);
+
+                if (saveResponse.IsSuccessStatusCode == true)
                 {
-                    var buffer = new byte[file.Size];
-                    await file.OpenReadStream(maxFileSize).ReadAsync(buffer);
-                    var imageBase64 = Convert.ToBase64String(buffer);
-                    var saveResponse = await Http.PostAsJsonAsync("api/Games/upload", imageBase64);
+                    string resizeUrl = saveResponse.Content.ReadAsStringAsync().Result;
+                    myFileImage = resizeUrl;
+                    Console.WriteLine(resizeUrl);
+                    CurrentQuestion.QuestionImage = myFileImage;
 
-                    if (saveResponse.IsSuccessStatusCode == true)
-                    {
-                        string resizeUrl = saveResponse.Content.ReadAsStringAsync().Result;
-                        myFileImage = resizeUrl;
-                        Console.WriteLine(resizeUrl);
-                        CurrentQuestion.QuestionImage = myFileImage;
+                }
+            }
+        }
+    }
 
-                    }
+
+    string myFileImageCorrectAnswer;
+
+    //פונקציה העלאת תמונה למסיח נכון
+    private async Task UploadFileforCorrectAnswer(InputFileChangeEventArgs e)
+    {
+
+        var imageFiles = e.GetMultipleFiles();
+        foreach (var file in imageFiles)
+        {
+            if (file.Size <= maxFileSize)
+            {
+                var buffer = new byte[file.Size];
+                await file.OpenReadStream(maxFileSize).ReadAsync(buffer);
+                var imageBase64 = Convert.ToBase64String(buffer);
+                var saveResponse = await Http.PostAsJsonAsync("api/Games/upload", imageBase64);
+
+                if (saveResponse.IsSuccessStatusCode == true)
+                {
+                    string resizeUrl = saveResponse.Content.ReadAsStringAsync().Result;
+                    myFileImageCorrectAnswer = resizeUrl;
+                    Console.WriteLine(resizeUrl);
+                    CorrectAnswer.DistractorContent = myFileImageCorrectAnswer;
+                    CorrectAnswer.IsImage = true;
                 }
             }
         }
 
+    }
 
-        string myFileImageCorrectAnswer;
+    //העלאת תמונה למסיחים השגויים
+    string myFileImageWorngAnswer;
 
-        //פונקציה העלאת תמונה למסיח נכון
-        private async Task UploadFileforCorrectAnswer(InputFileChangeEventArgs e)
+    private async Task UploadFileDistractor(InputFileChangeEventArgs e, int Place)
+    {
+        var imageFiles = e.GetMultipleFiles();
+        foreach (var file in imageFiles)
+        {
+            if (file.Size <= maxFileSize)
+            {
+                var buffer = new byte[file.Size];
+                await file.OpenReadStream(maxFileSize).ReadAsync(buffer);
+                var imageBase64 = Convert.ToBase64String(buffer);
+                var saveResponse = await Http.PostAsJsonAsync("api/Games/upload", imageBase64);
+
+                if (saveResponse.IsSuccessStatusCode == true)
+                {
+                    string resizeUrl = saveResponse.Content.ReadAsStringAsync().Result;
+                    myFileImageWorngAnswer = resizeUrl;
+                    Console.WriteLine(resizeUrl);
+                    myDistractorList[Place].DistractorContent = myFileImageWorngAnswer;
+                    myDistractorList[Place].IsImage = true;
+                }
+            }
+        }
+
+    }
+
+    // פונקציה שמופעלת בלחיצה על שמירת שאלה
+    protected async Task OnValidSubmit()
+    {
+        CurrentQuestion.QuestionDistractors = new List<Distractor>();
+
+        Console.WriteLine("CurrentQuestion.QuestionDistractors.count " + CurrentQuestion.QuestionDistractors.Count);
+
+        CorrectAnswer.IsCorrect = true;
+        CorrectAnswer.QuestionID = CurrentQuestion.ID;
+        CurrentQuestion.QuestionDistractors.Add(CorrectAnswer); //הוספת התשובה הנכונה לרשימה
+
+        foreach (Distractor d in myDistractorList)
         {
 
-            var imageFiles = e.GetMultipleFiles();
-            foreach (var file in imageFiles)
-            {
-                if (file.Size <= maxFileSize)
-                {
-                    var buffer = new byte[file.Size];
-                    await file.OpenReadStream(maxFileSize).ReadAsync(buffer);
-                    var imageBase64 = Convert.ToBase64String(buffer);
-                    var saveResponse = await Http.PostAsJsonAsync("api/Games/upload", imageBase64);
-
-                    if (saveResponse.IsSuccessStatusCode == true)
-                    {
-                        string resizeUrl = saveResponse.Content.ReadAsStringAsync().Result;
-                        myFileImageCorrectAnswer = resizeUrl;
-                        Console.WriteLine(resizeUrl);
-                        CorrectAnswer.DistractorContent = myFileImageCorrectAnswer;
-                        CorrectAnswer.IsImage = true;
-                    }
-                }
+            if (string.IsNullOrEmpty(d.DistractorContent) == false)
+            { //תנאי שבודק האם המסיח ריק ורק אז מכניס את המסיח לרישמה
+                d.QuestionID = CurrentQuestion.ID;
+                CurrentQuestion.QuestionDistractors.Add(d); //בלולאה הוספת המסיחים לרשימה
             }
 
         }
 
-        //העלאת תמונה למסיחים השגויים
-        string myFileImageWorngAnswer;
+        Console.WriteLine("CurrentQuestion.QuestionDistractors.count " + CurrentQuestion.QuestionDistractors.Count);
+        Console.WriteLine("myDistractorList.Count" + myDistractorList.Count);
 
-        private async Task UploadFileDistractor(InputFileChangeEventArgs e, int Place)
+        var postRespone = await Http.PostAsJsonAsync("api/Games/editQuestion/" + userId + "/" + gameID, CurrentQuestion);
+
+        if (postRespone.IsSuccessStatusCode == true)
         {
-            var imageFiles = e.GetMultipleFiles();
-            foreach (var file in imageFiles)
+
+            Question updateQuestion = postRespone.Content.ReadFromJsonAsync<Question>().Result;
+            Console.WriteLine(" updateQuestion" + updateQuestion.QuestionDistractors.Count);
+
+
+            var GetResponse = await Http.GetAsync("api/Games/bygameID/" + gameID);
+            if (GetResponse.IsSuccessStatusCode == true)
             {
-                if (file.Size <= maxFileSize)
-                {
-                    var buffer = new byte[file.Size];
-                    await file.OpenReadStream(maxFileSize).ReadAsync(buffer);
-                    var imageBase64 = Convert.ToBase64String(buffer);
-                    var saveResponse = await Http.PostAsJsonAsync("api/Games/upload", imageBase64);
-
-                    if (saveResponse.IsSuccessStatusCode == true)
-                    {
-                        string resizeUrl = saveResponse.Content.ReadAsStringAsync().Result;
-                        myFileImageWorngAnswer = resizeUrl;
-                        Console.WriteLine(resizeUrl);
-                        myDistractorList[Place].DistractorContent = myFileImageWorngAnswer;
-                        myDistractorList[Place].IsImage = true;
-                    }
-                }
-            }
-
-        }
-
-        // פונקציה שמופעלת בלחיצה על שמירת שאלה
-        protected async Task OnValidSubmit()
-        {
-            CurrentQuestion.QuestionDistractors = new List<Distractor>();
-
-            Console.WriteLine("CurrentQuestion.QuestionDistractors.count " + CurrentQuestion.QuestionDistractors.Count);
-
-            CorrectAnswer.IsCorrect = true;
-            CorrectAnswer.QuestionID = CurrentQuestion.ID;
-            CurrentQuestion.QuestionDistractors.Add(CorrectAnswer); //הוספת התשובה הנכונה לרשימה
-
-            foreach (Distractor d in myDistractorList)
-            {
-
-                if (string.IsNullOrEmpty(d.DistractorContent) == false)
-                { //תנאי שבודק האם המסיח ריק ורק אז מכניס את המסיח לרישמה
-                    d.QuestionID = CurrentQuestion.ID;
-                    CurrentQuestion.QuestionDistractors.Add(d); //בלולאה הוספת המסיחים לרשימה
-                }
-
-            }
-
-            Console.WriteLine("CurrentQuestion.QuestionDistractors.count " + CurrentQuestion.QuestionDistractors.Count);
-            Console.WriteLine("myDistractorList.Count" + myDistractorList.Count);
-
-            var postRespone = await Http.PostAsJsonAsync("api/Games/editQuestion/" + userId + "/" + gameID, CurrentQuestion);
-
-            if (postRespone.IsSuccessStatusCode == true)
-            {
-
-                Question updateQuestion = postRespone.Content.ReadFromJsonAsync<Question>().Result;
-                Console.WriteLine(" updateQuestion" + updateQuestion.QuestionDistractors.Count);
-
-
-                var GetResponse = await Http.GetAsync("api/Games/bygameID/" + gameID);
-                if (GetResponse.IsSuccessStatusCode == true)
-                {
-                    CurrentGame = GetResponse.Content.ReadFromJsonAsync<Game>().Result;
-                    Console.WriteLine(" OnValidSubmit קריאה שניה של משחק לפי ID");
-                    // לעדכן טבלה
-                }
-                else
-                {
-
-                    string error = GetResponse.Content.ReadAsStringAsync().Result;
-                    if (error == "game not found" || error == "empty Session")
-                    {
-                        nav.NavigateTo("./");
-                    }
-                    else
-                    {
-                        Console.WriteLine(" OnValidSubmit תקלה בשמירת השאלה ");
-
-                        Console.WriteLine(error);
-                    }
-                }
+                CurrentGame = GetResponse.Content.ReadFromJsonAsync<Game>().Result;
+                Console.WriteLine(" OnValidSubmit קריאה שניה של משחק לפי ID");
+                // לעדכן טבלה
             }
             else
             {
 
-                Console.WriteLine("api/Games/editQuestion/OnValidSubmit תקלה בשמירת השאלה ");
+                string error = GetResponse.Content.ReadAsStringAsync().Result;
+                if (error == "game not found" || error == "empty Session")
+                {
+                    nav.NavigateTo("./");
+                }
+                else
+                {
+                    Console.WriteLine(" OnValidSubmit תקלה בשמירת השאלה ");
 
-
+                    Console.WriteLine(error);
+                }
             }
-
-            // EditQBool = false;
-            CurrentQuestion = new Question();
-            myDistractorList = new List<Distractor>();
-            CorrectAnswer = new Distractor();
-            await OnInitializedAsync();
         }
-
-
-        bool Xbuttonhidden1;
-        bool Xbuttonhidden2;
-
-        //פונקציה למחיקת תוכן השאלה דרך תיבת טקסט
-        void CleanFuncQuestion()
+        else
         {
-            CurrentQuestion.QuestionTitle = "";
-            Xbuttonhidden1 = false;
-            StateHasChanged();
+
+            Console.WriteLine("api/Games/editQuestion/OnValidSubmit תקלה בשמירת השאלה ");
+
 
         }
 
-        void CleanFuncQuestionImage()
-        {
-            CurrentQuestion.QuestionImage = "";
-            Xbuttonhidden2 = false;
-            myFileImage = "";
+        // EditQBool = false;
+        CurrentQuestion = new Question();
+        myDistractorList = new List<Distractor>();
+        CorrectAnswer = new Distractor();
+        await OnInitializedAsync();
+    }
 
-            StateHasChanged();
 
-        }
+    bool Xbuttonhidden1;
+    bool Xbuttonhidden2;
 
-        void CleanFuncDistractorCorrectImage()
-        {
-            CorrectAnswer.DistractorContent = "";
-            CorrectAnswer.IsImage = false;
-            StateHasChanged();
-
-        }
-
-        void CleanFuncDistractorImage(int Place)
-        {
-            myDistractorList[Place].DistractorContent = "";
-            myDistractorList[Place].IsImage = false;
-
-            StateHasChanged();
-
-        }
-
-        //פונקציה חזרה לעמוד המשחקים שלי בלחיצה על חזרה לרשימת משחקים
-        void goToGamesPage()
-        {
-            nav.NavigateTo("./Games/" + userId);
-        }
+    //פונקציה למחיקת תוכן השאלה דרך תיבת טקסט
+    void CleanFuncQuestion()
+    {
+        CurrentQuestion.QuestionTitle = "";
+        Xbuttonhidden1 = false;
+        StateHasChanged();
 
     }
+
+    void CleanFuncQuestionImage()
+    {
+        CurrentQuestion.QuestionImage = "";
+        Xbuttonhidden2 = false;
+        myFileImage = "";
+
+        StateHasChanged();
+
+    }
+
+    void CleanFuncDistractorCorrectImage()
+    {
+        CorrectAnswer.DistractorContent = "";
+        CorrectAnswer.IsImage = false;
+        StateHasChanged();
+
+    }
+
+    void CleanFuncDistractorImage(int Place)
+    {
+        myDistractorList[Place].DistractorContent = "";
+        myDistractorList[Place].IsImage = false;
+
+        StateHasChanged();
+
+    }
+
+    //פונקציה חזרה לעמוד המשחקים שלי בלחיצה על חזרה לרשימת משחקים
+    void goToGamesPage()
+    {
+        nav.NavigateTo("./Games/" + userId);
+    }
+
+}
