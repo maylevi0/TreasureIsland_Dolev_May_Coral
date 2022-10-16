@@ -14,6 +14,7 @@
 </MudItem>
 
 <br />
+
 <MudTable Items="@CurrentUser.UserGames" Hover="true" Dense="true" FixedHeader="true">
     <HeaderContent>
 
@@ -28,27 +29,27 @@
 
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="שם המשחק">@context.GameName</MudTd>
-        <MudTd DataLabel="לצפייה"><MudButton EndIcon="@Icons.Material.Outlined.RemoveRedEye"></MudButton></MudTd>
-        <MudTd DataLabel="קוד המשחק">@context.GameCode</MudTd>
-        <MudTd DataLabel="מספר שאלות">@context.GameQuestions.Count</MudTd>
-        <MudTd DataLabel="הגדרות משחק"><MudButton Color="Color.Info" OnClick="@(() => OpenDialogSettings(context.ID,maxWidth))" EndIcon="@Icons.Material.Outlined.Settings"></MudButton></MudTd>
-        <MudTd DataLabel="עריכה"><MudButton Color="Color.Info" OnClick="@(()=>GotoEditPage(context))" EndIcon="@Icons.Material.Outlined.Edit"></MudButton></MudTd>
-        <MudTd DataLabel="מחיקה"><MudButton Color="Color.Info" OnClick="@(() => DeleteGame(context,MyDIalogDeleteGame))" EndIcon="@Icons.Material.Outlined.Delete"></MudButton></MudTd>
-        @if (context.GameQuestions.Count>=10)
-        {
-            <MudTd DataLabel="פרסום">
-                <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context,MyDialogPublish))" Checked="@context.IsPublish" Color="Color.Primary"></MudCheckBox>
-            </MudTd>
-        }
-        else
-        {
-            <MudTd DataLabel="פרסום">
-                <MudTooltip Text="המשחק לא עומד בתנאי הפרסום, לפחות 10 שאלות">
-                    <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context,MyDialogPublish))" Checked="@context.IsPublish" Disabled="true" Color="Color.Primary"></MudCheckBox>
-                </MudTooltip>
-                    </MudTd>
-        }
+          <MudTd DataLabel="שם המשחק">@context.GameName</MudTd>
+            <MudTd DataLabel="לצפייה"><MudButton EndIcon="@Icons.Material.Outlined.RemoveRedEye"></MudButton></MudTd>
+            <MudTd DataLabel="קוד המשחק">@context.GameCode</MudTd>
+            <MudTd DataLabel="מספר שאלות">@context.GameQuestions.Count</MudTd>
+            <MudTd DataLabel="הגדרות משחק"><MudButton Color="Color.Info" OnClick="@(() => OpenDialogSettings(context.ID, maxWidth))" EndIcon="@Icons.Material.Outlined.Settings"></MudButton></MudTd>
+            <MudTd DataLabel="עריכה"><MudButton Color="Color.Info" OnClick="@(() => GotoEditPage(context))" EndIcon="@Icons.Material.Outlined.Edit"></MudButton></MudTd>
+            <MudTd DataLabel="מחיקה"><MudButton Color="Color.Info" OnClick="@(() => DeleteGame(context, MyDIalogDeleteGame))" EndIcon="@Icons.Material.Outlined.Delete"></MudButton></MudTd>
+            @if (context.GameQuestions.Count >= 10) //תנאי שקשור לכפתור פרסום משחק
+            {
+                <MudTd DataLabel="פרסום">
+                    <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context, MyDialogPublish))" Checked="@context.IsPublish" Color="Color.Primary"></MudCheckBox>
+                </MudTd>
+            }
+            else
+            {
+                <MudTd DataLabel="פרסום">
+                    <MudTooltip Text="המשחק לא עומד בתנאי הפרסום, לפחות 10 שאלות">
+                        <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context, MyDialogPublish))" Checked="@context.IsPublish" Disabled="true" Color="Color.Primary"></MudCheckBox>
+                    </MudTooltip>
+                </MudTd>
+            }
     </RowTemplate>
 </MudTable>
 
@@ -160,7 +161,7 @@
 
     Game GametoUpdate = new Game();
 
-    string CurrentUseUserGames = "";
+    int CurrentUseUserGames = 0;
 
     //קריאה למאגר נותנים הצגת המשחקים של היוזר
     protected async override Task OnInitializedAsync()
@@ -169,7 +170,7 @@
         if (GetResponse.IsSuccessStatusCode == true)
         {
             CurrentUser = GetResponse.Content.ReadFromJsonAsync<User>().Result;
-            CurrentUseUserGames = CurrentUser.UserGames.Count.ToString();
+            CurrentUseUserGames = CurrentUser.UserGames.Count; //משתנה לספירת המשחקים של המשתמש הנוכחי
         }
         else
         {
@@ -298,7 +299,7 @@
 
                     newGame = new Game();// איפוס המופע כדי להכינו לקבלת מידע חדש
                     msg = "אחרי המחיקה";
-                    CurrentUseUserGames = CurrentUser.UserGames.Count.ToString();
+                    CurrentUseUserGames = CurrentUser.UserGames.Count;
 
                 }
                 else
