@@ -8,17 +8,17 @@ var loadedGoogleCount = 0;
 var gFontsUpdateCacheList = [];
 var tFontsUpdateCacheList = [];
 lib.ssMetadata = [
-		{name:"TreasureIsland_atlas_1", frames: [[0,0,1920,1080]]},
-		{name:"TreasureIsland_atlas_2", frames: [[0,0,1920,1080]]},
-		{name:"TreasureIsland_atlas_3", frames: [[0,0,1499,1174]]},
-		{name:"TreasureIsland_atlas_4", frames: [[0,0,1467,1179]]},
-		{name:"TreasureIsland_atlas_5", frames: [[0,1066,1422,617],[0,0,1386,1064]]},
+		{name:"TreasureIsland_atlas_1", frames: [[1611,567,276,228],[760,0,372,360],[1134,0,372,360],[0,736,322,181],[792,839,202,193],[545,898,202,192],[749,1034,192,183],[1356,567,253,266],[0,0,356,479],[1508,339,285,127],[324,736,219,236],[1611,797,219,236],[1068,807,219,236],[760,362,299,104],[1508,0,281,337],[1791,0,253,310],[1832,797,188,268],[1289,835,207,243],[0,567,551,167],[0,919,201,192],[943,1034,106,122],[1498,835,50,590],[358,0,400,400],[553,567,237,329],[1274,362,51,50],[203,974,285,127],[1068,567,286,238],[1417,362,32,32],[1220,362,52,52],[1889,567,141,160],[1795,312,165,167],[1550,1035,165,167],[792,567,274,270],[1372,362,43,42],[0,481,2021,84],[1327,362,43,43],[1962,312,68,68],[1160,362,58,58],[1061,362,97,104]]},
+		{name:"TreasureIsland_atlas_2", frames: [[1258,993,451,452],[1295,1447,418,452],[0,0,1177,417],[0,1193,1178,382],[0,1577,1293,327],[0,419,1241,389],[1295,0,677,510],[1295,512,592,479],[0,810,1256,381]]},
+		{name:"TreasureIsland_atlas_3", frames: [[961,0,946,716],[0,737,1439,480],[0,1219,1175,542],[0,0,959,735]]},
+		{name:"TreasureIsland_atlas_4", frames: [[0,1066,1422,617],[0,0,1386,1064]]},
+		{name:"TreasureIsland_atlas_5", frames: [[0,0,1467,1179]]},
 		{name:"TreasureIsland_atlas_6", frames: [[0,0,1172,707],[0,709,1173,699]]},
 		{name:"TreasureIsland_atlas_7", frames: [[0,1250,1354,561],[0,694,1455,554],[0,0,1173,692]]},
-		{name:"TreasureIsland_atlas_8", frames: [[961,0,946,716],[0,737,1439,480],[0,1219,1175,542],[0,0,959,735]]},
+		{name:"TreasureIsland_atlas_8", frames: [[0,0,1499,1174]]},
 		{name:"TreasureIsland_atlas_9", frames: [[0,940,1176,470],[0,1412,1177,445],[0,0,1194,523],[0,525,1456,413]]},
-		{name:"TreasureIsland_atlas_10", frames: [[1258,993,451,452],[1295,1447,418,452],[0,0,1177,417],[0,1193,1178,382],[0,1577,1293,327],[0,419,1241,389],[1295,0,677,510],[1295,512,592,479],[0,810,1256,381]]},
-		{name:"TreasureIsland_atlas_11", frames: [[1611,567,276,228],[760,0,372,360],[1134,0,372,360],[0,736,322,181],[792,839,202,193],[545,898,202,192],[749,1034,192,183],[1356,567,253,266],[0,0,356,479],[1508,339,285,127],[324,736,219,236],[1611,797,219,236],[1068,807,219,236],[760,362,299,104],[1508,0,281,337],[1791,0,253,310],[1832,797,188,268],[1289,835,207,243],[0,567,551,167],[0,919,201,192],[943,1034,106,122],[1498,835,50,590],[358,0,400,400],[553,567,237,329],[1274,362,51,50],[203,974,285,127],[1068,567,286,238],[1417,362,32,32],[1220,362,52,52],[1889,567,141,160],[1795,312,165,167],[1550,1035,165,167],[792,567,274,270],[1372,362,43,42],[0,481,2021,84],[1327,362,43,43],[1962,312,68,68],[1160,362,58,58],[1061,362,97,104]]}
+		{name:"TreasureIsland_atlas_10", frames: [[0,0,1920,1080]]},
+		{name:"TreasureIsland_atlas_11", frames: [[0,0,1920,1080]]}
 ];
 
 
@@ -117,21 +117,21 @@ p.nominalBounds = new cjs.Rectangle(0,0,2660,1480);
 
 
 (lib.CachedBmp_21 = function() {
-	this.initialize(ss["TreasureIsland_atlas_10"]);
+	this.initialize(ss["TreasureIsland_atlas_2"]);
 	this.gotoAndStop(0);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.CachedBmp_20 = function() {
-	this.initialize(ss["TreasureIsland_atlas_10"]);
+	this.initialize(ss["TreasureIsland_atlas_2"]);
 	this.gotoAndStop(1);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.CachedBmp_19 = function() {
-	this.initialize(ss["TreasureIsland_atlas_8"]);
+	this.initialize(ss["TreasureIsland_atlas_3"]);
 	this.gotoAndStop(0);
 }).prototype = p = new cjs.Sprite();
 
@@ -152,14 +152,14 @@ p.nominalBounds = new cjs.Rectangle(0,0,2660,1480);
 
 
 (lib.CachedBmp_15 = function() {
-	this.initialize(ss["TreasureIsland_atlas_10"]);
+	this.initialize(ss["TreasureIsland_atlas_2"]);
 	this.gotoAndStop(2);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.CachedBmp_14 = function() {
-	this.initialize(ss["TreasureIsland_atlas_10"]);
+	this.initialize(ss["TreasureIsland_atlas_2"]);
 	this.gotoAndStop(3);
 }).prototype = p = new cjs.Sprite();
 
@@ -180,7 +180,7 @@ p.nominalBounds = new cjs.Rectangle(0,0,2660,1480);
 
 
 (lib.CachedBmp_11 = function() {
-	this.initialize(ss["TreasureIsland_atlas_5"]);
+	this.initialize(ss["TreasureIsland_atlas_4"]);
 	this.gotoAndStop(0);
 }).prototype = p = new cjs.Sprite();
 
@@ -194,7 +194,7 @@ p.nominalBounds = new cjs.Rectangle(0,0,2660,1480);
 
 
 (lib.CachedBmp_9 = function() {
-	this.initialize(ss["TreasureIsland_atlas_8"]);
+	this.initialize(ss["TreasureIsland_atlas_3"]);
 	this.gotoAndStop(1);
 }).prototype = p = new cjs.Sprite();
 
@@ -208,21 +208,21 @@ p.nominalBounds = new cjs.Rectangle(0,0,2660,1480);
 
 
 (lib.CachedBmp_7 = function() {
-	this.initialize(ss["TreasureIsland_atlas_10"]);
+	this.initialize(ss["TreasureIsland_atlas_2"]);
 	this.gotoAndStop(4);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.CachedBmp_6 = function() {
-	this.initialize(ss["TreasureIsland_atlas_10"]);
+	this.initialize(ss["TreasureIsland_atlas_2"]);
 	this.gotoAndStop(5);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.CachedBmp_5 = function() {
-	this.initialize(ss["TreasureIsland_atlas_8"]);
+	this.initialize(ss["TreasureIsland_atlas_3"]);
 	this.gotoAndStop(2);
 }).prototype = p = new cjs.Sprite();
 
@@ -250,21 +250,21 @@ p.nominalBounds = new cjs.Rectangle(0,0,2660,1480);
 
 
 (lib.CachedBmp_1 = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(0);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib._100_shekels = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(1);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib._100_shekels_1 = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(2);
 }).prototype = p = new cjs.Sprite();
 
@@ -277,98 +277,98 @@ p.nominalBounds = new cjs.Rectangle(0,0,2525,1399);
 
 
 (lib.Bitmap3 = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(3);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.Bitmap93 = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(4);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.Bitmap94 = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(5);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.Bitmap95 = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(6);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.Bitmap96 = function() {
-	this.initialize(ss["TreasureIsland_atlas_4"]);
+	this.initialize(ss["TreasureIsland_atlas_5"]);
 	this.gotoAndStop(0);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.blue_flower = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(7);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.bone = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(8);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.brown_btnjpg = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(9);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.characterjpg = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(10);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.characterjpg_1 = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(11);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.characterjpgpngcopy = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(12);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.check_btnjpg = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(13);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.coins = function() {
-	this.initialize(ss["TreasureIsland_atlas_1"]);
+	this.initialize(ss["TreasureIsland_atlas_11"]);
 	this.gotoAndStop(0);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.dam_flower = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(14);
 }).prototype = p = new cjs.Sprite();
 
@@ -381,14 +381,14 @@ p.nominalBounds = new cjs.Rectangle(0,0,2500,1391);
 
 
 (lib.Final_score_window = function() {
-	this.initialize(ss["TreasureIsland_atlas_8"]);
+	this.initialize(ss["TreasureIsland_atlas_3"]);
 	this.gotoAndStop(3);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.frame = function() {
-	this.initialize(ss["TreasureIsland_atlas_10"]);
+	this.initialize(ss["TreasureIsland_atlas_2"]);
 	this.gotoAndStop(6);
 }).prototype = p = new cjs.Sprite();
 
@@ -401,119 +401,119 @@ p.nominalBounds = new cjs.Rectangle(0,0,1822,2400);
 
 
 (lib.irous_flower = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(15);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.Itzhak_Rabinjfif = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(16);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.kida_flower = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(17);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.odot_window_backgroundjpg = function() {
-	this.initialize(ss["TreasureIsland_atlas_5"]);
+	this.initialize(ss["TreasureIsland_atlas_4"]);
 	this.gotoAndStop(1);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.orange_btnjpg = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(18);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.pause_popUpjpg = function() {
-	this.initialize(ss["TreasureIsland_atlas_3"]);
+	this.initialize(ss["TreasureIsland_atlas_8"]);
 	this.gotoAndStop(0);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.pausePicBTN = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(19);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.picture_leaderjpg = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(20);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.scale = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(21);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.shimon_peres = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(22);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.skull = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(23);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.sound_btnjpg = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(24);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.StartGame_State2 = function() {
-	this.initialize(ss["TreasureIsland_atlas_10"]);
+	this.initialize(ss["TreasureIsland_atlas_2"]);
 	this.gotoAndStop(7);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.StartOver_Btn = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(25);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.talking_frame = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(26);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.TextInput = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(27);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.time_icon = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(28);
 }).prototype = p = new cjs.Sprite();
 
@@ -526,84 +526,84 @@ p.nominalBounds = new cjs.Rectangle(0,0,2223,1274);
 
 
 (lib.treasureBox_closejpg = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(29);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.treasureBox_goldjpg = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(30);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.treasureBox_goldjpgpngcopy = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(31);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.treasureBox_sculp = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(32);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.Untitleddesign2 = function() {
-	this.initialize(ss["TreasureIsland_atlas_2"]);
+	this.initialize(ss["TreasureIsland_atlas_10"]);
 	this.gotoAndStop(0);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.Vjpg = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(33);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.wood_TopOfPagejpg = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(34);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.woodenBoardjpg = function() {
-	this.initialize(ss["TreasureIsland_atlas_10"]);
+	this.initialize(ss["TreasureIsland_atlas_2"]);
 	this.gotoAndStop(8);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.Xjpg = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(35);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.zoomIn_btnjpg = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(36);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.zoomIn_btn1 = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(37);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.zzzz = function() {
-	this.initialize(ss["TreasureIsland_atlas_11"]);
+	this.initialize(ss["TreasureIsland_atlas_1"]);
 	this.gotoAndStop(38);
 }).prototype = p = new cjs.Sprite();
 // helper functions:
@@ -1892,14 +1892,14 @@ if (reversed == null) { reversed = false; }
 
 	// Layer_1
 	this.shape = new cjs.Shape();
-	var sprImg_shape = cjs.SpriteSheetUtils.extractFrame(ss["TreasureIsland_atlas_11"],3);
+	var sprImg_shape = cjs.SpriteSheetUtils.extractFrame(ss["TreasureIsland_atlas_1"],3);
 	sprImg_shape.onload = function(){
 		this.shape.graphics.bf(sprImg_shape, null, new cjs.Matrix2D(0.802,0,0,0.802,-129.1,-72.6)).s().p("AqxLWIAA2rIVjAAIAAWrg")
 	}.bind(this);
 	this.shape.setTransform(0,5.8);
 
 	this.shape_1 = new cjs.Shape();
-	var sprImg_shape_1 = cjs.SpriteSheetUtils.extractFrame(ss["TreasureIsland_atlas_11"],3);
+	var sprImg_shape_1 = cjs.SpriteSheetUtils.extractFrame(ss["TreasureIsland_atlas_1"],3);
 	sprImg_shape_1.onload = function(){
 		this.shape_1.graphics.bf(sprImg_shape_1, null, new cjs.Matrix2D(1.101,0,0,1.101,-177.1,-99.5)).s().p("AuyPkIAA/HIdlAAIAAfHg")
 	}.bind(this);

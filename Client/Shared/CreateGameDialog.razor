@@ -12,11 +12,10 @@
                     <MudTextField Variant="Variant.Outlined" Placeholder="הקלידו שם למשחק..." Label="שם משחק" HelperText="2-25 תווים" @onkeyup="statusButton"
                                   @bind-Value="newGame.GameName" For="@(() => newGame.GameName)" />
 
-                    <MudSelect Variant="Variant.Outlined" T="int" Placeholder="@GameTime" Label="זמן מענה לשאלה" @bind-Value="newGame.QTimeLimit" For="@(() => newGame.QTimeLimit)" AnchorOrigin="Origin.BottomCenter">
+                    <MudSelect Placeholder="20 שניות" Variant="Variant.Outlined" T="int"  Label="זמן מענה לשאלה" @bind-Value="newGame.QTimeLimit" For="@(() => newGame.QTimeLimit)" AnchorOrigin="Origin.BottomCenter">
                         <MudSelectItem T="int" Value="20">20 שניות</MudSelectItem>
                         <MudSelectItem T="int" Value="30">30 שניות</MudSelectItem>
                         <MudSelectItem T="int" Value="40">40 שניות</MudSelectItem>
-                        <MudSelectItem T="int" Value="50">50 שניות</MudSelectItem>
                         <MudSelectItem T="int" Value="60">60 שניות</MudSelectItem>
                     </MudSelect>
                     @if (IsButtonEabled == true)
@@ -48,7 +47,7 @@
 
     string gameCurrentName = "";
 
-    string GameTime = "בחרו זמן לשאלה";
+    string GameTime = "";
 
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
