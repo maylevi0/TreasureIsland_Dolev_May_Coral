@@ -3,17 +3,7 @@
 
 
 html, body {
-    /*    font-family: Arial, Helvetica, Arial, sans-serif;
-    background-color: white;
-    font-family: 'Assistant', sans-serif;
-    background-image: url('../Images/Picture2.png');
-    background-size: cover;
-    background-position: center;
-    border: 0;*/
     height: 100%;
-    /*    left: 0;
-    position: relative;
-    top: 0;*/
     width: 100%;
 }
 
@@ -21,14 +11,11 @@ body {
     font-family: Arial, Helvetica, Arial, sans-serif;
     font-family: 'Assistant', sans-serif;
     background-image: url('../Images/Picture2.png');
-    background-size: cover;
-    /*    background-position: center;
-    height: 100%;
-    left: 0;
-    position: relative;
-    top: 0;
-    width: 100%;*/
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position-y: center;
 }
+
 
 .mud-main-content {
     padding-top: unset;
@@ -284,51 +271,9 @@ nav {
     font-weight: bold;
     color: #5A3114;
 }
-/*גדלי מסכים*/
-@media screen and (min-width: 1601px) {
-    .scientistGif {
-        margin-top: -60%;
-        margin-right: -102%;
-    }
-}
 
 
-@media screen and (min-width: 1476px) and (max-width: 1600px) {
 
-    .scientistGif {
-        margin-top: -55%;
-        margin-right: -102%;
-        height: 275%;
-    }
-}
-
-@media screen (max-width: 1475px) and (min-width: 1281px) {
-
-    .scientistGif {
-        height: 200%;
-        margin-top: -66%;
-        margin-right: -120%;
-    }
-}
-
-@media screen and (max-width: 1280px) {
-    .scientistGif {
-        height: 300%;
-        margin-top: -75%;
-        margin-right: -120%;
-    }
-}
-
-
-/*html, body {
-    font-family: Arial, Helvetica, Arial, sans-serif;
-    background-color: white;
-    font-family: 'Assistant', sans-serif;
-    background-image: url('../Images/Picture2.png');
-    background-size: cover;
-    
-    background-position: center;
-}*/
 
 
 a, .btn-link {
