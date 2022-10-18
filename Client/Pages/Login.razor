@@ -2,27 +2,51 @@
 
 @inject NavigationManager nav
 @inject HttpClient Http
+@inject IDialogService DialogService
+@inject IDialogService Dialog
 
 
-    <h3 style="color:saddlebrown; text-align:center"><b>כניסת עורך</b></h3><br />
 
-                                                                           <MudItem Style="width: 400px; height: 300px">
+<div id="container" class="loginBG">
+    <header>
+        <a>
+            <img id="logo" src="photo/logo.png" />
+            <p>אי המטמון</p>
+        </a>
+        <nav>
+            <ul>
+                <li><a @onclick="@(() => GotoOdot(MyDialog))">אודות</a></li>
+                <li><a @onclick="@(() => GotoHowtoDialog(MyDialog))">איך משחקים?</a></li>
+                <li><a class="about" href="../indextest.html">למשחק</a></li>
 
-                                                                               <MudTextField Label="כתובת מייל" Placeholder="הזינו כתובת מייל" @bind-Value="inputMail" @onkeyup="ChangeButton" Variant="Variant.Outlined"></MudTextField>
-                                                                               <p style="color:red">@msg</p>
-                                                                               <br />
-                                                                               @if (IsButtonEabled == true)
-                                                                               {
-                                                                                   <MudButton Style="background-color: saddlebrown" Variant="Variant.Filled" Color="Color.Primary" @onclick="loginUser" Disabled="true">כניסה</MudButton>
+            </ul>
+        </nav>
+    </header>
 
-                                                                               }
-                                                                               else
-                                                                               {
-                                                                                   <MudButton Style="background-color: saddlebrown" Variant="Variant.Filled" Color="Color.Primary" @onclick="loginUser">כניסה</MudButton>
+    <div id="gameArea">
+        <div id="LoginSign">
+            <h1>אי המטמון</h1>
+        </div>
+        <div id="MailArea">
+            <br />
+            <h3>כניסת עורך</h3><br />
+            <div class="MailText">
+                <MudTextField Label="כתובת מייל" Placeholder="הזינו כתובת מייל" @bind-Value="inputMail" @onkeypress="ChangeButton" Variant="Variant.Outlined"></MudTextField>
+                <p style="color:red; text-align: right;">@msg</p>
+                <br />
 
-                                                                               }
-
-                                                                           </MudItem>
+                @if (IsButtonEabled == true)
+                {
+                    <MudButton Style="background-color: #A5703C; border-radius:30px; width:32%;" Variant="Variant.Filled" Color="Color.Primary" @onclick="loginUser" Disabled="true">כניסה</MudButton>
+                }
+                else
+                {
+                    <MudButton Style="background-color: saddlebrown; border-radius: 30px; width:32%;" Variant="Variant.Filled" Color="Color.Primary" @onclick="loginUser">כניסה</MudButton>
+                }
+            </div>
+        </div>
+    </div>
+</div>
 
 
 @code {
@@ -113,5 +137,26 @@
             return false;
 
         }
+    }
+
+    DialogOptions MyDialog = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true, DisableBackdropClick = true };
+
+
+    void GotoHowtoDialog(DialogOptions options)
+    {
+        Console.WriteLine("נכנס לפונקציה");
+        Console.WriteLine("options "+ options);
+        var dialog = DialogService.Show<HowtoplayDialog>("הגדרות משחק", options);
+
+        //var result = await dialog.Result;
+    }
+
+    void GotoOdot(DialogOptions options)
+    {
+        Console.WriteLine("נכנס לפונקציה");
+        Console.WriteLine("options " + options);
+        var dialog = DialogService.Show<Odot>("אודות", options);
+
+        //var result = await dialog.Result;
     }
 }

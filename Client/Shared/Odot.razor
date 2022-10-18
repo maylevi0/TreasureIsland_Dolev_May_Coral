@@ -1,0 +1,35 @@
+﻿@inject HttpClient Http
+@inject NavigationManager nav
+
+
+<MudDialog>
+    <DialogContent>
+
+
+        <p>
+            אפיון ופיתוח: מאי לוי, דולב קליינר וקורל ששון
+            <br />
+            אופיין ופותח במסגרת פרויקט בקורסים:
+            <br />
+            סביבות לימוד אינטראקטיביות 1
+            <br />
+            תכנות אינטראקטיבי 1
+            <br />
+            תשפ"ב
+        </p>
+
+    </DialogContent>
+    <DialogActions>
+
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Cancel() => MudDialog.Cancel();
+
+
+}

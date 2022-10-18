@@ -2,22 +2,26 @@
 @inject HttpClient Http
 
 
+<div id="PopUpDelete">
+    <MudDialog Style=" background-color: #DBCBAA;">
+        <DialogContent>
+            <MudItem Style="width: 60%; height:40%; margin-right: -1%;">
+                <MudText>
+                    <br />
+                    האם ברצונך למחוק את המשחק "@gameCurrentName" לצמיתות?
+                    <br />
+                    פעולה זו אינה ניתנת לשחזור.
+                </MudText>
+            </MudItem>
 
-<MudDialog>
-    <DialogContent>
-      <MudText>
-    האם ברצונך למחוק את המשחק "@gameCurrentName" לצמיתות?
-    <br />
-    פעולה זו אינה ניתנת לשחזור.
-</MudText> 
-    </DialogContent>
-    <DialogActions>
-        <MudButton Style="background-color:saddlebrown; color:azure" @onclick="OkFunc" Color="Color.Primary" Variant="Variant.Filled">מחיקה</MudButton>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Style="background-color:saddlebrown; color:azure" @onclick="OkFunc" Color="Color.Primary" Variant="Variant.Filled">מחיקה</MudButton>
 
-        <MudButton OnClick="Cancel">חזרה לרשימת המשחקים</MudButton>
-    </DialogActions>
-</MudDialog>
-
+            <MudButton OnClick="Cancel">חזרה לרשימת המשחקים</MudButton>
+        </DialogActions>
+    </MudDialog>
+</div>
 @code {
 
 

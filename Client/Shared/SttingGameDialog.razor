@@ -1,15 +1,12 @@
 ﻿
 @using TreasureIsland_Dolev_May_Coral.Shared.Entities
 @inject HttpClient Http
-<MudDialog>
-    <DialogContent>
-        <MudText></MudText>
-        <EditForm Model="@UpdatedGame" OnValidSubmit="OnValidSubmit">
-            <DataAnnotationsValidator />
-            <MudGrid>
-                <MudItem Style="width: 400px; height: 300px">
-
-                    <MudCardContent>
+    <div id="PopUpSetting">
+        <MudDialog Style=" background-color: #DBCBAA;">
+            <DialogContent>
+                <EditForm Model="@UpdatedGame" OnValidSubmit="OnValidSubmit">
+                    <DataAnnotationsValidator />
+                    <MudItem Style="width: 60%; height:40%; margin-right: -1%;">
                         <MudTextField Variant="Variant.Outlined" Label="שם משחק" MaxLength="25" Counter="25"
                                       @bind-Value="UpdatedGame.GameName" For="@(() => UpdatedGame.GameName)" />
 
@@ -20,81 +17,77 @@
                             <MudSelectItem T="int" Value="40">40 שניות</MudSelectItem>
                             <MudSelectItem T="int" Value="60">60 שניות</MudSelectItem>
                         </MudSelect>
-                        <MudButton Style="background-color:saddlebrown; color:azure" OnClick="OnValidSubmit">שמירת שינויים</MudButton>
-                    </MudCardContent>
-                </MudItem>
-            </MudGrid>
-                    </EditForm>
-    </DialogContent>
-    <DialogActions>
-        <MudItem>
-            <MudButton OnClick="Cancel">ביטול</MudButton>
-        </MudItem>
-
-    </DialogActions>
-</MudDialog>
-@code {
+                        <MudButton Style="background-color:saddlebrown; color:azure; margin-top: 5%; border-radius:20px;" OnClick="OnValidSubmit">שמירת שינויים</MudButton>
+                    </MudItem>
+                </EditForm>
+            </DialogContent>
+            <DialogActions>
+                <MudButton OnClick="Cancel">ביטול</MudButton>
+            </DialogActions>
+        </MudDialog>
+    </div>
+    @code {
 
 
-    [Parameter]
-    public int userId { get; set; }
+        [Parameter]
+        public int userId { get; set; }
 
-    [Parameter]
-    public Game GameFromPage { get; set; } // פרמטר שמתקבל מהדף
+        [Parameter]
+        public Game GameFromPage { get; set; } // פרמטר שמתקבל מהדף
 
-    [Parameter]
-    public Game GameTOPage { get; set; } // פרמטר שנשלח חזרה לדף
+        [Parameter]
+        public Game GameTOPage { get; set; } // פרמטר שנשלח חזרה לדף
 
 
 
-    //יצירת מופע חדש של משחק
-    Game UpdatedGame = new Game();
+        //יצירת מופע חדש של משחק
+        Game UpdatedGame = new Game();
 
-    string gameCurrentName = "";
+        string gameCurrentName = "";
 
-    string GameTime ="";
+        string GameTime = "";
 
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+        [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
-    // void OnValidSubmit() => MudDialog.Close(DialogResult.Ok(true));
-    private void Cancel()
-    {
-        GameTOPage = GameFromPage;
-        MudDialog.Cancel();
-    }
-
-
-
-    protected override void OnInitialized()
-    {
-        UpdatedGame = GameFromPage;
-        GameTOPage = GameFromPage;
-
-    }
-
-    void OnValidSubmit()
-    {
-        //GameTOPage = UpdatedGame;
-        if (UpdatedGame.GameName != GameTOPage.GameName || UpdatedGame.QTimeLimit != GameTOPage.QTimeLimit)
+        // void OnValidSubmit() => MudDialog.Close(DialogResult.Ok(true));
+        private void Cancel()
         {
-
-            Console.WriteLine("נכנס לתנאי בדיאלוג ");
-            UpdatedGame = GameFromPage;
-            //שליחת המשחק מהקומפוננטה לדף עם השינויים
-            //MudDialog.Close(DialogResult.Ok(GameTOPage));
-            MudDialog.Close(DialogResult.Ok(true));
-
-        }
-        else
-        {
-            Console.WriteLine("נכנס ל ELSE");
-
             GameTOPage = GameFromPage;
-            MudDialog.Close(DialogResult.Ok(true));
+            MudDialog.Cancel();
         }
 
 
-    }
+
+        protected override void OnInitialized()
+        {
+            UpdatedGame = GameFromPage;
+            GameTOPage = GameFromPage;
+
+        }
+
+        void OnValidSubmit()
+        {
+            //GameTOPage = UpdatedGame;
+            if (UpdatedGame.GameName != GameTOPage.GameName || UpdatedGame.QTimeLimit != GameTOPage.QTimeLimit)
+            {
+
+                Console.WriteLine("נכנס לתנאי בדיאלוג ");
+                UpdatedGame = GameFromPage;
+                //שליחת המשחק מהקומפוננטה לדף עם השינויים
+                //MudDialog.Close(DialogResult.Ok(GameTOPage));
+                MudDialog.Close(DialogResult.Ok(true));
+
+            }
+            else
+            {
+                Console.WriteLine("נכנס ל ELSE");
+
+                GameTOPage = GameFromPage;
+                MudDialog.Close(DialogResult.Ok(true));
+            }
+
+
+        }
 
 
 

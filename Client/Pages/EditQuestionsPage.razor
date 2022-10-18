@@ -5,6 +5,20 @@
 @inject IDialogService DialogService
 @inject IDialogService Dialog
 
+    <header>
+        <a>
+            <img id="logo" src="photo/logo.png" />
+            <p>אי המטמון</p>
+        </a>
+        <nav>
+            <ul>
+                <li><a class="about">אודות</a></li>
+                <li><a class="howToPlay">איך משחקים?</a></li>
+                <li><a class="about" href="../indextest.html">למשחק</a></li>
+            </ul>
+        </nav>
+    </header>
+
 <MudTooltip Text="המשחק שיצרת שמור">
     <MudText Class="cursor-pointer" Style="font-size:smaller; color:saddlebrown" @onclick="goToGamesPage">
         <MudIcon Size="Size.Small" Icon=@Icons.Filled.SubdirectoryArrowRight></MudIcon>חזרה לרשימת המשחקים
@@ -70,9 +84,6 @@ else
                 {
                     <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="CleanFuncQuestionImage" HtmlTag="label"></MudIconButton>
                 }
-
-
-
 
             </MudItem>
         </MudItem>
@@ -210,6 +221,7 @@ else
         <MudTh>מחיקה</MudTh>
     </HeaderContent>
     <RowTemplate>
+
         <MudTd DataLabel="שאלה"><MudTooltip Text="@context.QuestionTitle">@context.QuestionTitle</MudTooltip></MudTd>
         <MudTd DataLabel="כמות תשובות">@context.QuestionDistractors.Count</MudTd>
         <MudTd DataLabel="עריכה"><MudIconButton @onclick="() => EditQustionFunc(context.ID)" Icon="@Icons.Material.Outlined.Edit"></MudIconButton></MudTd>

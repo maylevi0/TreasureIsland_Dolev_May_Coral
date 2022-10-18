@@ -1,0 +1,35 @@
+﻿@inject HttpClient Http
+@inject NavigationManager nav
+
+
+<MudDialog>
+    <DialogContent>
+
+        <p>
+            עליכם למצוא את האוצר באמצעות מענה על השאלות.
+
+            <br />
+            בכל שאלה עליכם לבחור תיבת מטמון עם התשובה הנכונה.
+            <br />
+            בכדי לבדוק אם תשובתכם נכונה עליכם ללחוץ
+            <br />
+            על כפתור 'לבדיקה'.
+            <br />
+
+        </p>
+
+    </DialogContent>
+    <DialogActions>
+
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Cancel() => MudDialog.Cancel();
+
+
+}

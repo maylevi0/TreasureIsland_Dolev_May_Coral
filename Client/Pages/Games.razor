@@ -6,30 +6,46 @@
 @inject IDialogService DialogService
 @inject IDialogService Dialog
 
-<h1 style="color:saddlebrown; text-align:center"><b>המשחקים שלי</b></h1>
-<br />
+
+<header>
+    <a>
+        <img id="logo" src="photo/logo.png" />
+        <p>אי המטמון</p>
+    </a>
+    <nav>
+        <ul>
+            <li><a class="about">אודות</a></li>
+            <li><a class="howToPlay">איך משחקים?</a></li>
+            <li><a class="about" href="../indextest.html">למשחק</a></li>
+        </ul>
+    </nav>
+</header>
+
+
+<div id="GameSign">
+    <h1> רשימת המשחקים שלי  </h1>
+</div>
+
 <MudText style="color:saddlebrown; text-align:center">סה"כ משחקים: @CurrentUseUserGames</MudText>
-<MudItem>
-    <MudButton EndIcon="@Icons.Material.Outlined.Add" Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Button" Color="Color.Primary" OnClick="@(() => OpenDialogCreateGAme(userId,MyDialog))">יצירת משחק חדש</MudButton>
-</MudItem>
+<MudButton Style="background-color:saddlebrown; color:white; border-radius:20px;margin-right: 5px;" ButtonType="ButtonType.Button" Color="Color.Primary" OnClick="@(() => OpenDialogCreateGAme(userId,MyDialog))">+ יצירת משחק חדש</MudButton>
 
 <br />
+<div id="GameTable">
+    <MudTable Items="@CurrentUser.UserGames" Hover="true" Dense="true" FixedHeader="true">
+        <HeaderContent>
 
-<MudTable Items="@CurrentUser.UserGames" Hover="true" Dense="true" FixedHeader="true">
-    <HeaderContent>
+            <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">שם המשחק</MudTh>
+            <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">לצפייה</MudTh>
+            <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">קוד משחק</MudTh>
+            <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">מספר שאלות</MudTh>
+            <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;"><MudTooltip Text="בהגדרות ניתן לשנות את שם המשחק וזמן מענה לשאלה">הגדרות משחק<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
+            <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;"><MudTooltip Text="בעריכה ניתן לערוך את השאלה ואפשרויות המענה">עריכה<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
+            <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">מחיקה</MudTh>
+            <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;"><MudTooltip Text="נדרשות מינימום 10 שאלות לפרסום המשחק">פרסום<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
 
-        <MudTh>שם המשחק</MudTh>
-        <MudTh>לצפייה</MudTh>
-        <MudTh>קוד משחק</MudTh>
-        <MudTh>מספר שאלות</MudTh>
-        <MudTh><MudTooltip Text="בהגדרות ניתן לשנות את שם המשחק וזמן מענה לשאלה">הגדרות משחק<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
-        <MudTh><MudTooltip Text="בעריכה ניתן לערוך את השאלה ואפשרויות המענה">עריכה<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
-        <MudTh>מחיקה</MudTh>
-        <MudTh><MudTooltip Text="נדרשות מינימום 10 שאלות לפרסום המשחק">פרסום<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
-
-    </HeaderContent>
-    <RowTemplate>
-          <MudTd DataLabel="שם המשחק">@context.GameName</MudTd>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="שם המשחק">@context.GameName</MudTd>
             <MudTd DataLabel="לצפייה"><MudButton EndIcon="@Icons.Material.Outlined.RemoveRedEye"></MudButton></MudTd>
             <MudTd DataLabel="קוד המשחק">@context.GameCode</MudTd>
             <MudTd DataLabel="מספר שאלות">@context.GameQuestions.Count</MudTd>
@@ -50,9 +66,9 @@
                     </MudTooltip>
                 </MudTd>
             }
-    </RowTemplate>
-</MudTable>
-
+        </RowTemplate>
+    </MudTable>
+</div>
 
 <p>@msg</p>
 

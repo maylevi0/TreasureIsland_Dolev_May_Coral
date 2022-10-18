@@ -2,121 +2,119 @@
 @using TreasureIsland_Dolev_May_Coral.Shared.Entities
 @inject HttpClient Http
 @inject NavigationManager nav
+    <div id="CreatingGame">
+        <MudDialog Style=" background-color: #DBCBAA;">
+            <DialogContent>
+                <EditForm Model="@newGame" OnValidSubmit="OnValidSubmit">
+                    <DataAnnotationsValidator />
+                    <MudItem Style="width: 60%; height:40%; margin-right: -1%;">
+                        <MudTextField Variant="Variant.Outlined" Placeholder="הקלידו שם למשחק..." Label="שם משחק" HelperText="2-25 תווים" @onkeyup="statusButton"
+                                      @bind-Value="newGame.GameName" For="@(() => newGame.GameName)" />
 
-<MudDialog>
-    <DialogContent>
-        <EditForm Model="@newGame" OnValidSubmit="OnValidSubmit">
-            <DataAnnotationsValidator />
-            <MudGrid>
-                <MudItem Style="width: 400px; height:300px">
-                    <MudTextField Variant="Variant.Outlined" Placeholder="הקלידו שם למשחק..." Label="שם משחק" HelperText="2-25 תווים" @onkeyup="statusButton"
-                                  @bind-Value="newGame.GameName" For="@(() => newGame.GameName)" />
+                        <MudSelect Placeholder="20 שניות" Style="text-align: -webkit-right;" Variant="Variant.Outlined" T="int" Label="זמן מענה לשאלה" @bind-Value="newGame.QTimeLimit" For="@(() => newGame.QTimeLimit)" AnchorOrigin="Origin.BottomCenter">
+                            <MudSelectItem T="int" Value="20">20 שניות</MudSelectItem>
+                            <MudSelectItem T="int" Value="30">30 שניות</MudSelectItem>
+                            <MudSelectItem T="int" Value="40">40 שניות</MudSelectItem>
+                            <MudSelectItem T="int" Value="60">60 שניות</MudSelectItem>
+                        </MudSelect>
+                        @if (IsButtonEabled == true)
+                        {
+                            <MudButton Style="background-color:saddlebrown; color:azure; margin-top: 5%; border-radius:20px;" ButtonType="ButtonType.Submit" Color="Color.Primary" Disabled="true" Variant="Variant.Filled">צור משחק</MudButton>
+                        }
+                        else
+                        {
+                            <MudButton Style="background-color:saddlebrown; color:azure; margin-top: 5%; border-radius:20px;" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">צור משחק</MudButton>
+                        }
+                    </MudItem>
+                    <div id="PopUpIcone"></div>
+                </EditForm>
+            </DialogContent>
+            <DialogActions>
+                <MudButton OnClick="Cancel">ביטול</MudButton>
+            </DialogActions>
+        </MudDialog>
+    </div>
 
-                    <MudSelect Placeholder="20 שניות" Variant="Variant.Outlined" T="int"  Label="זמן מענה לשאלה" @bind-Value="newGame.QTimeLimit" For="@(() => newGame.QTimeLimit)" AnchorOrigin="Origin.BottomCenter">
-                        <MudSelectItem T="int" Value="20">20 שניות</MudSelectItem>
-                        <MudSelectItem T="int" Value="30">30 שניות</MudSelectItem>
-                        <MudSelectItem T="int" Value="40">40 שניות</MudSelectItem>
-                        <MudSelectItem T="int" Value="60">60 שניות</MudSelectItem>
-                    </MudSelect>
-                    @if (IsButtonEabled == true)
-                    {
-                        <MudButton Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Submit" Color="Color.Primary" Disabled="true" Variant="Variant.Filled">צור משחק</MudButton>
-                    }
-                    else
-                    {
-                        <MudButton Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">יצירת משחק</MudButton>
-                    }
-                </MudItem>
-            </MudGrid>
+    @code {
 
-        </EditForm>
-    </DialogContent>
-    <DialogActions>
-        <MudButton OnClick="Cancel">ביטול</MudButton>
-    </DialogActions>
-</MudDialog>
+        [Parameter]
+        public int userId { get; set; }  //נשלח מהדף פרמטר
 
+        //יצירת מופע חדש של משחק
+        Game newGame = new Game();
 
-@code {
+        string gameCurrentName = "";
 
-    [Parameter]
-    public int userId { get; set; }  //נשלח מהדף פרמטר
+        string GameTime = "";
 
-    //יצירת מופע חדש של משחק
-    Game newGame = new Game();
+        [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
-    string gameCurrentName = "";
+        void Cancel() => MudDialog.Cancel();
 
-    string GameTime = "";
-
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-
-    void Cancel() => MudDialog.Cancel();
-
-    // כפתור צור משחק- בלחיצה על כפתור של הטופס צריך להפעיל קריאה למאגר נתונים
-    protected async Task OnValidSubmit()
-    {
-        Console.WriteLine("userId " + userId);
-
-        //   מאפיינים של מודל משחק חדש צריכים להיות מאוכלסים
-        newGame.UserID = userId;
-
-        //ואז קריאה לקונטרולר והוספת משחק
-
-        var postRespone = await Http.PostAsJsonAsync("api/Games/", newGame);
-        if (postRespone.IsSuccessStatusCode == true)
+        // כפתור צור משחק- בלחיצה על כפתור של הטופס צריך להפעיל קריאה למאגר נתונים
+        protected async Task OnValidSubmit()
         {
-            Console.WriteLine("נכנס לתנאי בדיאלוג ");
+            Console.WriteLine("userId " + userId);
 
-            Game AddGame = postRespone.Content.ReadFromJsonAsync<Game>().Result;
+            //   מאפיינים של מודל משחק חדש צריכים להיות מאוכלסים
+            newGame.UserID = userId;
 
+            //ואז קריאה לקונטרולר והוספת משחק
 
-            var gameId = AddGame.ID;
-            var getResponse = await Http.GetAsync("api/Games/bygameID/" + gameId);
-
-            if (getResponse.IsSuccessStatusCode)
+            var postRespone = await Http.PostAsJsonAsync("api/Games/", newGame);
+            if (postRespone.IsSuccessStatusCode == true)
             {
-                Game gametoEditPage = getResponse.Content.ReadFromJsonAsync<Game>().Result;
+                Console.WriteLine("נכנס לתנאי בדיאלוג ");
 
-                nav.NavigateTo("./EditQuestionsPage/" + gametoEditPage.ID + "/" + gametoEditPage.UserID);
+                Game AddGame = postRespone.Content.ReadFromJsonAsync<Game>().Result;
+
+
+                var gameId = AddGame.ID;
+                var getResponse = await Http.GetAsync("api/Games/bygameID/" + gameId);
+
+                if (getResponse.IsSuccessStatusCode)
+                {
+                    Game gametoEditPage = getResponse.Content.ReadFromJsonAsync<Game>().Result;
+
+                    nav.NavigateTo("./EditQuestionsPage/" + gametoEditPage.ID + "/" + gametoEditPage.UserID);
+                }
+                else
+                {
+                    nav.NavigateTo("./Games/" + userId);
+                }
+
+                //איפוס המופע לאפשר יצירת מופע חדש
+                newGame = new Game();
+
+                // CurrentUser = new User();
+
+                MudDialog.Close(DialogResult.Ok(true));
             }
             else
             {
-                nav.NavigateTo("./Games/" + userId);
+                Console.WriteLine("לא בוצעו שינויים תקלה בקריאה");
+
+                MudDialog.Close(DialogResult.Ok(false));
+
+            }
+        }
+
+        bool IsButtonEabled = true;
+
+        void statusButton()
+        {
+            StateHasChanged();
+            if (string.IsNullOrEmpty(newGame.GameName) == false)
+            {
+                IsButtonEabled = true;
+                StateHasChanged();
+            }
+            else
+            {
+                IsButtonEabled = false;
+                StateHasChanged();
+
             }
 
-            //איפוס המופע לאפשר יצירת מופע חדש
-            newGame = new Game();
-
-            // CurrentUser = new User();
-
-            MudDialog.Close(DialogResult.Ok(true));
-        }
-        else
-        {
-            Console.WriteLine("לא בוצעו שינויים תקלה בקריאה");
-
-            MudDialog.Close(DialogResult.Ok(false));
-
         }
     }
-
-    bool IsButtonEabled = true;
-
-    void statusButton()
-    {
-        StateHasChanged();
-        if (string.IsNullOrEmpty(newGame.GameName) == false)
-        {
-            IsButtonEabled = true;
-            StateHasChanged();
-        }
-        else
-        {
-            IsButtonEabled = false;
-            StateHasChanged();
-
-        }
-
-    }
-}
