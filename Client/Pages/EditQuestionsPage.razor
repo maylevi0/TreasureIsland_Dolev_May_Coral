@@ -5,20 +5,6 @@
 @inject IDialogService DialogService
 @inject IDialogService Dialog
 
-<header>
-    <a>
-        <img id="logo" src="photo/logo.png" />
-        <p>אי המטמון</p>
-    </a>
-    <nav>
-        <ul>
-            <li><a class="about">אודות</a></li>
-            <li><a class="howToPlay">איך משחקים?</a></li>
-            <li><a class="about" href="../indextest.html">למשחק</a></li>
-        </ul>
-    </nav>
-</header>
-
 <MudTooltip Text="המשחק שיצרת שמור">
     <MudText Class="cursor-pointer" Style="font-size:smaller; color:saddlebrown" @onclick="goToGamesPage">
         <MudIcon Size="Size.Small" Icon=@Icons.Filled.SubdirectoryArrowRight></MudIcon>חזרה לרשימת המשחקים
@@ -58,42 +44,40 @@ else
 
     <DataAnnotationsValidator />
     <MudItem>
-        <MudText Style="color: saddlebrown">
-            השאלה:
-            <MudText Style="color:black; font-size:small"> 3-50 תווים</MudText>
-        </MudText>
-        <MudItem Style="width: 500px">
-            <MudItem>
-                <MudTextField @ref="questionTitleField"
-                              Variant="Variant.Outlined"
-                              Counter="50"
-                              MaxLength="50"
-                              Margin="Margin.Dense"
-                              Placeholder="תוכן השאלה..."
-                              @bind-Value="CurrentQuestion.QuestionTitle"
-                              TextChanged="@(()=> QuestionTitleChanged())"
-                              Immediate="true"
-                              Adornment="ad"
-                              AdornmentIcon="@Icons.Filled.Close"
-                              OnAdornmentClick="CleanFuncQuestion"
-                              For="@(() => CurrentQuestion.QuestionTitle)"></MudTextField>
+        <div class="questionDiv">
+            <MudText Style="color: saddlebrown">
+                השאלה:
+                <MudText Style="color:black; font-size:small"> 3-50 תווים</MudText>
+            </MudText>
+            <MudItem Style="width: 500px">
+                <MudItem>
+                    @if (CurrentQuestion.QuestionTitle == null || CurrentQuestion.QuestionTitle == "")
+                    {
+                        <MudTextField Variant="Variant.Outlined" Counter="50" MaxLength="50" Margin="Margin.Dense" Placeholder="תוכן השאלה..." @bind-Value="CurrentQuestion.QuestionTitle" For="@(() => CurrentQuestion.QuestionTitle)"></MudTextField>
+                    }
+                    else
+                    {
+                        <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Placeholder="תוכן השאלה..." @bind-Value="CurrentQuestion.QuestionTitle" For="@(() => CurrentQuestion.QuestionTitle)" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Close" OnAdornmentClick="CleanFuncQuestion"></MudTextField>
 
+                    }
+                    <div class="imguploadbtn">
+                        <InputFile id="FileInputID" OnChange="UploadFile" accept=".jpg, .jpeg, .png" hidden />
+                        <img src="@CurrentQuestion.QuestionImage" width="30" />
+                        @if (Xbuttonhidden2 == false)
+                        {
+                            <MudText Style="font-size:small">ניתן להוסיף</MudText>
+                            <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudIconButton>
+                        }
+                        else
+                        {
+                            <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="(() => CleanFuncQuestionImage(CurrentQuestion.QuestionImage))" HtmlTag="label"></MudIconButton>
+                        }
 
-                <InputFile id="FileInputID" OnChange="ShowFile" accept=".jpg, .jpeg, .png" hidden />
-                <img src="@CurrentQuestion.QuestionImage" width="30" />
-                @if (Xbuttonhidden2 == false)
-                {
-                    <MudText Style="font-size:small">ניתן להוסיף</MudText>
-                    <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudIconButton>
-                }
-                else
-                {
-                    <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="CleanFuncQuestionImage" HtmlTag="label"></MudIconButton>
-                }
+                    </div>
 
+                </MudItem>
             </MudItem>
-        </MudItem>
-
+        </div>
 
         <MudText>אפשרויות מענה: </MudText><MudText Style="font-size:smaller">(@DistractorsonScreen מתוך 6)</MudText>
         <MudItem Style="width: 350px">
@@ -104,13 +88,26 @@ else
 
             @if (CorrectAnswer.IsImage == false)
             {
-                <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Immediate="true" Counter="25" MaxLength="25" Placeholder="תוכן תשובה נכונה"
-                              @bind-Value="CorrectAnswer.DistractorContent" For="@(() => CorrectAnswer.DistractorContent)" Adornment="@(GetAdorment(CorrectAnswer.DistractorContent))" AdornmentIcon="@Icons.Filled.Close" OnAdornmentClick="CleanFuncDistractorCorrectImage" />
-                <MudTooltip Text="כדי להוסיף תמונה עליך למחוק את הטקסט">
-                    @*//כפתור העלאת תמונה מושבת*@
-                    <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Disabled="!string.IsNullOrEmpty(CorrectAnswer.DistractorContent)" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudIconButton>
-                </MudTooltip>
 
+                @if (string.IsNullOrEmpty(CorrectAnswer.DistractorContent) == false)
+                {
+                    // תיבת טקסט מלא
+                    <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Counter="25" MaxLength="25"  Placeholder="תוכן תשובה נכונה"
+                                  @bind-Value="CorrectAnswer.DistractorContent" For="@(() => CorrectAnswer.DistractorContent)" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Close" OnAdornmentClick="CleanFuncDistractorCorrectImage" />
+
+                    //כפתור העלאת תמונה מושבת
+                          <MudTooltip Text="כדי להעלות תמונה עליך למחוק את הטקסט">
+                        <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Disabled="true" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudIconButton>
+                       </MudTooltip>   
+            }
+                else
+                {
+                    //האם תיבת טקסט ריק אז אפשר להכניס תוכן לתיבה
+                    <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Counter="25" MaxLength="25"  Placeholder="תוכן תשובה נכונה"
+                                  @bind-Value="CorrectAnswer.DistractorContent" For="@(() => CorrectAnswer.DistractorContent)" />
+                    //כפתור העלאת תמונה פעיל
+                    <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="imgFileCorrectAnswer" HtmlTag="label"></MudIconButton>
+                }
             }
             else
             {
@@ -120,7 +117,7 @@ else
                 if (CorrectAnswer.IsImage == true)
                 {
                     <MudTooltip Text="כדי להוסיף טקסט עליך למחוק את התמונה">
-                        <MudTextField Disabled="true" Immediate="true" Variant="Variant.Outlined" Margin="Margin.Dense" Counter="25" MaxLength="25" Placeholder="תוכן תשובה נכונה"
+                        <MudTextField Disabled="true" Variant="Variant.Outlined" Margin="Margin.Dense" Counter="25" MaxLength="25" Placeholder="תוכן תשובה נכונה"
                                       For="@(() => CorrectAnswer.DistractorContent)" />
                     </MudTooltip>
                     <img src="@CorrectAnswer.DistractorContent" width="30" />
@@ -148,39 +145,51 @@ else
 
                 @if (a.IsImage == false)
                 {
-                    <MudTextField @bind-Value="a.DistractorContent" Immediate="true" Margin="Margin.Dense"
-                                  Counter="25" MaxLength="25" Label="תשובה לא נכונה" Variant="Variant.Outlined" Adornment="@(GetAdorment(a.DistractorContent))"
-                                  AdornmentIcon="@Icons.Filled.Close" OnAdornmentClick="(() => CleanFuncDistractorImage(place))"></MudTextField>
-
-                    // מוסיפים כפתור להעלאת תמונה במצב מושבת
-                    <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Disabled="!string.IsNullOrEmpty(a.DistractorContent)" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudIconButton>
                     //אם המסיח אינו מכיל תמונה אז...
-
-                }
-                else
-                {
-                    if (a.IsImage == true)
+                    @if (string.IsNullOrEmpty(a.DistractorContent) == false)
                     {
+                        //האם התוכן של המסיח הוא מלא אז....
 
-                        //תיבת טקסט הינה מושבתת כי יש תמונה בתוכן של המסיח
-                        <MudTooltip Text="כדי להוסיף טקסט עליך למחוק את התמונה">
-                            <MudTextField Disabled="true" Placeholder="" Counter="25" MaxLength="25" Variant="Variant.Outlined" Margin="Margin.Dense" T="string"></MudTextField>
-                        </MudTooltip>
-                        <img src="@myDistractorList[place].DistractorContent" width="30" />
-                        <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="(() => CleanFuncDistractorImage(place))" HtmlTag="label"></MudIconButton>
-                    }
-                    else
-                    {
-                        //תיבת טקסט הינה מושבתת כי יש תמונה בתוכן של המסיח
-                        <MudTextField Disabled="true" Margin="Margin.Dense" Placeholder="" Counter="25" MaxLength="25" Variant="Variant.Outlined" T="string"></MudTextField>
-                        <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="@("imgFile" + place.ToString())" HtmlTag="label"></MudIconButton>
-                    }
+                        <MudTextField @bind-Value="a.DistractorContent" Margin="Margin.Dense" Counter="25" MaxLength="25" Label="תשובה לא נכונה" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Close" OnAdornmentClick="(() => CleanFuncDistractorImage(place))"></MudTextField>
 
-                }
+                        // מוסיפים כפתור להעלאת תמונה במצב מושבת
+                         <MudTooltip Text="כדי להעלות תמונה עליך למחוק את הטקסט">
+                          <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Disabled="true" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudIconButton>
+                              </MudTooltip>
+            }
+            else
+            {
+            // מוסיפים כתפור תמונה שהוא כן פעיל
+            <MudTextField @bind-Value="a.DistractorContent" Margin="Margin.Dense" Counter="25" MaxLength="25" Placeholder="תוכן תשובה לא נכונה" Variant="Variant.Outlined"></MudTextField>
+
+            <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="@("imgFile" + place.ToString())" HtmlTag="label"></MudIconButton>
+
+            }
+            }
+            else
+            {
+            if (a.IsImage == true)
+            {
+
+            //תיבת טקסט הינה מושבתת כי יש תמונה בתוכן של המסיח
+            <MudTooltip Text="כדי להוסיף טקסט עליך למחוק את התמונה">
+                <MudTextField Disabled="true" Placeholder="" Counter="25" MaxLength="25" Variant="Variant.Outlined" Margin="Margin.Dense" T="string"></MudTextField>
+            </MudTooltip>
+            <img src="@myDistractorList[place].DistractorContent" width="30" />
+            <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="(() => CleanFuncDistractorImage(place))" HtmlTag="label"></MudIconButton>
+            }
+            else
+            {
+            //תיבת טקסט הינה מושבתת כי יש תמונה בתוכן של המסיח
+            <MudTextField Disabled="true" Margin="Margin.Dense" Placeholder="" Counter="25" MaxLength="25" Variant="Variant.Outlined" T="string"></MudTextField>
+            <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="@("imgFile" + place.ToString())" HtmlTag="label"></MudIconButton>
+            }
 
             }
 
-        </MudItem>
+            }
+
+</MudItem>
 
     </MudItem>
     @if (string.IsNullOrEmpty(CorrectAnswer.DistractorContent) == false && string.IsNullOrEmpty(myDistractorList[0].DistractorContent) == false && string.IsNullOrEmpty(CurrentQuestion.QuestionTitle) == false)
@@ -206,7 +215,6 @@ else
         <MudTh>מחיקה</MudTh>
     </HeaderContent>
     <RowTemplate>
-
         <MudTd DataLabel="שאלה"><MudTooltip Text="@context.QuestionTitle">@context.QuestionTitle</MudTooltip></MudTd>
         <MudTd DataLabel="כמות תשובות">@context.QuestionDistractors.Count</MudTd>
         <MudTd DataLabel="עריכה"><MudIconButton @onclick="() => EditQustionFunc(context.ID)" Icon="@Icons.Material.Outlined.Edit"></MudIconButton></MudTd>
@@ -215,10 +223,14 @@ else
     </RowTemplate>
 </MudTable>
 
+
 <br />
 <p>@msg</p>
 
 @code {
+
+
+
     DialogOptions MyDialogPublish = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true, DisableBackdropClick = true };
     async Task PublishGame(DialogOptions options)
     {
@@ -253,9 +265,6 @@ else
     }
 
     bool fixedheader = true;
-
-    MudTextField<string> questionTitleField;
-    Adornment ad = Adornment.None;
 
     [Parameter]
     public int userId { get; set; } // פרמטר יוזר
@@ -471,24 +480,11 @@ else
     string myFileImage;
     long maxFileSize = 4194304;
     string msg1;
-    List<string> DeletedImages = new List<string>();
-    List<string> DeletedImagesforans = new List<string>();
-    private async Task ShowFile(InputFileChangeEventArgs e)
-    {
-        Xbuttonhidden2 = true;
 
-        var imageFiles = e.GetMultipleFiles();
-        foreach (var file in imageFiles)
-        {
-            if (file.Size <= maxFileSize)
-            {
-                var buffer = new byte[file.Size];
-                await file.OpenReadStream(maxFileSize).ReadAsync(buffer);
-                var imageBase64 = Convert.ToBase64String(buffer);
-                CurrentQuestion.QuestionImage = "data:image/png;base64, " + imageBase64;
-            }
-        }
-    }
+    //רשימה מקומית לשמירה התמונות לפני שעושים פעולה של שליחה לשרת
+    List<string> DeletedImages = new List<string>();
+
+    List<string> DeletedImagesforans = new List<string>();
 
     //העלאת תמונה לגזע השאלה
     private async Task UploadFile(InputFileChangeEventArgs e)
@@ -640,10 +636,14 @@ else
 
         }
 
+        // מחיקת התמונות המיותרות שנמחקו
+        await DeleteImages();
+
         // EditQBool = false;
         CurrentQuestion = new Question();
         myDistractorList = new List<Distractor>();
         CorrectAnswer = new Distractor();
+
         await OnInitializedAsync();
     }
 
@@ -660,8 +660,30 @@ else
 
     }
 
-    void CleanFuncQuestionImage()
+
+
+    //פונקצית מחיקת תמונה
+    private async Task DeleteImages()
     {
+
+        var saveResponse = await Http.PostAsJsonAsync("api/Games/deleteImages", DeletedImages);
+
+        //פעולת המחיקה
+        if (saveResponse.IsSuccessStatusCode == true)
+        {
+            Console.WriteLine(" נמחקה בהצלחה");
+            //myFileImage = "";
+        }
+
+
+
+    }
+
+    void CleanFuncQuestionImage(string myFileImage)
+    {
+        DeletedImages.Add(myFileImage); //הוספה לרשימת המחיקה
+        Console.WriteLine(" myFileImage" + myFileImage);
+
         CurrentQuestion.QuestionImage = null;
         Xbuttonhidden2 = false;
         myFileImage = "";
@@ -672,6 +694,7 @@ else
 
     void CleanFuncDistractorCorrectImage()
     {
+        DeletedImages.Add(myFileImageCorrectAnswer); //הוספה לרשימת המחיקה
         CorrectAnswer.DistractorContent = "";
         CorrectAnswer.IsImage = false;
         StateHasChanged();
@@ -680,6 +703,9 @@ else
 
     void CleanFuncDistractorImage(int Place)
     {
+        myFileImageWorngAnswer = myDistractorList[Place].DistractorContent;
+        DeletedImages.Add(myFileImageWorngAnswer); //הוספה לרשימת המחיקה
+
         myDistractorList[Place].DistractorContent = "";
         myDistractorList[Place].IsImage = false;
 
@@ -691,25 +717,6 @@ else
     void goToGamesPage()
     {
         nav.NavigateTo("./Games/" + userId);
-    }
-    void QuestionTitleChanged()
-    {
-        if (string.IsNullOrEmpty(questionTitleField.Text))
-        {
-            ad = Adornment.None;
-        }
-        else
-        {
-            ad = Adornment.End;
-        }
-
-    }
-
-    //התיבה ריקה לא יציג איקס, התיבה עם תוכן יתווסף אייקון של איקס
-    Adornment GetAdorment(string content)
-    {
-        if (string.IsNullOrEmpty(content)) return Adornment.None;
-        return Adornment.End;
     }
 
 }
