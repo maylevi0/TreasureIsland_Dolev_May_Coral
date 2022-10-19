@@ -1,6 +1,27 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;700&display=swap');
+/* If the screen size is 601px wide or more, set the font-size of <div> to 80px */
+@media screen and (min-width: 601px) {
+    body {
+        font-size: 1em;
+    }
+}
 
+/* If the screen size is 600px wide or less, set the font-size of <div> to 30px */
+@media screen and (max-width: 600px) {
+    body {
+        font-size: 80%;
+    }
+
+    #LoginSign h1 {
+        font-size: 20px !important;
+    }
+
+    .mud-input {
+        height: 80%;
+        width: 80%;
+    }
+}
 
 html, body {
     height: 100%;
@@ -11,9 +32,10 @@ body {
     font-family: Arial, Helvetica, Arial, sans-serif;
     font-family: 'Assistant', sans-serif;
     background-image: url('../Images/Picture2.png');
-    background-repeat: no-repeat;
+    background-repeat: space;
     background-size: 100%;
     background-position-y: center;
+    background-size:cover;
 }
 
 
@@ -272,13 +294,23 @@ nav {
     color: #5A3114;
 }
 
-
-
-
-
-a, .btn-link {
-    color: #0366d6 ;
+/*פופ-אפ עמוד אודות*/
+#PopUpOdot {
+    background-position: center;
+    background-size: 36%;
+    background-repeat: no-repeat;
+    background-image: url(../Images/compass.png);
 }
+
+    #PopUpOdot p{
+       text-align:center;
+    }
+
+
+
+    a, .btn-link {
+        color: #0366d6;
+    }
 
 .btn-primary {
     color: #fff;

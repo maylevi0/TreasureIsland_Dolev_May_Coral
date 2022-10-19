@@ -1,35 +1,40 @@
 ﻿@inject HttpClient Http
 @inject NavigationManager nav
 
-
-<MudDialog>
-    <DialogContent>
-
-
-        <p>
-            אפיון ופיתוח: מאי לוי, דולב קליינר וקורל ששון
+<div id="PopUpOdot">
+    <MudDialog Style=" background-color: #DBCBAA;">
+        <DialogContent>
+            <p>
+                אודות
+                <br />
+                אפיון ופיתוח: דולב קליינר, מאי לוי וקורל ששון
+                <br />
+                אופיין ופותח במסגרת פרויקט בקורסים:
+                <br />
+                סביבות לימוד אינטראקטיביות
+                <br />
+                תכנות אנינטרקציה ואנימציה
+                <br />
+                תכנות
+                <br />
+                תשפ"ב
+            </p>
+            <img id="HIT" src="../photo/HIT.png" style=" WIDTH: 20%; margin-right: 39%;" />
             <br />
-            אופיין ופותח במסגרת פרויקט בקורסים:
-            <br />
-            סביבות לימוד אינטראקטיביות 1
-            <br />
-            תכנות אינטראקטיבי 1
-            <br />
-            תשפ"ב
-        </p>
+            <p
+            <a href="https://www.hit.ac.il/telem/overview" target="_blank">הפקולטה לטכנולוגיות למידה </a> <br />
+            </p>
 
-    </DialogContent>
-    <DialogActions>
+        </DialogContent>
 
-    </DialogActions>
-</MudDialog>
+    </MudDialog>
+</div>
+        @code {
 
-@code {
+            [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-
-    void Submit() => MudDialog.Close(DialogResult.Ok(true));
-    void Cancel() => MudDialog.Cancel();
+            void Submit() => MudDialog.Close(DialogResult.Ok(true));
+            void Cancel() => MudDialog.Cancel();
 
 
-}
+        }
