@@ -5,20 +5,6 @@
 @inject IDialogService DialogService
 @inject IDialogService Dialog
 
-    <header>
-        <a>
-            <img id="logo" src="photo/logo.png" />
-            <p>אי המטמון</p>
-        </a>
-        <nav>
-            <ul>
-                <li><a class="about">אודות</a></li>
-                <li><a class="howToPlay">איך משחקים?</a></li>
-                <li><a class="about" href="../indextest.html">למשחק</a></li>
-            </ul>
-        </nav>
-    </header>
-
 <MudTooltip Text="המשחק שיצרת שמור">
     <MudText Class="cursor-pointer" Style="font-size:smaller; color:saddlebrown" @onclick="goToGamesPage">
         <MudIcon Size="Size.Small" Icon=@Icons.Filled.SubdirectoryArrowRight></MudIcon>חזרה לרשימת המשחקים
@@ -28,11 +14,11 @@
 
 @if (Qcount >= 10)
 { //גדול מ10 ניתן לפרסום
-<MudItem>
-    <MudText Style="font-size:small">לפרסום המשחק הנוכחי:</MudText>
-    <MudButton Style="background-color:darkorange" Variant="Variant.Filled" OnClick="(() => PublishGame(MyDialogPublish))">פרסום משחק</MudButton>
-</MudItem>
-        <MudItem Style="color:green">
+    <MudItem>
+        <MudText Style="font-size:small">לפרסום המשחק הנוכחי:</MudText>
+        <MudButton Style="background-color:darkorange" Variant="Variant.Filled" OnClick="(() => PublishGame(MyDialogPublish))">פרסום משחק</MudButton>
+    </MudItem>
+    <MudItem Style="color:green">
         <MudText Style="font-size:small"> <MudIcon Size="Size.Small" Icon="@Icons.Filled.Info" />המשחק ניתן לפרסום</MudText>
     </MudItem>
 }
@@ -82,8 +68,11 @@ else
                 }
                 else
                 {
-                    <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="CleanFuncQuestionImage" HtmlTag="label"></MudIconButton>
+                    <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="(() => CleanFuncQuestionImage(CurrentQuestion.QuestionImage))" HtmlTag="label"></MudIconButton>
                 }
+
+
+
 
             </MudItem>
         </MudItem>
@@ -210,7 +199,7 @@ else
     }
 </EditForm>
 
-<MudTable  FixedHeader="true" Dense="true" style="height:600px; overflow-y: scroll;" class="tableofQ" Items="@CurrentGame.GameQuestions" Hover="true">
+<MudTable FixedHeader="true" Dense="true" style="height:600px; overflow-y: scroll;" class="tableofQ" Items="@CurrentGame.GameQuestions" Hover="true">
     <ToolBarContent>
         <MudText Style="color:saddlebrown" Typo="Typo.h6">מאגר שאלות (@CurrentGame.GameQuestions.Count)</MudText>
     </ToolBarContent>
@@ -221,7 +210,6 @@ else
         <MudTh>מחיקה</MudTh>
     </HeaderContent>
     <RowTemplate>
-
         <MudTd DataLabel="שאלה"><MudTooltip Text="@context.QuestionTitle">@context.QuestionTitle</MudTooltip></MudTd>
         <MudTd DataLabel="כמות תשובות">@context.QuestionDistractors.Count</MudTd>
         <MudTd DataLabel="עריכה"><MudIconButton @onclick="() => EditQustionFunc(context.ID)" Icon="@Icons.Material.Outlined.Edit"></MudIconButton></MudTd>
@@ -412,10 +400,11 @@ else
 
     protected async Task DeleteQustionFunc(Question Qtodelet, DialogOptions options)
     {
-        //בדיקה האם מספר השאלות במשחק עומד בתנאי לפרסום 
+        //בדיקה האם מספר השאלות במשחק עומד בתנאי לפרסום
         int Qnumber = CurrentGame.GameQuestions.Count;
 
-        if (Qnumber == 10) { //אם מספר השאלות כרגע הוא 10 אז תציג הודעה לגבי פרסום משחק
+        if (Qnumber == 10)
+        { //אם מספר השאלות כרגע הוא 10 אז תציג הודעה לגבי פרסום משחק
             var parameters = new DialogParameters();
             parameters.Add("QtoDialog", Qtodelet); //שולח מופע של משחק
             var dialog = DialogService.Show<DeleteQWarning>("מחיקת שאלה", parameters, options);
@@ -482,7 +471,10 @@ else
     string myFileImage;
     long maxFileSize = 4194304;
     string msg1;
+
+    //רשימה מקומית לשמירה התמונות לפני שעושים פעולה של שליחה לשרת
     List<string> DeletedImages = new List<string>();
+
     List<string> DeletedImagesforans = new List<string>();
 
     //העלאת תמונה לגזע השאלה
@@ -635,6 +627,9 @@ else
 
         }
 
+        // מחיקת התמונות המיותרות שנמחקו
+        await DeleteImages();
+
         // EditQBool = false;
         CurrentQuestion = new Question();
         myDistractorList = new List<Distractor>();
@@ -655,8 +650,37 @@ else
 
     }
 
-    void CleanFuncQuestionImage()
+
+
+    //פונקצית מחיקת תמונה
+    private async Task DeleteImages()
     {
+
+        var saveResponse = await Http.PostAsJsonAsync("api/Games/deleteImages", DeletedImages);
+
+        //פעולת המחיקה
+        if (saveResponse.IsSuccessStatusCode == true)
+        {
+            Console.WriteLine(" נמחקה בהצלחה");
+            //myFileImage = "";
+        }
+
+        // foreach (string pic in DeletedImages)
+        // {
+        //   Console.WriteLine(" התמונה" + pic);
+
+        // }
+        //DeletedImages.Add(myFileImage);
+
+        // צריך להפריד בין הפונקציות האלה
+
+    }
+
+    void CleanFuncQuestionImage(string myFileImage)
+    {
+        DeletedImages.Add(myFileImage); //הוספה לרשימת המחיקה
+        Console.WriteLine(" myFileImage" + myFileImage);
+
         CurrentQuestion.QuestionImage = "";
         Xbuttonhidden2 = false;
         myFileImage = "";
@@ -667,6 +691,7 @@ else
 
     void CleanFuncDistractorCorrectImage()
     {
+        DeletedImages.Add(myFileImageCorrectAnswer); //הוספה לרשימת המחיקה
         CorrectAnswer.DistractorContent = "";
         CorrectAnswer.IsImage = false;
         StateHasChanged();
@@ -675,6 +700,9 @@ else
 
     void CleanFuncDistractorImage(int Place)
     {
+        myFileImageWorngAnswer = myDistractorList[Place].DistractorContent;
+        DeletedImages.Add(myFileImageWorngAnswer); //הוספה לרשימת המחיקה
+
         myDistractorList[Place].DistractorContent = "";
         myDistractorList[Place].IsImage = false;
 
