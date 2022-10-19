@@ -35,7 +35,7 @@ body {
     background-repeat: space;
     background-size: 100%;
     background-position-y: center;
-    background-size:cover;
+    background-size: cover;
 }
 
 
@@ -170,14 +170,14 @@ nav {
     }
 
 /*תיבת טקסט להכנסת המייל*/
-    .MailText {
-        margin: 0;
-        box-sizing: border-box;
-        margin-right: 40%;
-        width: 250px;
-        height: 300px;
-        text-align: center;
-    }
+.MailText {
+    margin: 0;
+    box-sizing: border-box;
+    margin-right: 40%;
+    width: 250px;
+    height: 300px;
+    text-align: center;
+}
 /*תיבת הטקסט של עמוד הכניסה*/
 .mud-input.mud-input-outlined .mud-input-outlined-border {
     display: flex;
@@ -260,7 +260,7 @@ nav {
 }
 
 /*תמונת פופ-אפ יצירת משחק
-*/#CreatingGame {
+*/ #CreatingGame {
     background-image: url(../Images/AddGame.png);
     background-size: 30%;
     background-repeat: no-repeat;
@@ -268,7 +268,7 @@ nav {
 }
 
 /*תמונת פופ-אפ הגדרות משחק
-*/#PopUpSetting {
+*/ #PopUpSetting {
     background-image: url(../Images/PopUpSetting.png);
     background-size: 30%;
     background-repeat: no-repeat;
@@ -302,15 +302,15 @@ nav {
     background-image: url(../Images/compass.png);
 }
 
-    #PopUpOdot p{
-       text-align:center;
+    #PopUpOdot p {
+        text-align: center;
     }
 
 
 
-    a, .btn-link {
-        color: #0366d6;
-    }
+a, .btn-link {
+    color: #0366d6;
+}
 
 .btn-primary {
     color: #fff;
@@ -353,24 +353,20 @@ nav {
         top: 0.5rem;
     }
 
-p.mypClass{
+p.mypClass {
 }
 
-.positioned{
+.positioned {
     position: relative;
     top: 100px;
     left: 100px;
-
 }
 
 .tableofQ {
     width: 35%;
     display: inline-block;
-    right:750px;
+    right: 750px;
     top: 50px;
     vertical-align: top;
     position: absolute;
-   
-    
 }
-
