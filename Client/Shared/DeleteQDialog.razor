@@ -25,10 +25,17 @@
 </div>
     @code {
 
-
+        string Qcontent = "";
+        Question QtoDialog = new Question();
 
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
+        protected override void OnInitialized()
+        {
+
+            Qcontent = QtoDialog.QuestionTitle;
+                    
+        }
 
         private void Cancel()
         {

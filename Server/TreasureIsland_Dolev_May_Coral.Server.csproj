@@ -26,9 +26,5 @@
     <ProjectReference Include="..\Shared\TreasureIsland_Dolev_May_Coral.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\uploadedFiles\" />
-  </ItemGroup>
-
 
 </Project>

@@ -178,7 +178,13 @@
                             {
                                 //האם התוכן של המסיח הוא מלא אז....
 
-                                <MudTextField @bind-Value="a.DistractorContent" Margin="Margin.Dense" Counter="30" MaxLength="30" Label="תשובה לא נכונה" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Close" OnAdornmentClick="(() => CleanFuncDistractorImage(place))"></MudTextField>
+                                <MudTextField 
+                                  @bind-Value="a.DistractorContent"
+                                   Margin="Margin.Dense" 
+                                   Counter="30" 
+                                   MaxLength="30"
+                                   Label="תשובה לא נכונה" 
+                                   Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Close" OnAdornmentClick="(() => CleanFuncDistractorImage(place))"></MudTextField>
 
                                 // מוסיפים כפתור להעלאת תמונה במצב מושבת
                                 <MudTooltip Text="כדי להעלות תמונה עליך למחוק את הטקסט">
@@ -220,6 +226,7 @@
                 </MudItem>
             </div>
         </MudItem>
+        
         @if (string.IsNullOrEmpty(CorrectAnswer.DistractorContent) == false && string.IsNullOrEmpty(myDistractorList[0].DistractorContent) == false && string.IsNullOrEmpty(CurrentQuestion.QuestionTitle) == false)
         {
             <MudButton Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">שמירת שאלה</MudButton>
@@ -448,7 +455,26 @@
             var result = await dialog.Result;
             if (result.Cancelled == false)
             {
-                Console.WriteLine(Qtodelet.ID);
+                CurrentQuestion = Qtodelet;
+                if (CurrentQuestion.QuestionImage != null)
+                {
+                    DeletedImages.Add(CurrentQuestion.QuestionImage); //הוספה לרשימת המחיקה                       
+                    Console.WriteLine("QuestionImage " + DeletedImages.Count);
+
+                }
+                foreach (Distractor d in CurrentQuestion.QuestionDistractors)
+                {
+                    if (d.IsImage == true)
+                    {
+                        DeletedImages.Add(d.DistractorContent); //הוספה לרשימת המחיקה                       
+                    }
+
+                }
+
+                Console.WriteLine("DeletedImages.Count " + DeletedImages.Count);
+
+                //פעולת המחיקה
+                await DeleteImages();
 
                 var deleteRespone = await Http.DeleteAsync("api/Games/DeleteQ/" + CurrentGame.UserID.ToString() + "/" + Qtodelet.ID);
                 if (deleteRespone.IsSuccessStatusCode == true)
@@ -494,7 +520,25 @@
 
             if (result.Cancelled == false)
             {
-                Console.WriteLine(Qtodelet.ID);
+                CurrentQuestion = Qtodelet;
+                if (CurrentQuestion.QuestionImage != null)
+                {
+                    DeletedImages.Add(CurrentQuestion.QuestionImage); //הוספה לרשימת המחיקה                       
+
+                }
+                foreach (Distractor d in CurrentQuestion.QuestionDistractors)
+                {
+                    if (d.IsImage == true)
+                    {
+                        DeletedImages.Add(d.DistractorContent); //הוספה לרשימת המחיקה                       
+                    }
+
+                }
+
+
+                //פעולת המחיקה
+                await DeleteImages();
+
 
                 var deleteRespone = await Http.DeleteAsync("api/Games/DeleteQ/" + CurrentGame.UserID.ToString() + "/" + Qtodelet.ID);
                 if (deleteRespone.IsSuccessStatusCode == true)
