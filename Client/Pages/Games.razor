@@ -32,7 +32,7 @@
 
 <br />
 <div id="GameTable">
-    <MudTable Items="@CurrentUser.UserGames" Hover="true" Dense="true" FixedHeader="true">
+    <MudTable Items="@CurrentUser.UserGames" Hover="true" Dense="true" FixedHeader="true" NoRecordsContent="null">
         <HeaderContent>
 
             <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">שם המשחק</MudTh>
@@ -46,6 +46,7 @@
 
         </HeaderContent>
         <RowTemplate>
+         
             <MudTd DataLabel="שם המשחק">@context.GameName</MudTd>
             <MudTd DataLabel="לצפייה"><MudButton EndIcon="@Icons.Material.Outlined.RemoveRedEye"></MudButton></MudTd>
             <MudTd DataLabel="קוד המשחק">@context.GameCode</MudTd>
@@ -78,7 +79,7 @@
 
     DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true, DisableBackdropClick = true };
 
-    async Task OpenDialogSettings(int gameID, DialogOptions options)
+    async Task OpenDialogSettings(int gameID, DialogOptions options) //פופאפ לשינוי הגדרות משחק
     {
         Game GametoUpdateinDialog = CurrentUser.UserGames.FirstOrDefault(q => q.ID == gameID);//שולפת את המשחק מתוך הטבלה
 
@@ -132,7 +133,7 @@
 
     DialogOptions MyDialog = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true, DisableBackdropClick = true };
 
-    async Task OpenDialogCreateGAme(int userId, DialogOptions options)
+    async Task OpenDialogCreateGAme(int userId, DialogOptions options) //פופאפ ליצירת משחק חדש
     {
         var parameters = new DialogParameters();
 
@@ -157,6 +158,7 @@
         }
 
         newGame = new Game(); // המופעאיפוס
+
 
     }
 
@@ -198,9 +200,20 @@
             }
             else
             {
-                msg = "התרחשה תקלת שרת";
+                Console.WriteLine("התרחשה תקלת שרת");
             }
         }
+
+        if (CurrentUser.UserGames.Count == 0)
+        {
+            msg= "רשימת המשחקים ריקה, לחצו על כפתור יצירת משחק כדי להוסיף משחק לרשימה";
+        }
+        else
+        {
+            msg="";
+        }
+
+
     }
 
 
@@ -245,7 +258,9 @@
 
             else
             {
-                msg = "משחק לא פורסם";
+                Console.WriteLine("משחק לא פורסם");
+
+
             }
         }
 
@@ -275,9 +290,21 @@
             }
             else
             {
-                msg = "התרחשה תקלת שרת";
+                Console.WriteLine("התרחשה תקלת שרת");
             }
         }
+
+        if (CurrentUser.UserGames.Count != 0)
+        {
+            msg = "";
+        }
+        else
+        {
+            msg = "רשימת המשחקים ריקה, לחצו על כפתור יצירת משחק כדי להוסיף משחק לרשימה";
+
+        }
+
+
     }
 
 
@@ -356,20 +383,20 @@
                     await RefreshTable(); // ריענון הטבלה
 
                     CurrentGame = new Game();// איפוס המופע כדי להכינו לקבלת מידע חדש
-                    msg = "אחרי המחיקה";
+                    Console.WriteLine("אחרי המחיקה");
+
                     CurrentUseUserGames = CurrentUser.UserGames.Count;
 
                 }
                 else
                 {
-                    msg = "לא נמחק";
+                    Console.WriteLine("לא נמחק") ;
                 }
             }
         }
         else
         {
             Console.WriteLine("לא היו שינויים סגירת חלון ");
-            msg = "לא נמחק";
 
         }
 
@@ -389,7 +416,7 @@
         }
         else
         {
-            msg = "התרחשה תקלת שרת";
+            Console.WriteLine( "התרחשה תקלת שרת");
         }
 
 

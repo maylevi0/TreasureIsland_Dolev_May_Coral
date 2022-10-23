@@ -68,30 +68,41 @@
                 <MudText Style="color:black; font-size:small"> 3-50 תווים</MudText>
             </MudText>
             <MudItem Style="width: 500px">
-                    @if (CurrentQuestion.QuestionTitle == null || CurrentQuestion.QuestionTitle == "")
+                @if (CurrentQuestion.QuestionTitle == null || CurrentQuestion.QuestionTitle == "")
+                {
+                    <MudTextField Variant="Variant.Outlined" Counter="50"  Margin="Margin.Dense" Placeholder="תוכן השאלה..." @bind-Value="CurrentQuestion.QuestionTitle" For="@(() => CurrentQuestion.QuestionTitle)"></MudTextField>
+                }
+                else
+                {
+
+                    <MudTextField
+                      T="string"
+                     Counter="50"
+                     Immediate="true"
+                     Variant="Variant.Outlined" 
+                     Margin="Margin.Dense"
+                     Placeholder="תוכן השאלה..."
+                     @bind-Value="CurrentQuestion.QuestionTitle" 
+                     For="@(() => CurrentQuestion.QuestionTitle)" 
+                    Adornment="Adornment.End" 
+                     AdornmentIcon="@Icons.Filled.Close" 
+                     OnAdornmentClick="CleanFuncQuestion"></MudTextField>
+
+                }
+                <div class="imgUploadBtn">
+                    <InputFile id="FileInputID" OnChange="UploadFile" accept=".jpg, .jpeg, .png" hidden />
+                    <img src="@CurrentQuestion.QuestionImage" width="30" />
+                    @if (Xbuttonhidden2 == false)
                     {
-                        <MudTextField  Variant="Variant.Outlined" Counter="50" MaxLength="50"  Margin="Margin.Dense" Placeholder="תוכן השאלה..." @bind-Value="CurrentQuestion.QuestionTitle" For="@(() => CurrentQuestion.QuestionTitle)"></MudTextField>
+                        <MudText Class="TextImfI" Style="font-size:small">ניתן להוסיף</MudText>
+                        <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudIconButton>
                     }
                     else
                     {
-                       
-                        <MudTextField Counter="50" MaxLength="50"  Variant="Variant.Outlined" Margin="Margin.Dense" Placeholder="תוכן השאלה..." @bind-Value="CurrentQuestion.QuestionTitle" For="@(() => CurrentQuestion.QuestionTitle)" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Close" OnAdornmentClick="CleanFuncQuestion"></MudTextField>
-
+                        <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="(() => CleanFuncQuestionImage(CurrentQuestion.QuestionImage))" HtmlTag="label"></MudIconButton>
                     }
-                    <div class="imgUploadBtn">
-                        <InputFile id="FileInputID" OnChange="UploadFile" accept=".jpg, .jpeg, .png" hidden />
-                        <img src="@CurrentQuestion.QuestionImage" width="30" />
-                        @if (Xbuttonhidden2 == false)
-                        {
-                            <MudText Class="TextImfI" Style="font-size:small">ניתן להוסיף</MudText>
-                            <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudIconButton>
-                        }
-                        else
-                        {
-                            <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="(() => CleanFuncQuestionImage(CurrentQuestion.QuestionImage))" HtmlTag="label"></MudIconButton>
-                        }
 
-                    </div>
+                </div>
 
             </MudItem>
 
@@ -249,7 +260,7 @@
 
 
     DialogOptions MyDialogPublish = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true, DisableBackdropClick = true };
-    async Task PublishGame(DialogOptions options)
+    async Task PublishGame(DialogOptions options) //פופאפ לפרסום משחק
     {
 
         var parameters = new DialogParameters();
@@ -308,7 +319,7 @@
     // חיווי למשתמש
     string msg = "";
 
-    protected async override Task OnInitializedAsync()
+    protected async override Task OnInitializedAsync() //טעינת נתונים בעמוד , קיראה לנתונים של המשחק
     {
         Xbuttonhidden2 = false; // איפוס משתנה איקס לתמונה בגזע השאלה
 
@@ -360,7 +371,7 @@
     //עריכת שאלה כפתור עריכה
     bool EditQBool = false;
 
-    protected async Task EditQustionFunc(int QtoEditID)
+    protected async Task EditQustionFunc(int QtoEditID) // , שליפה בלחיצה על כפתור עריכת  שאלה
 
     {
 
@@ -423,7 +434,7 @@
 
     DialogOptions MyDialogDeleteQuestion = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true, DisableBackdropClick = true };
 
-    protected async Task DeleteQustionFunc(Question Qtodelet, DialogOptions options)
+    protected async Task DeleteQustionFunc(Question Qtodelet, DialogOptions options) //פופאם למחיקת שאלה
     {
         //בדיקה האם מספר השאלות במשחק עומד בתנאי לפרסום
         int Qnumber = CurrentGame.GameQuestions.Count;
@@ -574,10 +585,10 @@
 
     }
 
-    //העלאת תמונה למסיחים השגויים
     string myFileImageWorngAnswer;
 
-    private async Task UploadFileDistractor(InputFileChangeEventArgs e, int Place)
+    private async Task UploadFileDistractor(InputFileChangeEventArgs e, int Place)     //העלאת תמונה למסיחים השגויים
+
     {
         var imageFiles = e.GetMultipleFiles();
         foreach (var file in imageFiles)
@@ -710,7 +721,7 @@
 
     }
 
-    void CleanFuncQuestionImage(string myFileImage)
+    void CleanFuncQuestionImage(string myFileImage) // פונקציה למחיקת תמונה בגזע השאלה
     {
         DeletedImages.Add(myFileImage); //הוספה לרשימת המחיקה
         Console.WriteLine(" myFileImage" + myFileImage);
@@ -723,7 +734,7 @@
 
     }
 
-    void CleanFuncDistractorCorrectImage()
+    void CleanFuncDistractorCorrectImage() // פונקציה למחיקת תמונה במסיח הנכון
     {
         DeletedImages.Add(myFileImageCorrectAnswer); //הוספה לרשימת המחיקה
         CorrectAnswer.DistractorContent = "";
@@ -732,7 +743,7 @@
 
     }
 
-    void CleanFuncDistractorImage(int Place)
+    void CleanFuncDistractorImage(int Place) // פונקציה למחיקת תמונה במסיחים
     {
         myFileImageWorngAnswer = myDistractorList[Place].DistractorContent;
         DeletedImages.Add(myFileImageWorngAnswer); //הוספה לרשימת המחיקה
@@ -753,7 +764,7 @@
     DialogOptions MyDialog = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true, DisableBackdropClick = true };
 
 
-    void GotoHowtoDialog(DialogOptions options)
+    void GotoHowtoDialog(DialogOptions options) // פופאפ לתפריט ניווט איך משחקים
     {
         Console.WriteLine("נכנס לפונקציה");
         Console.WriteLine("options " + options);
@@ -762,7 +773,7 @@
         //var result = await dialog.Result;
     }
 
-    void GotoOdot(DialogOptions options)
+    void GotoOdot(DialogOptions options) //פופאפ לאודות
     {
         Console.WriteLine("נכנס לפונקציה");
         Console.WriteLine("options " + options);
