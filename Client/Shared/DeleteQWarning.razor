@@ -2,23 +2,29 @@
 @inject HttpClient Http
 
 
+<div id="PopUpDelete">
 
-<MudDialog>
-    <DialogContent>
-        <MudText>
-            שימו לב - במידה ובמאגר השאלות יש פחות מ - 10 שאלות
-            <br />
-            לא ניתן יהיה לפרסם את המשחק.
-        </MudText>
-        <MudText>
-            האם  למחוק את השאלה "@QuestionString..."?
-        </MudText>
-    </DialogContent>
-    <DialogActions>
-        <MudButton Style="background-color:saddlebrown; color:azure" @onclick="OkFunc" Color="Color.Primary" Variant="Variant.Filled">מחיקה</MudButton>
-        <MudButton OnClick="Cancel">חזרה לעריכת המשחק</MudButton>
-    </DialogActions>
-</MudDialog>
+    <MudDialog Style=" background-color: #DBCBAA;">
+        <DialogContent>
+            <MudItem Style="width: 60%; height:40%; margin-right: -1%;">
+
+                <MudText>
+                    שימו לב - במידה ובמאגר השאלות יש פחות מ - 10 שאלות
+                    <br />
+                    לא ניתן יהיה לפרסם את המשחק.
+                </MudText>
+                <MudText>
+                    האם  למחוק את השאלה "@QuestionString..."?
+                </MudText>
+            </MudItem>
+
+        </DialogContent>
+        <DialogActions>
+            <MudButton Style="background-color:saddlebrown; color:azure" @onclick="OkFunc" Color="Color.Primary" Variant="Variant.Filled">מחיקה</MudButton>
+            <MudButton OnClick="Cancel">חזרה לעריכת המשחק</MudButton>
+        </DialogActions>
+    </MudDialog>
+</div>
 
 @code {
 

@@ -1,5 +1,4 @@
-﻿
-@using TreasureIsland_Dolev_May_Coral.Shared.Entities
+﻿@using TreasureIsland_Dolev_May_Coral.Shared.Entities
 @inject HttpClient Http
     <div id="PopUpSetting">
         <MudDialog Style=" background-color: #DBCBAA;">
@@ -17,8 +16,8 @@
                             <MudSelectItem T="int" Value="40">40 שניות</MudSelectItem>
                             <MudSelectItem T="int" Value="60">60 שניות</MudSelectItem>
                         </MudSelect>
-                        <MudButton Style="background-color:saddlebrown; color:azure; margin-top: 5%; border-radius:20px;" OnClick="OnValidSubmit">שמירת שינויים</MudButton>
                     </MudItem>
+                    <MudButton Style="background-color:saddlebrown; color:azure; margin-top: 5%; border-radius:20px;" OnClick="OnValidSubmit">שמירת שינויים</MudButton>
                 </EditForm>
             </DialogContent>
             <DialogActions>

@@ -1,7 +1,10 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;700&display=swap');
-/* If the screen size is 601px wide or more, set the font-size of <div> to 80px */
-@media screen and (min-width: 601px) {
+
+/*הגדרת עמוד*/
+
+/* If the screen size is 601px wide or more, set the font-size of <div> to 80px 
+*/@media screen and (min-width: 601px) {
     body {
         font-size: 1em;
     }
@@ -12,16 +15,15 @@
     body {
         font-size: 80%;
     }
-
     #LoginSign h1 {
         font-size: 20px !important;
     }
-
     .mud-input {
         height: 80%;
         width: 80%;
     }
 }
+
 
 html, body {
     height: 100%;
@@ -43,7 +45,7 @@ body {
     padding-top: unset;
 }
 
-
+/*תפריט ניווט*/
 
 header {
     background-image: url('../photo/wood.png');
@@ -115,15 +117,6 @@ nav {
                     text-decoration: none;
                 }
 
-
-/*.hide {
-    display: none;
-}*/
-
-/*.container {
-    position: relative;
-    text-align: center;
-}*/
 
 .centered {
     position: absolute;
@@ -199,6 +192,7 @@ nav {
     border-radius: 30px;
 }
 
+/*----עמוד 2-רשימת המשחקים----*/
 
 /*שלט עמוד רשימת המשחקים*/
 #GameSign {
@@ -222,6 +216,7 @@ nav {
         text-align: center;
         margin-top: 46px;
         margin-right: 15px;
+        font-size: 30px;
     }
 
 /*טבלת המשחקים*/
@@ -258,6 +253,8 @@ nav {
     letter-spacing: .01071em;
     vertical-align: inherit;
 }
+
+
 
 /*תמונת פופ-אפ יצירת משחק
 */ #CreatingGame {
@@ -304,10 +301,116 @@ nav {
 
     #PopUpOdot p {
         text-align: center;
+        font-size: 18px;
+        font-family: 'Assistant';
+    }
+
+    #PopUpOdot h1 {
+        text-align:center;
+        font-size: 40px;
+        font-family: 'Assistant';
+        margin-top: -35px;
+        z-index:1;
+    }
+
+/*    פופ- אפ פירסום*/
+
+/*#PopUpPublish {
+    background-repeat: no-repeat;
+    background-image: url(../Images/PublishIcon.png);
+    background-size: 20%;
+    background-position-x: 130px;
+    background-position-y: -13px;
+}
+
+#PopUpPublishGame p {
+    text-align: center;
+    font-size: 18px;
+    font-family: 'Assistant';
+}*/
+
+.mud-button-root {
+    z-index: 2;
+}
+
+#PopUpHowToPlay {
+    background-position: center;
+    background-size: 36%;
+    background-repeat: no-repeat;
+    background-image: url(../Images/compass.png);
+    height:260px;
+}
+
+    #PopUpHowToPlay p {
+        text-align: center;
+        font-size: 18px;
+        font-family: 'Assistant';
+    }
+
+    #PopUpHowToPlay h1 {
+        text-align: center;
+        font-size: 40px;
+        font-family: 'Assistant';
+        margin-top: -35px;
+        z-index: 1;
     }
 
 
+/*----עריכת שאלות----*/
 
+
+.tableofQ {
+    margin-top: 7%;
+    width: 35%;
+    z-index: 3;
+    top: 50px;
+    position: absolute;
+    margin-right: 60%;
+}
+
+.mud-table-toolbar {
+    padding-left: 16px;
+    padding-right: 8px;
+    padding-inline-start: 16px;
+    padding-inline-end: 8px;
+    justify-content: center;
+    background-color: #DBCBAA;
+}
+
+.BtnPublish {
+    text-align: center;
+}
+
+#ImgWoodEditGame {
+    background-image: url(../Images/SignEditGame.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-position-y: bottom;
+    background-size: 16%;
+}
+
+#ContentQuestion {
+    padding: 10px;
+}
+
+.imgUploadBtn {
+    inline-size: auto;
+    margin-right: 91%;
+    z-index: 2;
+    margin-top: -35%;
+}
+
+.TextImfI {
+    z-index: 3;
+    margin-right: -173%;
+    margin-top: 190%;
+}
+
+#Distracting {
+    padding: 1%;
+    padding-top: 2%;
+}
+/*--------------*/
 a, .btn-link {
     color: #0366d6;
 }
@@ -362,11 +465,3 @@ p.mypClass {
     left: 100px;
 }
 
-.tableofQ {
-    width: 35%;
-    display: inline-block;
-    right: 750px;
-    top: 50px;
-    vertical-align: top;
-    position: absolute;
-}

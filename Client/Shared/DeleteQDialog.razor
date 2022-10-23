@@ -3,35 +3,41 @@
 
 
 
-<MudDialog>
-    <DialogContent>
-        <MudText>
-           האם ברצונך למחוק את השאלה?
-            <br />
-            פעולה זו אינה ניתנת לשחזור.
-        </MudText>
-    </DialogContent>
-    <DialogActions>
-        <MudButton Style="background-color:saddlebrown; color:azure" @onclick="OkFunc" Color="Color.Primary" Variant="Variant.Filled">מחיקה</MudButton>
-        <MudButton OnClick="Cancel">ביטול הפעולה</MudButton>
-    </DialogActions>
-</MudDialog>
+<div id="PopUpDelete">
+    <MudDialog Style=" background-color: #DBCBAA;">
+        <DialogContent>
+            <MudItem Style="width: 60%; height:40%; margin-right: -1%;">
+                <MudText>
+                    <br />
 
-@code {
+                    האם ברצונך למחוק את השאלה?
+                    <br />
+                    פעולה זו אינה ניתנת לשחזור.
+                </MudText>
+            </MudItem>
+        </DialogContent>
 
-   
+        <DialogActions>
+            <MudButton Style="background-color:saddlebrown; color:azure" @onclick="OkFunc" Color="Color.Primary" Variant="Variant.Filled">מחיקה</MudButton>
+            <MudButton OnClick="Cancel">ביטול הפעולה</MudButton>
+        </DialogActions>
+    </MudDialog>
+</div>
+    @code {
 
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
-    
-    private void Cancel()
-    {
-        MudDialog.Cancel();
+
+        [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+
+        private void Cancel()
+        {
+            MudDialog.Cancel();
+        }
+
+        private void OkFunc()
+        {
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+
     }
-
-    private void OkFunc()
-    {
-        MudDialog.Close(DialogResult.Ok(true));
-    }
-
-}
