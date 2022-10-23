@@ -283,6 +283,8 @@
 
     DialogOptions MyDIalogDeleteGame = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true, DisableBackdropClick = true };
 
+    List<string> DeletedImages = new List<string>(); //רשימת תמונות למחיקה
+
 
     protected async Task DeleteGame(Game Game, DialogOptions options) //שיטה למחיקת משחק
 
@@ -300,6 +302,34 @@
             Console.WriteLine("התבצעו שינויים");
 
             newGame = Game;
+
+
+            //foreach (Question q in newGame.GameQuestions)
+            //{
+
+            //    foreach (Distractor d in q.QuestionDistractors)
+            //    {
+            //        if (d.IsImage == true)
+            //        {
+
+            //            DeletedImages.Add(d.DistractorContent); //הוספה לרשימת המחיקה                       
+            //        }
+
+            //    }
+
+            //}
+            //Console.WriteLine("DeletedImages.Count " + DeletedImages.Count);
+
+            //var saveResponse = await Http.PostAsJsonAsync("api/Games/deleteImages", DeletedImages);
+
+            ////פעולת המחיקה
+            //if (saveResponse.IsSuccessStatusCode == true)
+            //{
+            //    Console.WriteLine(" תמונות נמחקו ");
+            //}
+
+            //DeletedImages = new List<string>(); //איפוס
+
 
             var deleteResponse = await Http.DeleteAsync("api/Games/" + newGame.UserID.ToString() + "/" + newGame.ID); //הנתיב של הקונטרולר מוצא לנו את המשחק שהמספר המזהה שלו נבחר או הוקלד
 
