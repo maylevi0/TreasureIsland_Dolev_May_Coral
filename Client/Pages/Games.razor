@@ -286,12 +286,13 @@
     List<string> DeletedImages = new List<string>(); //רשימת תמונות למחיקה
 
 
-    protected async Task DeleteGame(Game Game, DialogOptions options) //שיטה למחיקת משחק
+    protected async Task DeleteGame(Game CurrentGame, DialogOptions options) //שיטה למחיקת משחק
 
     {
+
         var parameters = new DialogParameters();
 
-        parameters.Add("GameFromPage", Game); //שולח מופע של משחק
+        parameters.Add("GameFromPage", CurrentGame); //שולח מופע של משחק
 
         var dialog = DialogService.Show<DeleteGameDialog>("מחיקת המשחק", parameters, options);
 
@@ -301,37 +302,47 @@
         {
             Console.WriteLine("התבצעו שינויים");
 
-            newGame = Game;
+            var getResponse = await Http.GetAsync("api/Games/bygameID/" + CurrentGame.ID); // שליפת תוכן המשחק כולל מסיחים ושאלות
+
+            if (getResponse.IsSuccessStatusCode == true)
+            {
+
+                // הכלה של פרטי הקריאה מהדטה בייס למופע של המשחק בעמוד זה
+                CurrentGame = getResponse.Content.ReadFromJsonAsync<Game>().Result;
+
+            }
+            foreach (Question q in CurrentGame.GameQuestions)
+            {
+                if (q.QuestionImage != null)
+                {
+                    DeletedImages.Add(q.QuestionImage); //הוספה לרשימת המחיקה                       
+
+                }
+                foreach (Distractor d in q.QuestionDistractors)
+                {
+                    if (d.IsImage == true)
+                    {
+
+                        DeletedImages.Add(d.DistractorContent); //הוספה לרשימת המחיקה                       
+                    }
+
+                }
+
+            }
+            Console.WriteLine("DeletedImages.Count " + DeletedImages.Count);
+
+            var saveResponse = await Http.PostAsJsonAsync("api/Games/deleteImages", DeletedImages);
+
+            //פעולת המחיקה
+            if (saveResponse.IsSuccessStatusCode == true)
+            {
+                Console.WriteLine(" תמונות נמחקו ");
+            }
+
+            DeletedImages = new List<string>(); //איפוס
 
 
-            //foreach (Question q in newGame.GameQuestions)
-            //{
-
-            //    foreach (Distractor d in q.QuestionDistractors)
-            //    {
-            //        if (d.IsImage == true)
-            //        {
-
-            //            DeletedImages.Add(d.DistractorContent); //הוספה לרשימת המחיקה                       
-            //        }
-
-            //    }
-
-            //}
-            //Console.WriteLine("DeletedImages.Count " + DeletedImages.Count);
-
-            //var saveResponse = await Http.PostAsJsonAsync("api/Games/deleteImages", DeletedImages);
-
-            ////פעולת המחיקה
-            //if (saveResponse.IsSuccessStatusCode == true)
-            //{
-            //    Console.WriteLine(" תמונות נמחקו ");
-            //}
-
-            //DeletedImages = new List<string>(); //איפוס
-
-
-            var deleteResponse = await Http.DeleteAsync("api/Games/" + newGame.UserID.ToString() + "/" + newGame.ID); //הנתיב של הקונטרולר מוצא לנו את המשחק שהמספר המזהה שלו נבחר או הוקלד
+            var deleteResponse = await Http.DeleteAsync("api/Games/" + CurrentGame.UserID.ToString() + "/" + CurrentGame.ID); //הנתיב של הקונטרולר מוצא לנו את המשחק שהמספר המזהה שלו נבחר או הוקלד
 
             if (deleteResponse.IsSuccessStatusCode == true) //בדיקת תקינות
             {
@@ -340,11 +351,11 @@
                 {
 
 
-                    CurrentUser.UserGames.Remove(newGame);  //להסיר את המשחק
+                    CurrentUser.UserGames.Remove(CurrentGame);  //להסיר את המשחק
 
                     await RefreshTable(); // ריענון הטבלה
 
-                    newGame = new Game();// איפוס המופע כדי להכינו לקבלת מידע חדש
+                    CurrentGame = new Game();// איפוס המופע כדי להכינו לקבלת מידע חדש
                     msg = "אחרי המחיקה";
                     CurrentUseUserGames = CurrentUser.UserGames.Count;
 
