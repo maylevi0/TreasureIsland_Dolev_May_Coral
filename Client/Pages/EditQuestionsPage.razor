@@ -194,9 +194,14 @@
                             else
                             {
                                 // מוסיפים כתפור תמונה שהוא כן פעיל
-                                <MudTextField @bind-Value="a.DistractorContent" Margin="Margin.Dense" Counter="30" MaxLength="30" Placeholder="תוכן תשובה לא נכונה" Variant="Variant.Outlined"></MudTextField>
+                                <MudTextField
+                                 @bind-Value="a.DistractorContent" 
+                                 Margin="Margin.Dense" 
+                                Counter="30" MaxLength="30" 
+                                  Placeholder="תוכן תשובה לא נכונה"
+                                   Variant="Variant.Outlined"></MudTextField>
 
-                                <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="@("imgFile" + place.ToString())" HtmlTag="label"></MudIconButton>
+                                <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="@("imgFile" + place.ToString())" Style="margin-top: -33%; margin-right: 89%;" HtmlTag="label"></MudIconButton>
 
                             }
                         }
