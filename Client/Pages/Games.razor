@@ -14,8 +14,8 @@
     </a>
     <nav>
         <ul>
-            <li><a>אודות</a></li>
-            <li><a>איך משחקים?</a></li>
+            <li><a @onclick="@(() => GotoOdot(MyDialogPopup))">אודות</a></li>
+            <li><a @onclick="@(() => GotoHowtoDialog(MyDialogPopup))">איך משחקים?</a></li>
             <li><a class="about" href="../indextest.html">למשחק</a></li>
 
         </ul>
@@ -46,7 +46,7 @@
 
         </HeaderContent>
         <RowTemplate>
-         
+
             <MudTd DataLabel="שם המשחק">@context.GameName</MudTd>
             <MudTd DataLabel="לצפייה"><MudButton EndIcon="@Icons.Material.Outlined.RemoveRedEye"></MudButton></MudTd>
             <MudTd DataLabel="קוד המשחק">@context.GameCode</MudTd>
@@ -70,9 +70,10 @@
             }
         </RowTemplate>
     </MudTable>
+    <p>@msg</p>
 </div>
 
-<p>@msg</p>
+
 
 
 @code {
@@ -425,6 +426,26 @@
 
     }
 
+    DialogOptions MyDialogPopup = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true, DisableBackdropClick = true };
+
+
+    void GotoHowtoDialog(DialogOptions options) // פופאפ לתפריט ניווט איך משחקים
+    {
+        Console.WriteLine("נכנס לפונקציה");
+        Console.WriteLine("options " + options);
+        var dialog = DialogService.Show<HowtoplayDialog>(" ", options);
+
+        //var result = await dialog.Result;
+    }
+
+    void GotoOdot(DialogOptions options) //פופאפ לאודות
+    {
+        Console.WriteLine("נכנס לפונקציה");
+        Console.WriteLine("options " + options);
+        var dialog = DialogService.Show<Odot>(" ", options);
+
+        //var result = await dialog.Result;
+    }
 
 }
 

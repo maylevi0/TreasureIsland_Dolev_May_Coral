@@ -225,12 +225,14 @@ nav {
     margin-left: 143px;
     margin-right: 10px;
 }
-
-/*אייקונים טבלת משחקים*/
-.mud-icon-root {
-    fill: currentColor;
-    color: #714727;
-}
+    #GameTable p {
+        margin-right: 2%;
+    }
+    /*אייקונים טבלת משחקים*/
+    .mud-icon-root {
+        fill: currentColor;
+        color: #714727;
+    }
 
 /*כותרת טבלת המשחקים*/
 .mud-table-sticky-header * .mud-table-root .mud-table-head * .mud-table-cell {
@@ -363,7 +365,7 @@ nav {
     margin-top: 7%;
     width: 35%;
     z-index: 3;
-    top: 50px;
+    top: 10px;
     position: absolute;
     margin-right: 60%;
 }

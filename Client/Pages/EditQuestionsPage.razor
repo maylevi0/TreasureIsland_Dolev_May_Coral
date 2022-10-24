@@ -12,8 +12,8 @@
     </a>
     <nav>
         <ul>
-            <li><a @onclick="@(() => GotoOdot(MyDialog))">אודות</a></li>
-            <li><a @onclick="@(() => GotoHowtoDialog(MyDialog))">איך משחקים?</a></li>
+            <li><a @onclick="@(() => GotoOdot(MyDialogPop))">אודות</a></li>
+            <li><a @onclick="@(() => GotoHowtoDialog(MyDialogPop))">איך משחקים?</a></li>
             <li><a class="about" href="../indextest.html">למשחק</a></li>
 
         </ul>
@@ -245,7 +245,7 @@
     </EditForm>
 </div>
 <div id="TableEditinGame">
-    <MudTable FixedHeader="true" Dense="true" style="height:600px; overflow-y: scroll;" class="tableofQ" Items="@CurrentGame.GameQuestions" Hover="true">
+    <MudTable FixedHeader="true" Dense="true" style="height:650px; overflow-y: scroll;" class="tableofQ" Items="@CurrentGame.GameQuestions" Hover="true">
         <ToolBarContent>
             <MudText Style="color:black;" Typo="Typo.h6">מאגר שאלות (@CurrentGame.GameQuestions.Count)</MudText>
         </ToolBarContent>
@@ -810,7 +810,7 @@
         nav.NavigateTo("./Games/" + userId);
     }
 
-    DialogOptions MyDialog = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true, DisableBackdropClick = true };
+    DialogOptions MyDialogPop = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true, DisableBackdropClick = true };
 
 
     void GotoHowtoDialog(DialogOptions options) // פופאפ לתפריט ניווט איך משחקים
