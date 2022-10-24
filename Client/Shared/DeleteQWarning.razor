@@ -9,12 +9,12 @@
             <MudItem Style="width: 60%; height:40%; margin-right: -1%;">
 
                 <MudText>
-                    שימו לב - במידה ובמאגר השאלות יש פחות מ - 10 שאלות
+                    שימו לב - במידה ובמאגר השאלות יש פחות מ - 10
                     <br />
-                    לא ניתן יהיה לפרסם את המשחק.
+                    שאלות לא ניתן יהיה לפרסם את המשחק.
                 </MudText>
                 <MudText>
-                    האם  למחוק את השאלה "@QuestionString..."?
+                    האם  למחוק את השאלה "<b>@QuestionString</b>..."?
                 </MudText>
             </MudItem>
 
@@ -38,16 +38,21 @@
     protected override void OnInitialized()
     {
         QuestionString = QtoDialog.QuestionTitle; // הכנסת תוכן השאלה אל המשתנה בעמוד הזה
-
+        if (QuestionString.Length > 10)
+        {
+            QuestionString = QuestionString.Substring(0, 10);
+        }
     }
 
     private void Cancel()
     {
+        QuestionString = "";
         MudDialog.Cancel();
     }
 
     private void OkFunc()
     {
+        QuestionString = "";
         MudDialog.Close(DialogResult.Ok(true));
     }
 

@@ -34,16 +34,18 @@
         {
 
             Qcontent = QtoDialog.QuestionTitle;
-                    
+           
         }
 
         private void Cancel()
         {
             MudDialog.Cancel();
+            Qcontent = "";
         }
 
         private void OkFunc()
         {
+            Qcontent = "";
             MudDialog.Close(DialogResult.Ok(true));
         }
 
