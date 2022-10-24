@@ -188,7 +188,7 @@
 
                                 // מוסיפים כפתור להעלאת תמונה במצב מושבת
                                 <MudTooltip Text="כדי להעלות תמונה עליך למחוק את הטקסט">
-                                    <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Disabled="true" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudIconButton>
+                                    <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Disabled="true" Size="Size.Small"  Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudIconButton>
                                 </MudTooltip>
                             }
                             else
@@ -212,7 +212,7 @@
 
                                 //תיבת טקסט הינה מושבתת כי יש תמונה בתוכן של המסיח
                                 <MudTooltip Text="כדי להוסיף טקסט עליך למחוק את התמונה">
-                                    <MudTextField Disabled="true" Placeholder=""  Variant="Variant.Outlined" Margin="Margin.Dense" T="string"></MudTextField>
+                                    <MudTextField Disabled="true" Placeholder=""  Counter="30" MaxLength="30" Variant="Variant.Outlined" Margin="Margin.Dense" T="string"></MudTextField>
                                 </MudTooltip>
                                 <img src="@myDistractorList[place].DistractorContent" width="30" />
                                 <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="(() => CleanFuncDistractorImage(place))" HtmlTag="label"></MudIconButton>
