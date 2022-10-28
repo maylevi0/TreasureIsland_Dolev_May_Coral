@@ -117,20 +117,24 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
         [HttpGet("bygameID/{gameId}")]
         public async Task<IActionResult> GetgamecontentbyId(int gameId)
         {
-            Game gameFromDB = await _context.Games.Include(g => g.GameQuestions).ThenInclude(q => q.QuestionDistractors).FirstOrDefaultAsync(g => g.ID == gameId);
-            if (gameFromDB != null)
-            {
-                return Ok(gameFromDB);
-            }
-            else
-            {
-                return BadRequest("Game not found");
-            }
+           
+
+                    Game gameFromDB = await _context.Games.Include(g => g.GameQuestions).ThenInclude(q => q.QuestionDistractors).FirstOrDefaultAsync(g => g.ID == gameId);
+                    if (gameFromDB != null)
+                    {
+                        return Ok(gameFromDB);
+                    }
+                    else
+                    {
+                        return BadRequest("Game not found");
+                    }
+              
+            
         }
+            
+                //קוד משחק יצירת משחק חדש
 
-        //קוד משחק יצירת משחק חדש
-
-        [HttpPost]
+                [HttpPost]
         public async Task<IActionResult> AddGame(Game gameToAdd)
         {
             string sessionContent = HttpContext.Session.GetString("UserId");

@@ -331,9 +331,9 @@ nav {
     font-family: 'Assistant';
 }*/
 
-.mud-button-root {
+/*.mud-button-root {
     z-index: 2;
-}
+}*/
 
 #PopUpHowToPlay {
     background-position: center;
@@ -503,8 +503,8 @@ margin-right: 105%;
 /*עיצוב ספירת האותיות
 */.ml-auto {
     direction: ltr;
-    margin-right: 74%;
-}
+/*    margin-right: 74%;
+*/}
 
 .mud-input.mud-input-outlined {
     position: relative;

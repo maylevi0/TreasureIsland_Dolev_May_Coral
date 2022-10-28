@@ -1,0 +1,46 @@
+﻿@using TreasureIsland_Dolev_May_Coral.Shared.Entities
+@inject HttpClient Http
+@inject NavigationManager nav
+
+<div id="PopUpDelete">
+
+    <MudDialog Style=" background-color: #DBCBAA;">
+        <DialogContent>
+            <MudItem Style="width: 60%; height:40%; margin-right: -1%;">
+
+                <MudText>
+
+                </MudText>
+            </MudItem>
+
+        </DialogContent>
+        <DialogActions>
+            <MudButton Style="background-color:saddlebrown; color:azure" @onclick="OkFunc" Color="Color.Primary" Variant="Variant.Filled">אישור</MudButton>
+        </DialogActions>
+    </MudDialog>
+</div>
+
+@code {
+
+
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+
+    private void Cancel()
+    {
+
+        MudDialog.Cancel();
+        nav.NavigateTo("./");
+
+    }
+
+    private void OkFunc()
+    {
+
+        MudDialog.Close(DialogResult.Ok(true));
+        nav.NavigateTo("./");
+
+    }
+
+}
