@@ -363,11 +363,11 @@ nav {
 
 .tableofQ {
     margin-top: 7%;
-    width: 35%;
+    width: 31%;
     z-index: 3;
     top: 10px;
     position: absolute;
-    margin-right: 60%;
+    margin-right: 67%;
 }
 
 .mud-table-toolbar {
@@ -388,21 +388,24 @@ nav {
     background-repeat: no-repeat;
     background-position: center;
     background-position-y: bottom;
-    background-size: 16%;
+    background-size: 18%;
 }
 
+
 #ContentQuestion {
-    padding: 10px;
+    margin-top: -5%;
+    padding: 6px;
 }
 
 .imgUploadBtn {
-    inline-size: auto;
-    margin-right: 91%;
-    z-index: 2;
-    margin-top: -35%;
+    margin-right: 108%;
+    z-index: 3;
+    margin-top: -5%;
+    display: flex;
 }
 
-.TextImfI {
+
+    .TextImfI {
     z-index: 3;
     margin-right: -173%;
     margin-top: 190%;
@@ -410,7 +413,7 @@ nav {
 
 #Distracting {
     padding: 1%;
-    padding-top: 2%;
+    margin-top: 2%;
 }
 /*--------------*/
 a, .btn-link {
@@ -468,29 +471,39 @@ p.mypClass {
 }
 
 
-
-.distractor-0 {
-    margin-left: 53%;
-}
-
 .distractor-1 {
-    margin-right: 50%;
-    margin-top: -28%;
+    margin-right: 105%;
+    margin-top: -69%;
+    z-index: 3;
+    width: 304px;
 }
-
 
 .distractor-2 {
-    margin-left: 53%;
-    margin-top: 17%;
+    margin-right: 105%;
+    margin-top: 8%;
+    z-index: 3;
+    width: 304px;
 }
+
+
 .distractor-3 {
-    margin-right: 50%;
-    margin-top: -26%;
+margin-right: 105%;
+    margin-top: 9%;
+    z-index: 3;
+    width: 304px;
 }
 
 .distractor-4 {
-    margin-right: 50%;
-    margin-top: 5%;
+    margin-right: 0%;
+    margin-top: -30%;
+    z-index: 3;
+    width: 304px;
+}
+
+/*עיצוב ספירת האותיות
+*/.ml-auto {
+    direction: ltr;
+    margin-right: 74%;
 }
 
 .mud-input.mud-input-outlined {

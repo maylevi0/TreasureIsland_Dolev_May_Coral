@@ -32,7 +32,7 @@
         { //גדול מ10 ניתן לפרסום
             <MudItem>
                 <MudText Style="font-size:small; color:white;">לפרסום המשחק הנוכחי:</MudText>
-                <MudButton Style="background-color:darkorange;height:26px;border-radius:30px;" Variant="Variant.Filled" OnClick="(() => PublishGame(MyDialogPublish))">פרסום משחק</MudButton>
+                <MudButton Style="background-color:darkorange;height:26px;border-radius:30px; margin-top:1%;" Variant="Variant.Filled" OnClick="(() => PublishGame(MyDialogPublish))">פרסום משחק</MudButton>
             </MudItem>
             <MudItem Style="color:green">
                 <MudText Style="font-size:small"> <MudIcon Size="Size.Small" Icon="@Icons.Filled.Info" />המשחק ניתן לפרסום</MudText>
@@ -44,7 +44,7 @@
             {
                 //כפתור כבוי
                 <MudItem>
-                    <MudButton Style="background-color:darkorange" Variant="Variant.Filled" Disabled="true">פרסום משחק</MudButton>
+                    <MudButton Style="background-color:darkorange; height: 26px;border-radius: 30px;" Variant="Variant.Filled" Disabled="true">פרסום משחק</MudButton>
                 </MudItem>
                 <MudItem Style="color:red;">
                     <MudText Style="font-size:small"> <MudIcon Size="Size.Small" Icon="@Icons.Filled.Info" />לא ניתן לפרסם את המשחק</MudText>
@@ -55,10 +55,10 @@
     </div>
 </div>
 <br />
-
-<h1 style="color: saddlebrown">עריכת המשחק: <b style="color: black">@CurrentGame.GameName</b></h1>
-
 <div id="ContentQuestion">
+
+    <h1 style="color: saddlebrown">עריכת המשחק: <b style="color: black">@CurrentGame.GameName</b></h1>
+
     <EditForm Model="@CurrentQuestion" OnValidSubmit="OnValidSubmit">
 
         <DataAnnotationsValidator />
@@ -70,49 +70,48 @@
             <MudItem Style="width: 500px">
                 @if (CurrentQuestion.QuestionTitle == null || CurrentQuestion.QuestionTitle == "")
                 {
-                    <MudTextField Variant="Variant.Outlined" Counter="50"  Margin="Margin.Dense" Placeholder="תוכן השאלה..." @bind-Value="CurrentQuestion.QuestionTitle" For="@(() => CurrentQuestion.QuestionTitle)"></MudTextField>
+                    <MudTextField Variant="Variant.Outlined" Counter="50" Margin="Margin.Dense" Placeholder="תוכן השאלה..." @bind-Value="CurrentQuestion.QuestionTitle" For="@(() => CurrentQuestion.QuestionTitle)"></MudTextField>
                 }
                 else
                 {
 
-                    <MudTextField
-                      T="string"
-                     Counter="50"
-                     Variant="Variant.Outlined" 
-                     Margin="Margin.Dense"
-                     Placeholder="תוכן השאלה..."
-                     @bind-Value="CurrentQuestion.QuestionTitle" 
-                     For="@(() => CurrentQuestion.QuestionTitle)" 
-                    Adornment="Adornment.End" 
-                     AdornmentIcon="@Icons.Filled.Close" 
-                     OnAdornmentClick="CleanFuncQuestion"></MudTextField>
+                    <MudTextField T="string"
+                                  Counter="50"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense"
+                                  Placeholder="תוכן השאלה..."
+                                  @bind-Value="CurrentQuestion.QuestionTitle"
+                                  For="@(() => CurrentQuestion.QuestionTitle)"
+                                  Adornment="Adornment.End"
+                                  AdornmentIcon="@Icons.Filled.Close"
+                                  OnAdornmentClick="CleanFuncQuestion"></MudTextField>
 
                 }
-                
-                    <InputFile id="FileInputID" OnChange="UploadFile" accept=".jpg, .jpeg, .png" hidden />
-                    <img src="@CurrentQuestion.QuestionImage" width="30" />
-                    <div class="imgUploadBtn">
-                        @if (Xbuttonhidden2 == false)
-                        {
-                            <MudText Class="TextImfI" Style="font-size:small">ניתן להוסיף</MudText>
-                            <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudIconButton>
-                        }
-                        else
-                        {
-                            <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="(() => CleanFuncQuestionImage(CurrentQuestion.QuestionImage))" HtmlTag="label"></MudIconButton>
-                        }
 
-                    </div>
+                <InputFile id="FileInputID" OnChange="UploadFile" accept=".jpg, .jpeg, .png" hidden />
+                <img src="@CurrentQuestion.QuestionImage" class="img-qu" width="30" style="display: flow-root; margin-top: -13%;margin-right: 100%;" />
+                <div class="imgUploadBtn">
+                    @if (Xbuttonhidden2 == false)
+                    {
+                        <MudText Class="TextImfI" Style="font-size:small">ניתן להוסיף</MudText>
+                        <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="FileInputID" HtmlTag="label"></MudIconButton>
+                    }
+                    else
+                    {
+                        <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="(() => CleanFuncQuestionImage(CurrentQuestion.QuestionImage))" HtmlTag="label"></MudIconButton>
+                    }
+
+                </div>
 
             </MudItem>
 
             <div id="Distracting">
                 <MudText>אפשרויות מענה: </MudText><MudText Style="font-size:smaller">(@DistractorsonScreen מתוך 6)</MudText>
-                <MudItem Style="width: 350px">
+                <MudItem Style="width: 304px">
 
                     <MudText Style="color: forestgreen; font-size:medium"><b>תשובה נכונה</b></MudText>
 
-                    <InputFile id="imgFileCorrectAnswer"  OnChange="UploadFileforCorrectAnswer" accept=".jpg, .jpeg, .png" hidden  />
+                    <InputFile id="imgFileCorrectAnswer" OnChange="UploadFileforCorrectAnswer" accept=".jpg, .jpeg, .png" hidden />
 
                     @if (CorrectAnswer.IsImage == false)
                     {
@@ -120,12 +119,12 @@
                         @if (string.IsNullOrEmpty(CorrectAnswer.DistractorContent) == false)
                         {
                             // תיבת טקסט מלא
-                            <MudTextField  Variant="Variant.Outlined" Margin="Margin.Dense" Counter="30" MaxLength="30" Placeholder="תוכן תשובה נכונה"
+                            <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Counter="30" MaxLength="30" Placeholder="תוכן תשובה נכונה"
                                           @bind-Value="CorrectAnswer.DistractorContent" For="@(() => CorrectAnswer.DistractorContent)" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Close" OnAdornmentClick="CleanFuncDistractorCorrectImage" />
 
                             //כפתור העלאת תמונה מושבת
                             <MudTooltip Text="כדי להעלות תמונה עליך למחוק את הטקסט">
-                                <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Disabled="true" Size="Size.Small" Color="Color.Dark" Style="margin-top: -33%; margin-right: 89%;" for="FileInputID" HtmlTag="label"></MudIconButton>
+                                <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Disabled="true" Size="Size.Small" Color="Color.Dark" Style="margin-top: -38%; margin-right: 89%;" for="FileInputID" HtmlTag="label"></MudIconButton>
                             </MudTooltip>
                         }
                         else
@@ -134,7 +133,7 @@
                             <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Counter="30" MaxLength="30" Placeholder="תוכן תשובה נכונה"
                                           @bind-Value="CorrectAnswer.DistractorContent" For="@(() => CorrectAnswer.DistractorContent)" />
                             //כפתור העלאת תמונה פעיל
-                            <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" Style="margin-top: -33%; margin-right: 89%;" for="imgFileCorrectAnswer" HtmlTag="label"></MudIconButton>
+                            <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" Style="margin-top: -36%; margin-right: 89%;" for="imgFileCorrectAnswer" HtmlTag="label"></MudIconButton>
                         }
                     }
                     else
@@ -148,12 +147,12 @@
                                 <MudTextField Disabled="true" Variant="Variant.Outlined" Margin="Margin.Dense" Placeholder="תוכן תשובה נכונה"
                                               For="@(() => CorrectAnswer.DistractorContent)" />
                             </MudTooltip>
-                            <img src="@CorrectAnswer.DistractorContent" width="30"/>
+                            <img src="@CorrectAnswer.DistractorContent" width="30" />
                             <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Dark" @onclick="CleanFuncDistractorCorrectImage" HtmlTag="label"></MudIconButton>
                         }
                         else
                         {
-                            <MudTextField Disabled="true" Variant="Variant.Outlined" Margin="Margin.Dense"  Placeholder="תוכן תשובה נכונה"
+                            <MudTextField Disabled="true" Variant="Variant.Outlined" Margin="Margin.Dense" Placeholder="תוכן תשובה נכונה"
                                           For="@(() => CorrectAnswer.DistractorContent)" />
                             <MudIconButton Icon="@Icons.Material.Filled.AddPhotoAlternate" Size="Size.Small" Color="Color.Dark" for="imgFileCorrectAnswer" HtmlTag="label"></MudIconButton>
                         }
@@ -163,7 +162,7 @@
                 </MudItem>
 
                 <MudText Style="color: saddlebrown; font-size: medium"><b>תשובה לא נכונה</b></MudText>
-                <MudItem Style="width: 750px">
+                <MudItem Style="width: 304px">
                     @foreach (Distractor a in myDistractorList)
                     {
 
@@ -223,27 +222,27 @@
                                 }
 
                             }
-                            </div>
+                        </div>
                     }
 
-</MudItem>
+                </MudItem>
             </div>
         </MudItem>
-        
+
         @if (string.IsNullOrEmpty(CorrectAnswer.DistractorContent) == false && string.IsNullOrEmpty(myDistractorList[0].DistractorContent) == false && string.IsNullOrEmpty(CurrentQuestion.QuestionTitle) == false)
         {
-            <MudButton Style="background-color:saddlebrown; color:azure" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">שמירת שאלה</MudButton>
+    <MudButton Style="background-color:saddlebrown; color:azure; border-radius:17px;margin-right:15px;margin-top:-40%;" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">שמירת שאלה</MudButton>
         }
         else
         {
             <MudTooltip Text="לא ניתן לשמור את השאלה. יש להוסיף שאלה בגזע השאלה ו-2 מסיחים.">
-                <MudButton Style="background-color:saddlebrown; color:azure" Disabled="true" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">שמירת שאלה</MudButton>
+                <MudButton Style="background-color:saddlebrown; color:azure; border-radius:17px;margin-right:15px;margin-top:-40%;" Disabled="true" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">שמירת שאלה</MudButton>
             </MudTooltip>
         }
     </EditForm>
 </div>
 <div id="TableEditinGame">
-    <MudTable FixedHeader="true" Dense="true" style="height:650px; overflow-y: scroll;" class="tableofQ" Items="@CurrentGame.GameQuestions" Hover="true">
+    <MudTable FixedHeader="true" Dense="true" style="height:614px; overflow-y: scroll;" class="tableofQ" Items="@CurrentGame.GameQuestions" Hover="true">
         <ToolBarContent>
             <MudText Style="color:black;" Typo="Typo.h6">מאגר שאלות (@CurrentGame.GameQuestions.Count)</MudText>
         </ToolBarContent>
