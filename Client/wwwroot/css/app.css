@@ -56,6 +56,7 @@ header {
     display: block;
     direction: rtl;
     z-index: 3;
+    background-size: auto;
 }
 
 /*לוגו*/
@@ -223,16 +224,13 @@ nav {
 #GameTable {
     margin-top: 13px;
     margin-left: 143px;
-    margin-right: 10px;
+    margin-right: 35px;
 }
     #GameTable p {
         margin-right: 2%;
     }
-    /*אייקונים טבלת משחקים*/
-    .mud-icon-root {
-        fill: currentColor;
-        color: #714727;
-    }
+
+
 
 /*כותרת טבלת המשחקים*/
 .mud-table-sticky-header * .mud-table-root .mud-table-head * .mud-table-cell {
@@ -381,6 +379,7 @@ nav {
 
 .BtnPublish {
     text-align: center;
+    margin-top: 2%;
 }
 
 #ImgWoodEditGame {
@@ -413,7 +412,7 @@ nav {
 
 #Distracting {
     padding: 1%;
-    margin-top: 2%;
+    margin-top: 5%;
 }
 /*--------------*/
 a, .btn-link {
@@ -514,3 +513,10 @@ margin-right: 105%;
     border: 1px solid #714727;
 }
 
+/*כפתור איקס פעיל 
+*/
+.mud-dialog.mud-dialog-rtl .mud-dialog-title .mud-button-root {
+    right: unset;
+    left: 8px;
+    z-index: 2;
+}
