@@ -1,4 +1,5 @@
-﻿@using TreasureIsland_Dolev_May_Coral.Shared.Entities
+﻿
+@using TreasureIsland_Dolev_May_Coral.Shared.Entities
 @inject HttpClient Http
 @inject NavigationManager nav
 
@@ -9,13 +10,13 @@
             <MudItem Style="width: 60%; height:40%; margin-right: -1%;">
 
                 <MudText>
-                     נראה כי התנתקת מהמערכת, יש להתחבר שנית
+                    אופס נראה כי קרתה תקלה...
                 </MudText>
             </MudItem>
 
         </DialogContent>
         <DialogActions>
-            <MudButton Style="background-color:saddlebrown; color:azure" @onclick="OkFunc" Color="Color.Primary" Variant="Variant.Filled">אישור</MudButton>
+            <MudButton Style="background-color:saddlebrown; color:azure" @onclick="OkFunc" Color="Color.Primary" Variant="Variant.Filled">להמשך</MudButton>
         </DialogActions>
     </MudDialog>
 </div>
@@ -23,12 +24,7 @@
 @code {
 
 
-    [Parameter]
-    public string MSGFromPage { get; set; } // פרמטר שמתקבל מהדף
-
-
-  
-    string MSGtoUSER = ""; //מופע מקומי של סטרינג
+   
 
 
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
@@ -38,16 +34,17 @@
     {
 
         MudDialog.Cancel();
-        nav.NavigateTo("./");
 
+       
     }
 
     private void OkFunc()
     {
 
         MudDialog.Close(DialogResult.Ok(true));
-        nav.NavigateTo("./");
 
+       
     }
 
 }
+

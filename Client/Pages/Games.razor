@@ -120,11 +120,16 @@
                     if (error == "user not logged in" || error == "Empty Session")
                     {
                         Console.WriteLine(error);
-                        nav.NavigateTo("./");
+
+
+                        var dialog2 = DialogService.Show<SessionDialog>("התנתקת מהמערכת", options);
+
+                        //nav.NavigateTo("./");
                     }
                     else
                     {
                         Console.WriteLine(error);
+                        var dialog2 = DialogService.Show<BadServer>("תקלה במערכת", options);
 
                     }
 
@@ -424,6 +429,7 @@
                 string error = getResponse.Content.ReadAsStringAsync().Result;
                 if (error == "user not logged in" || error == "Empty Session")
                 {
+
                     Console.WriteLine(error);
 
                 }
