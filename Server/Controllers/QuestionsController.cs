@@ -23,18 +23,36 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
 
 
 
-        [HttpGet("editQ/{QuestionID}")]
-        public async Task<IActionResult> GetQuestion(int QuestionID)
+        [HttpGet("editQ/{QuestionID}/{userID}")]
+        public async Task<IActionResult> GetQuestion(int QuestionID, int userID)
         {
-            Question QFromDB = await _context.Questions.Include(q => q.QuestionDistractors).FirstOrDefaultAsync(q => q.ID == QuestionID);
-            if (QFromDB != null)
+
+
+
+            string sessionContent = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(sessionContent) == false)
             {
-                return Ok(QFromDB);
+                int sessionId = Convert.ToInt32(sessionContent);
+
+                if (sessionId == userID)
+                {
+
+                    Question QFromDB = await _context.Questions.Include(q => q.QuestionDistractors).FirstOrDefaultAsync(q => q.ID == QuestionID);
+                    if (QFromDB != null)
+                    {
+                        return Ok(QFromDB);
+                    }
+                    else
+                    {
+                        return BadRequest("Question not found");
+                    }
+
+                }
+                return BadRequest("User not login");
             }
-            else
-            {
-                return BadRequest("Question not found");
-            }
+            return BadRequest("Empty session");
+
+
         }
 
         [HttpPost("SaveQuestion")]
@@ -65,50 +83,65 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
 
 
 
-        [HttpDelete("{questionID}")]
-        public async Task<IActionResult> DeleteQ(int questionID)
-        {
-            Console.WriteLine("Qid in controller:" + questionID);
-            Question QuestionFromDB = await _context.Questions.FirstOrDefaultAsync(q => q.ID == questionID);
-            if (QuestionFromDB != null)
-            {
-                Console.WriteLine("not null");
-                _context.Questions.Remove(QuestionFromDB);
-                await _context.SaveChangesAsync();
-                return Ok(true);
-            }
-            else
-            {
+        //[HttpDelete("{questionID}")]
+        //public async Task<IActionResult> DeleteQ(int questionID)
+        //{
+        //    string sessionContent = HttpContext.Session.GetString("UserId");
+        //    if (string.IsNullOrEmpty(sessionContent) == false)
+        //    {
+        //        int sessionId = Convert.ToInt32(sessionContent);
 
-                return BadRequest("no such game...");
-            }
-        }
+        //        if (sessionId == userIdClient)
+        //        {
+        //            Console.WriteLine("Qid in controller:" + questionID);
+        //            Question QuestionFromDB = await _context.Questions.FirstOrDefaultAsync(q => q.ID == questionID);
+        //            if (QuestionFromDB != null)
+        //            {
+        //                Console.WriteLine("not null");
+        //                _context.Questions.Remove(QuestionFromDB);
+        //                await _context.SaveChangesAsync();
+        //                return Ok(true);
+        //            }
+        //            else
+        //            {
+
+        //                return BadRequest("no such game...");
+        //            }
+
+        //        }
+        //        return BadRequest("User not login");
+        //    }
+        //    return BadRequest("Empty session");
+
+
+            
+        //}
 
 
 
-        [HttpDelete("{userID}/{questionID}")]
-        public async Task<IActionResult> DeleteQ(int userID, int questionID)
-        {
-            string sessionContent = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(sessionContent) == false)
-            {
-                int sessionId = Convert.ToInt32(sessionContent);
+        //[HttpDelete("{userID}/{questionID}")]
+        //public async Task<IActionResult> DeleteQ(int userID, int questionID)
+        //{
+        //    string sessionContent = HttpContext.Session.GetString("UserId");
+        //    if (string.IsNullOrEmpty(sessionContent) == false)
+        //    {
+        //        int sessionId = Convert.ToInt32(sessionContent);
 
-                if (sessionId == userID)
-                {
-                    Question QuestionFromDB = await _context.Questions.FirstOrDefaultAsync(q => q.ID == questionID);
-                    if (QuestionFromDB != null)
-                    {
-                        _context.Questions.Remove(QuestionFromDB);
-                        await _context.SaveChangesAsync();
-                        return Ok(true);
-                    }
-                    return BadRequest("no such game...");
-                }
-                return BadRequest("User not login");
-            }
-            return BadRequest("Empty session");
-        }
+        //        if (sessionId == userID)
+        //        {
+        //            Question QuestionFromDB = await _context.Questions.FirstOrDefaultAsync(q => q.ID == questionID);
+        //            if (QuestionFromDB != null)
+        //            {
+        //                _context.Questions.Remove(QuestionFromDB);
+        //                await _context.SaveChangesAsync();
+        //                return Ok(true);
+        //            }
+        //            return BadRequest("no such game...");
+        //        }
+        //        return BadRequest("User not login");
+        //    }
+        //    return BadRequest("Empty session");
+        //}
 
     }
 }

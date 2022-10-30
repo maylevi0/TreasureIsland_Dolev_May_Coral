@@ -47,7 +47,8 @@
                     <MudButton Style="background-color:darkorange; height: 26px;border-radius: 30px;" Variant="Variant.Filled" Disabled="true">פרסום משחק</MudButton>
                 </MudItem>
                 <MudItem Style="color:red;">
-                    <MudText Style="font-size:small"> <MudIcon Size="Size.Small" Icon="@Icons.Filled.Info" />לא ניתן לפרסם את המשחק</MudText>
+                 
+                    <MudText Style="font-size:small;"> <MudIcon Size="Size.Small" Icon="@Icons.Filled.Info" />לא ניתן לפרסם את המשחק, נותרו עוד (@MinimumQ) שאלות</MudText>
                 </MudItem>
             }
             // else קטן מאפס כפתור מוסתר
@@ -329,6 +330,7 @@
 
     int DistractorsonScreen = 0; //משתנה לספירת מסיחים על המסך לפני שמירה
     int Qcount = 0; // משתנה לספירת שאלות - תנאי לפרסום
+    int MinimumQ = 0; // משתנה לספירת שאלות - תנאי לפרסום
 
     // חיווי למשתמש
     string msg = "";
@@ -339,7 +341,7 @@
 
         CurrentGame.ID = gameID;
 
-        var getResponse = await Http.GetAsync("api/Games/bygameID/" + CurrentGame.ID);
+        var getResponse = await Http.GetAsync("api/Games/bygameID/" + CurrentGame.ID + "/" + userId);
 
 
         if (getResponse.IsSuccessStatusCode == true)
@@ -366,14 +368,14 @@
         else
         {
             string error = getResponse.Content.ReadAsStringAsync().Result;
-            if (error == "game not found")
+            if (error == "Game not found")
             {
 
                 nav.NavigateTo("./");
             }
             else
             {
-                if (error == "empty Session")
+                if (error == "Empty session")
                 {
                     DialogOptions options = MyDialogSession;
                     var parameters = new DialogParameters();
@@ -387,6 +389,8 @@
 
         DistractorsonScreen = CurrentQuestion.QuestionDistractors.Count;
         Qcount = CurrentGame.GameQuestions.Count;
+        MinimumQ = 10- Qcount;
+
     }
 
 
@@ -414,7 +418,7 @@
 
 
         //נקרא לקונטרולר ונבקש את התוכן מהשאלה כולל מסיחים
-        var GetResponse = await Http.GetAsync("api/Questions/editQ/" + QtoEditID);
+        var GetResponse = await Http.GetAsync("api/Questions/editQ/" + QtoEditID +"/"+ userId);
         if (GetResponse.IsSuccessStatusCode == true)
         {
             //נכניס את השאלה שהתקבלה מהבסיס נתונים למופע של השאלה
@@ -609,7 +613,7 @@
                 var buffer = new byte[file.Size];
                 await file.OpenReadStream(maxFileSize).ReadAsync(buffer);
                 var imageBase64 = Convert.ToBase64String(buffer);
-                var saveResponse = await Http.PostAsJsonAsync("api/Games/upload", imageBase64);
+                var saveResponse = await Http.PostAsJsonAsync("api/Games/upload/" + userId, imageBase64);
 
                 if (saveResponse.IsSuccessStatusCode == true)
                 {
@@ -617,6 +621,12 @@
                     myFileImage = resizeUrl;
                     Console.WriteLine(resizeUrl);
                     CurrentQuestion.QuestionImage = myFileImage;
+
+                }
+                else
+                {
+                    string error = saveResponse.Content.ReadAsStringAsync().Result;
+                    Console.WriteLine(error);
 
                 }
             }
@@ -638,7 +648,7 @@
                 var buffer = new byte[file.Size];
                 await file.OpenReadStream(maxFileSize).ReadAsync(buffer);
                 var imageBase64 = Convert.ToBase64String(buffer);
-                var saveResponse = await Http.PostAsJsonAsync("api/Games/upload", imageBase64);
+                var saveResponse = await Http.PostAsJsonAsync("api/Games/upload/" + userId, imageBase64);
 
                 if (saveResponse.IsSuccessStatusCode == true)
                 {
@@ -647,6 +657,12 @@
                     Console.WriteLine(resizeUrl);
                     CorrectAnswer.DistractorContent = myFileImageCorrectAnswer;
                     CorrectAnswer.IsImage = true;
+                }
+                else
+                {
+                    string error = saveResponse.Content.ReadAsStringAsync().Result;
+                    Console.WriteLine(error);
+
                 }
             }
         }
@@ -666,7 +682,7 @@
                 var buffer = new byte[file.Size];
                 await file.OpenReadStream(maxFileSize).ReadAsync(buffer);
                 var imageBase64 = Convert.ToBase64String(buffer);
-                var saveResponse = await Http.PostAsJsonAsync("api/Games/upload", imageBase64);
+                var saveResponse = await Http.PostAsJsonAsync("api/Games/upload/" + userId, imageBase64);
 
                 if (saveResponse.IsSuccessStatusCode == true)
                 {
@@ -675,6 +691,12 @@
                     Console.WriteLine(resizeUrl);
                     myDistractorList[Place].DistractorContent = myFileImageWorngAnswer;
                     myDistractorList[Place].IsImage = true;
+                }
+                else
+                {
+                    string error = saveResponse.Content.ReadAsStringAsync().Result;
+                    Console.WriteLine(error);
+
                 }
             }
         }
@@ -715,7 +737,7 @@
             Console.WriteLine(" updateQuestion" + updateQuestion.QuestionDistractors.Count);
 
 
-            var GetResponse = await Http.GetAsync("api/Games/bygameID/" + gameID);
+            var GetResponse = await Http.GetAsync("api/Games/bygameID/" + gameID + "/" + userId);
             if (GetResponse.IsSuccessStatusCode == true)
             {
                 CurrentGame = GetResponse.Content.ReadFromJsonAsync<Game>().Result;
@@ -726,7 +748,7 @@
             {
 
                 string error = GetResponse.Content.ReadAsStringAsync().Result;
-                if (error == "game not found" || error == "empty Session")
+                if(error == "user not logged in" || error == "Empty session")
                 {
                     nav.NavigateTo("./");
                 }
@@ -741,7 +763,7 @@
         else
         {
 
-            Console.WriteLine("api/Games/editQuestion/OnValidSubmit תקלה בשמירת השאלה ");
+            Console.WriteLine(" תקלה בשמירת השאלה ");
 
 
         }
@@ -780,7 +802,7 @@
     private async Task DeleteImages()
     {
 
-        var saveResponse = await Http.PostAsJsonAsync("api/Games/deleteImages", DeletedImages);
+        var saveResponse = await Http.PostAsJsonAsync("api/Games/deleteImages/"+ userId , DeletedImages);
 
         //פעולת המחיקה
         if (saveResponse.IsSuccessStatusCode == true)
@@ -788,8 +810,20 @@
             Console.WriteLine(" נמחקה בהצלחה");
             //myFileImage = "";
         }
+        else
+        {
+            string error = saveResponse.Content.ReadAsStringAsync().Result;
 
-        DeletedImages= new List<string>(); //איפוס
+            if (error == "user not logged in" || error == "Empty session")
+            {
+                Console.WriteLine(error);
+
+            }
+            Console.WriteLine(error);
+
+        }
+
+        DeletedImages = new List<string>(); //איפוס
 
     }
 

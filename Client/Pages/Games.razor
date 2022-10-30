@@ -116,8 +116,19 @@
                 }
                 else
                 {
-                    //שליחת ההודעה מהקומפוננטה לדף
-                    Console.WriteLine(" לא בוצעו שינויים קריאה שגויה");
+                    string error = GetResponse.Content.ReadAsStringAsync().Result;
+                    if (error == "user not logged in" || error == "Empty Session")
+                    {
+                        Console.WriteLine(error);
+                        nav.NavigateTo("./");
+                    }
+                    else
+                    {
+                        Console.WriteLine(error);
+
+                    }
+
+                    Console.WriteLine(error);
                 }
             }
         }
@@ -195,7 +206,7 @@
         else
         {
             string error = GetResponse.Content.ReadAsStringAsync().Result;
-            if (error == "user not login" || error == "empty Session")
+            if (error == "user not logged in" || error == "Empty Session")
             {
                 nav.NavigateTo("./");
             }
@@ -264,6 +275,20 @@
 
 
             }
+        } else
+        {
+            string error = postRespone.Content.ReadAsStringAsync().Result;
+
+            if (error == "user not logged in" || error == "Empty Session")
+            {
+                Console.WriteLine(error);
+
+                nav.NavigateTo("./");
+            }
+            else
+            {
+                Console.WriteLine(error);
+            }
         }
 
 
@@ -286,7 +311,7 @@
         else
         {
             string error = GetResponse.Content.ReadAsStringAsync().Result;
-            if (error == "user not login" || error == "empty Session")
+            if (error == "user not logged in" || error == "Empty Session")
             {
                 nav.NavigateTo("./");
             }
@@ -331,9 +356,9 @@
         {
             Console.WriteLine("התבצעו שינויים");
 
-            var getResponse = await Http.GetAsync("api/Games/bygameID/" + CurrentGame.ID); // שליפת תוכן המשחק כולל מסיחים ושאלות
-
+            var getResponse = await Http.GetAsync("api/Games/bygameID/" + CurrentGame.ID + "/" + CurrentGame.UserID); // שליפת תוכן המשחק כולל מסיחים ושאלות
             if (getResponse.IsSuccessStatusCode == true)
+
             {
 
                 // הכלה של פרטי הקריאה מהדטה בייס למופע של המשחק בעמוד זה
@@ -360,7 +385,7 @@
             }
             Console.WriteLine("DeletedImages.Count " + DeletedImages.Count);
 
-            var saveResponse = await Http.PostAsJsonAsync("api/Games/deleteImages", DeletedImages);
+            var saveResponse = await Http.PostAsJsonAsync("api/Games/deleteImages/" + userId, DeletedImages);
 
             //פעולת המחיקה
             if (saveResponse.IsSuccessStatusCode == true)
@@ -394,6 +419,16 @@
                 {
                     Console.WriteLine("לא נמחק") ;
                 }
+            } else
+            {
+                string error = getResponse.Content.ReadAsStringAsync().Result;
+                if (error == "user not logged in" || error == "Empty Session")
+                {
+                    Console.WriteLine(error);
+
+                }
+
+
             }
         }
         else
@@ -408,7 +443,7 @@
     protected async Task GotoEditPage(Game Game)
     {
         var gameId = Game.ID;
-        var getResponse = await Http.GetAsync("api/Games/bygameID/" + gameId);
+        var getResponse = await Http.GetAsync("api/Games/bygameID/" + gameId + "/" + userId);
 
         if (getResponse.IsSuccessStatusCode)
         {
@@ -425,6 +460,7 @@
 
 
     }
+
 
     DialogOptions MyDialogPopup = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true, DisableBackdropClick = true };
 

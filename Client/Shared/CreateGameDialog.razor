@@ -64,22 +64,28 @@
             var postRespone = await Http.PostAsJsonAsync("api/Games/", newGame);
             if (postRespone.IsSuccessStatusCode == true)
             {
-                Console.WriteLine("נכנס לתנאי בדיאלוג ");
 
                 Game AddGame = postRespone.Content.ReadFromJsonAsync<Game>().Result;
 
-
                 var gameId = AddGame.ID;
-                var getResponse = await Http.GetAsync("api/Games/bygameID/" + gameId);
+
+                var getResponse = await Http.GetAsync("api/Games/bygameID/" + gameId + "/" + userId);
 
                 if (getResponse.IsSuccessStatusCode)
                 {
+
                     Game gametoEditPage = getResponse.Content.ReadFromJsonAsync<Game>().Result;
 
                     nav.NavigateTo("./EditQuestionsPage/" + gametoEditPage.ID + "/" + gametoEditPage.UserID);
                 }
                 else
                 {
+                    string error = getResponse.Content.ReadAsStringAsync().Result;
+                    if (error == "user not login" || error == "empty Session")
+                    {
+                        Console.WriteLine(error);
+
+                    }
                     nav.NavigateTo("./Games/" + userId);
                 }
 
@@ -98,6 +104,7 @@
 
             }
         }
+
 
         bool IsButtonEabled = true;
 

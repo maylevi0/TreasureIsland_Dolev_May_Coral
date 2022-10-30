@@ -399,8 +399,9 @@ nav {
 .imgUploadBtn {
     margin-right: 108%;
     z-index: 3;
-    margin-top: -5%;
+   /* margin-top: -5%;*/
     display: flex;
+    justify-content: center;
 }
 
 
@@ -412,7 +413,7 @@ nav {
 
 #Distracting {
     padding: 1%;
-    margin-top: 5%;
+    margin-top: 3%;
 }
 /*--------------*/
 a, .btn-link {
@@ -472,23 +473,31 @@ p.mypClass {
 
 .distractor-1 {
     margin-right: 105%;
-    margin-top: -69%;
+    margin-top: -63%;
     z-index: 3;
     width: 304px;
 }
 
 .distractor-2 {
     margin-right: 105%;
-    margin-top: 8%;
+    margin-top: 9%;
     z-index: 3;
     width: 304px;
 }
 
 
 .distractor-3 {
-margin-right: 105%;
+    /*margin-right: 105%;
     margin-top: 9%;
     z-index: 3;
+    width: 304px;*/
+
+    margin-right: 105%;
+    margin-top: 8.5%;
+    margin-bottom: 2.5%;
+    margin-inline: 105%;
+    display: inline-block;
+    z-index: 4;
     width: 304px;
 }
 
@@ -510,7 +519,7 @@ margin-right: 105%;
     border-width: 0;
     border-radius: 30px;
     background-color: white;
-    border: 1px solid #714727;
+    border: 0.5px solid #714727;
 }
 
 /*כפתור איקס פעיל 
@@ -520,3 +529,15 @@ margin-right: 105%;
     left: 8px;
     z-index: 2;
 }
+
+/*תיבות טקסט עובי
+*/.mud-input > input.mud-input-root-outlined, div.mud-input-slot.mud-input-root-outlined {
+    padding: 10px;
+}
+
+.mud-input > input.mud-input-root-outlined.mud-input-root-margin-dense, div.mud-input-slot.mud-input-root-outlined.mud-input-root-margin-dense {
+         padding-top: 1px; 
+        /* padding-bottom: unset; */
+}
+
+

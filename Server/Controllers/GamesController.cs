@@ -49,42 +49,72 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
 
         //פרסום משחק עדכון (לא יצירת משחק)
         [HttpPost("Update/Publish")]
-        public async Task<IActionResult> UpdateGame(Game GameToUpdate)
+        public async Task<IActionResult> UpdateGame(Game GameToUpdate, int userIdClient)
         {
-            Game Game = await _context.Games.FirstOrDefaultAsync(w => w.ID == GameToUpdate.ID);
+            userIdClient = GameToUpdate.UserID;
 
-            if (Game != null)
+            string sessionContent = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(sessionContent) == false)
             {
+                int sessionId = Convert.ToInt32(sessionContent);
 
-                Game.IsPublish = GameToUpdate.IsPublish;
-                await _context.SaveChangesAsync();
-                return Ok(Game);
+                if (sessionId == userIdClient)
+                {
+                    Game Game = await _context.Games.FirstOrDefaultAsync(w => w.ID == GameToUpdate.ID);
+
+                    if (Game != null)
+                    {
+
+                        Game.IsPublish = GameToUpdate.IsPublish;
+                        await _context.SaveChangesAsync();
+                        return Ok(Game);
+                    }
+                    else
+                    {
+                        return BadRequest("לא פורסם");
+                    }
+
+                }
+                return BadRequest("User not login");
             }
-            else
-            {
-                return BadRequest("לא פורסם");
-            }
+            return BadRequest("Empty session");
+            
         }
 
 
         //עדכון שם המשחק וזמן המשחק
         [HttpPost("Update/GameUpdate")]
-        public async Task<IActionResult> GameUpdate(Game GameToUpdate)
+        public async Task<IActionResult> GameUpdate(Game GameToUpdate, int userIdClient)
         {
-            Game Game = await _context.Games.FirstOrDefaultAsync(w => w.ID == GameToUpdate.ID);
+            userIdClient = GameToUpdate.UserID;
 
-            if (Game != null)
-            {
+            string sessionContent = HttpContext.Session.GetString("UserId");
 
-                Game.GameName = GameToUpdate.GameName;
-                Game.QTimeLimit = GameToUpdate.QTimeLimit;
-                await _context.SaveChangesAsync();
-                return Ok(Game);
-            }
-            else
+            if (string.IsNullOrEmpty(sessionContent) == false)
             {
-                return BadRequest("לא פורסם");
+                int sessionId = Convert.ToInt32(sessionContent);
+
+                if (sessionId == userIdClient)
+                {                    
+                    Game Game = await _context.Games.FirstOrDefaultAsync(w => w.ID == GameToUpdate.ID);
+
+                    if (Game != null)
+                    {
+
+                        Game.GameName = GameToUpdate.GameName;
+                        Game.QTimeLimit = GameToUpdate.QTimeLimit;
+                        await _context.SaveChangesAsync();
+                        return Ok(Game);
+                    }
+                    else
+                    {
+                        return BadRequest("לא פורסם");
+                    }
+                }
+                return BadRequest("User not login");
             }
+            return BadRequest("Empty session");
+            
         }
 
 
@@ -92,6 +122,7 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
         [HttpGet("byCode/{gameCodeFromClient}")]
         public async Task<IActionResult> GetGameByCode(int gameCodeFromClient)
         {
+
             Game gameFromDB = await _context.Games.Include(gq => gq.GameQuestions).ThenInclude(qd => qd.QuestionDistractors).FirstOrDefaultAsync(g => g.GameCode == gameCodeFromClient);
             if (gameFromDB != null)
             {
@@ -114,11 +145,16 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
 
         // שליפת תוכן משחק מכפתור עריכה
 
-        [HttpGet("bygameID/{gameId}")]
-        public async Task<IActionResult> GetgamecontentbyId(int gameId)
+        [HttpGet("bygameID/{gameId}/{userIdClient}")]
+        public async Task<IActionResult> GetgamecontentbyId(int gameId, int userIdClient)
         {
-           
-
+            string sessionContent = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(sessionContent) == false)
+            {
+                int SessionID = Convert.ToInt32(sessionContent);
+                if (SessionID == userIdClient)
+                {
+                    //הפונקציה
                     Game gameFromDB = await _context.Games.Include(g => g.GameQuestions).ThenInclude(q => q.QuestionDistractors).FirstOrDefaultAsync(g => g.ID == gameId);
                     if (gameFromDB != null)
                     {
@@ -128,13 +164,25 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
                     {
                         return BadRequest("Game not found");
                     }
-              
-            
-        }
-            
-                //קוד משחק יצירת משחק חדש
+                }
+                else
+                {
+                    return BadRequest("user not logged in");
+                }
+            }
+            else
+            {
+                return BadRequest("Empty session");
+            }
 
-                [HttpPost]
+
+
+        }
+
+
+        //קוד משחק יצירת משחק חדש
+
+        [HttpPost]
         public async Task<IActionResult> AddGame(Game gameToAdd)
         {
             string sessionContent = HttpContext.Session.GetString("UserId");
@@ -169,7 +217,7 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
             }
             else
             {
-                return BadRequest("empty Session");
+                return BadRequest("Empty session");
             }
         }
 
@@ -200,25 +248,55 @@ namespace TreasureIsland_Dolev_May_Coral.Server.Controllers
         }
 
         //שמירת תמונה
-        [HttpPost("upload")]
-        public async Task<IActionResult> UploadFile([FromBody] string imageBase64)
+        [HttpPost("upload/{userID}")]
+        public async Task<IActionResult> UploadFile([FromBody] string imageBase64, int userID)
         {
-            byte[] picture = Convert.FromBase64String(imageBase64);
-            string url = await _fileStorage.SaveFile(picture, "png", "uploadedFiles");
-            return Ok(url);
+
+
+            string sessionContent = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(sessionContent) == false)
+            {
+                int sessionId = Convert.ToInt32(sessionContent);
+
+                if (sessionId == userID)
+                {
+                    byte[] picture = Convert.FromBase64String(imageBase64);
+                    string url = await _fileStorage.SaveFile(picture, "png", "uploadedFiles");
+                    return Ok(url);
+
+                }
+                return BadRequest("User not login");
+            }
+            return BadRequest("Empty session");
+
+          
         }
 
-            //מחיקת תמונה
-            [HttpPost("deleteImages")]
-            public async Task<IActionResult> DeleteImages([FromBody] List<string> images)
-            {
-                foreach (string img in images)
-                {
-                    await _fileStorage.DeleteFile(img, "uploadedFiles");
-                }
-                return Ok("deleted");
-            }
 
+
+            //מחיקת תמונה
+            [HttpPost("deleteImages/{userID}")]
+            public async Task<IActionResult> DeleteImages([FromBody] List<string> images, int userID)
+            {
+            string sessionContent = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(sessionContent) == false)
+            {
+                int sessionId = Convert.ToInt32(sessionContent);
+
+                if (sessionId == userID)
+                {
+                    foreach (string img in images)
+                    {
+                        await _fileStorage.DeleteFile(img, "uploadedFiles");
+                    }
+                    return Ok("deleted");
+
+                }
+                return BadRequest("User not login");
+            }
+            return BadRequest("Empty session");
+            
+            }
 
 
         // הוספת שאלות עריכה ועדכון
