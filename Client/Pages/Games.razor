@@ -48,7 +48,7 @@
         <RowTemplate>
 
             <MudTd DataLabel="שם המשחק">@context.GameName</MudTd>
-            <MudTd DataLabel="לצפייה"><MudButton EndIcon="@Icons.Material.Outlined.RemoveRedEye" Style="color:#714727;"></MudButton></MudTd>
+            <MudTd DataLabel="לצפייה"><MudTooltip Text="לא פעיל"><MudButton  EndIcon="@Icons.Material.Outlined.RemoveRedEye" Disabled="true" Style="color: #714727; cursor: not-allowed"></MudButton></MudTooltip></MudTd>
             <MudTd DataLabel="קוד המשחק">@context.GameCode</MudTd>
             <MudTd DataLabel="מספר שאלות">@context.GameQuestions.Count</MudTd>
             <MudTd DataLabel="הגדרות משחק"><MudButton Color="Color.Info" OnClick="@(() => OpenDialogSettings(context.ID, maxWidth))" EndIcon="@Icons.Material.Outlined.Settings" Style="color:#714727;"></MudButton></MudTd>
@@ -77,6 +77,11 @@
 
 
 @code {
+
+
+   
+
+
 
     DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true, DisableBackdropClick = true };
 
