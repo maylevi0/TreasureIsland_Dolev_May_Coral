@@ -192,11 +192,15 @@ nav {
     transition: border-width,border-color 200ms cubic-bezier(.4,0,.2,1) 0ms;
     border-radius: 30px;
 }
+/*משנה את הצבע בפוקוס של תיבת טקסט*/
+.mud-input.mud-input-outlined:focus-within .mud-input-outlined-border {
+    border-color: saddlebrown;
+}
 
-/*----עמוד 2-רשימת המשחקים----*/
 
-/*שלט עמוד רשימת המשחקים*/
-#GameSign {
+    /*----עמוד 2-רשימת המשחקים----*/
+    /*שלט עמוד רשימת המשחקים*/
+    #GameSign {
     background-image: url(../Images/SignGame.png);
     height: 110px;
     width: 33%;
