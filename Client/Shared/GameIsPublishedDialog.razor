@@ -15,24 +15,27 @@
             <DialogContent>
                     @if (GameFromPage.IsPublish == false)
                     {
-                        <MudText>
-                            <br />
-                            המשחק "@gameCurrentName" פורסם בהצלחה.
-                            <br />
-                            הקוד למשחק הוא: @GameCode
-                        </MudText>
+                <MudText>
+                    <br />
+                    המשחק "@gameCurrentName" פורסם בהצלחה.
+                    <br />
+                    הקוד למשחק הוא: @GameCode
+                    <br />
+                </MudText>
                     }
                     else
                     {
                         <MudText>
                             המשחק "@gameCurrentName" אינו מפורסם כעת
+                       <br/> 
                         </MudText>
                     }
+               
             </DialogContent>
-
+          
             <DialogActions>
                 <MudButton Style="background-color:saddlebrown; color:azure;float:right;" @onclick="OkFunc" Color="Color.Primary" Variant="Variant.Filled">אישור </MudButton>
-                <MudButton Style="float:right;" OnClick="Cancel">ביטול הפעולה</MudButton>
+                <MudButton Style="margin-left: 60%; border-color: #714727; border-width: 0.5px; border-style: solid; border-radius: 10px " OnClick="Cancel">ביטול הפעולה</MudButton>
             </DialogActions>
         </MudDialog>
     </div>

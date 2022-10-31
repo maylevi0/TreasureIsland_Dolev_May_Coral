@@ -7,7 +7,7 @@
             <DialogContent>
                 <EditForm Model="@newGame" OnValidSubmit="OnValidSubmit">
                     <DataAnnotationsValidator />
-                    <MudItem Style="width: 60%; height:40%; margin-right: -1%;">
+                    <MudItem Style="width: 55%; height:40%; margin-right: -1%;">
                         <MudTextField Variant="Variant.Outlined" Placeholder="הקלידו שם למשחק..." Label="שם משחק" Counter="25" MaxLength="25"  @onkeyup="statusButton"
                                       @bind-Value="newGame.GameName" For="@(() => newGame.GameName)" />
 
@@ -30,7 +30,7 @@
                 </EditForm>
             </DialogContent>
             <DialogActions>
-                <MudButton OnClick="Cancel">ביטול</MudButton>
+                <MudButton Style="border-color: #714727; border-width: 0.5px; border-style: solid; border-radius: 10px " OnClick="Cancel">ביטול</MudButton>
             </DialogActions>
         </MudDialog>
     </div>

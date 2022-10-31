@@ -40,16 +40,16 @@
                 <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;text-align: center;">לצפייה</MudTh>
                 <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">קוד משחק</MudTh>
                 <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">מספר שאלות</MudTh>
-                <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;"><MudTooltip Text="בהגדרות ניתן לשנות את שם המשחק וזמן מענה לשאלה">הגדרות משחק<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
-                <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;"><MudTooltip Text="בעריכה ניתן לערוך את השאלה ואפשרויות המענה">עריכה<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
+                <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;"><MudTooltip Text="בהגדרות ניתן לשנות את שם המשחק וזמן מענה לשאלה">הגדרות משחק<MudIcon Size="Size.Small" Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
+                <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;"><MudTooltip Text="בעריכה ניתן לערוך את השאלה ואפשרויות המענה">עריכה<MudIcon Size="Size.Small" Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
                 <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">מחיקה</MudTh>
-                <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;"><MudTooltip Text="נדרשות מינימום 10 שאלות לפרסום המשחק">פרסום<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
+                <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;"><MudTooltip Text="נדרשות מינימום 10 שאלות לפרסום המשחק">פרסום<MudIcon Size="Size.Small" Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
 
             </HeaderContent>
             <RowTemplate>
 
                 <MudTd DataLabel="שם המשחק">@context.GameName</MudTd>
-                <MudTd style="text-align:center;" DataLabel="לצפייה"><MudTooltip Text="לא פעיל"><MudButton EndIcon="@Icons.Material.Outlined.RemoveRedEye" Disabled="true" Style="color: #714727; cursor: not-allowed;"></MudButton></MudTooltip></MudTd>
+                <MudTd style="text-align:center;" DataLabel="לצפייה"><MudTooltip Text="לא פעיל"><MudButton EndIcon="@Icons.Material.Outlined.RemoveRedEye" Disabled="true" Style="color: #714727; cursor: not-allowed; "></MudButton></MudTooltip></MudTd>
                 <MudTd style="text-align:center;" DataLabel="קוד המשחק">@context.GameCode</MudTd>
                 @if (context.GameQuestions.Count < 10)
                 {<MudTd style="color: red; text-align: center" DataLabel="מספר שאלות">@context.GameQuestions.Count</MudTd>}
