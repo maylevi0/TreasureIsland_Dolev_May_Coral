@@ -28,48 +28,55 @@
 </div>
 
 <MudText style="color:saddlebrown; text-align:center">סה"כ משחקים: @CurrentUseUserGames</MudText>
-<MudButton Style="background-color:saddlebrown; color:white; border-radius:20px;margin-right: 34px;" ButtonType="ButtonType.Button" Color="Color.Primary" OnClick="@(() => OpenDialogCreateGAme(userId,MyDialog))">+ יצירת משחק חדש</MudButton>
+<MudButton Class="createGAmeBTN" ButtonType="ButtonType.Button"  OnClick="@(() => OpenDialogCreateGAme(userId,MyDialog))">+ יצירת משחק חדש</MudButton>
 
 <br />
 <div id="GameTable">
-    <MudTable Items="@CurrentUser.UserGames" Hover="true" Dense="true" FixedHeader="true" NoRecordsContent="null" Style="overflow-y: scroll; @*height: 496px;*@ ">
-        <HeaderContent>
+    
+        <MudTable Items="@CurrentUser.UserGames" Hover="true" Dense="true" FixedHeader="true" NoRecordsContent="null">
+            <HeaderContent>
 
-            <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">שם המשחק</MudTh>
-            <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;text-align: center;">לצפייה</MudTh>
-            <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">קוד משחק</MudTh>
-            <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">מספר שאלות</MudTh>
-            <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;"><MudTooltip Text="בהגדרות ניתן לשנות את שם המשחק וזמן מענה לשאלה">הגדרות משחק<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
-            <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;"><MudTooltip Text="בעריכה ניתן לערוך את השאלה ואפשרויות המענה">עריכה<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
-            <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">מחיקה</MudTh>
-            <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;"><MudTooltip Text="נדרשות מינימום 10 שאלות לפרסום המשחק">פרסום<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
+                <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">שם המשחק</MudTh>
+                <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;text-align: center;">לצפייה</MudTh>
+                <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">קוד משחק</MudTh>
+                <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">מספר שאלות</MudTh>
+                <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;"><MudTooltip Text="בהגדרות ניתן לשנות את שם המשחק וזמן מענה לשאלה">הגדרות משחק<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
+                <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;"><MudTooltip Text="בעריכה ניתן לערוך את השאלה ואפשרויות המענה">עריכה<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
+                <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">מחיקה</MudTh>
+                <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;"><MudTooltip Text="נדרשות מינימום 10 שאלות לפרסום המשחק">פרסום<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
 
-        </HeaderContent>
-        <RowTemplate>
+            </HeaderContent>
+            <RowTemplate>
 
-            <MudTd DataLabel="שם המשחק">@context.GameName</MudTd>
-            <MudTd DataLabel="לצפייה"><MudTooltip Text="לא פעיל"><MudButton  EndIcon="@Icons.Material.Outlined.RemoveRedEye" Disabled="true" Style="color: #714727; cursor: not-allowed;"></MudButton></MudTooltip></MudTd>
-            <MudTd DataLabel="קוד המשחק">@context.GameCode</MudTd>
-            <MudTd DataLabel="מספר שאלות">@context.GameQuestions.Count</MudTd>
-            <MudTd DataLabel="הגדרות משחק"><MudButton Color="Color.Info" OnClick="@(() => OpenDialogSettings(context.ID, maxWidth))" EndIcon="@Icons.Material.Outlined.Settings" Style="color:#714727;"></MudButton></MudTd>
-            <MudTd DataLabel="עריכה"><MudButton Color="Color.Info" OnClick="@(() => GotoEditPage(context))" EndIcon="@Icons.Material.Outlined.Edit" Style="color:#714727;"></MudButton></MudTd>
-            <MudTd DataLabel="מחיקה"><MudButton Color="Color.Info" OnClick="@(() => DeleteGame(context, MyDIalogDeleteGame))" EndIcon="@Icons.Material.Outlined.Delete" Style="color:#714727;" ></MudButton></MudTd>
-            @if (context.GameQuestions.Count >= 10) //תנאי שקשור לכפתור פרסום משחק
-            {
-                <MudTd DataLabel="פרסום">
-                    <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context, MyDialogPublish))" Checked="@context.IsPublish" Color="Color.Success"></MudCheckBox>
-                </MudTd>
-            }
+                <MudTd DataLabel="שם המשחק">@context.GameName</MudTd>
+                <MudTd style="text-align:center;" DataLabel="לצפייה"><MudTooltip Text="לא פעיל"><MudButton EndIcon="@Icons.Material.Outlined.RemoveRedEye" Disabled="true" Style="color: #714727; cursor: not-allowed;"></MudButton></MudTooltip></MudTd>
+                <MudTd style="text-align:center;" DataLabel="קוד המשחק">@context.GameCode</MudTd>
+                @if (context.GameQuestions.Count < 10)
+                {<MudTd style="color: red; text-align: center" DataLabel="מספר שאלות">@context.GameQuestions.Count</MudTd>}
             else
-            {
-                <MudTd DataLabel="פרסום">
-                    <MudTooltip Text="המשחק לא עומד בתנאי הפרסום, לפחות 10 שאלות">
-                        <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context, MyDialogPublish))" Checked="@context.IsPublish" Disabled="true" Color="Color.Primary"></MudCheckBox>
-                    </MudTooltip>
-                </MudTd>
-            }
-        </RowTemplate>
-    </MudTable>
+            {<MudTd style="color: black; text-align: center;" DataLabel="מספר שאלות">@context.GameQuestions.Count</MudTd>}
+
+
+                <MudTd DataLabel="הגדרות משחק"><MudButton Color="Color.Info" OnClick="@(() => OpenDialogSettings(context.ID, maxWidth))" EndIcon="@Icons.Material.Outlined.Settings" Style="color:#714727;"></MudButton></MudTd>
+                <MudTd DataLabel="עריכה"><MudButton Color="Color.Info" OnClick="@(() => GotoEditPage(context))" EndIcon="@Icons.Material.Outlined.Edit" Style="color:#714727;"></MudButton></MudTd>
+                <MudTd DataLabel="מחיקה"><MudButton Color="Color.Info" OnClick="@(() => DeleteGame(context, MyDIalogDeleteGame))" EndIcon="@Icons.Material.Outlined.Delete" Style="color:#714727;"></MudButton></MudTd>
+                @if (context.GameQuestions.Count >= 10) //תנאי שקשור לכפתור פרסום משחק
+                {
+                    <MudTd DataLabel="פרסום">
+                        <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context, MyDialogPublish))" Checked="@context.IsPublish" Color="Color.Success"></MudCheckBox>
+                    </MudTd>
+                }
+                else
+                {
+                    <MudTd DataLabel="פרסום">
+                        <MudTooltip Text="המשחק לא עומד בתנאי הפרסום, לפחות 10 שאלות">
+                            <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context, MyDialogPublish))" Checked="@context.IsPublish" Disabled="true" Color="Color.Primary"></MudCheckBox>
+                        </MudTooltip>
+                    </MudTd>
+                }
+            </RowTemplate>
+        </MudTable>
+   
     <p>@msg</p>
 </div>
 

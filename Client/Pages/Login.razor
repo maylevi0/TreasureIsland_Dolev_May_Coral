@@ -37,11 +37,11 @@
 
                 @if (IsButtonEabled == true)
                 {
-                    <MudButton Style="background-color: #A5703C; border-radius:30px; width:32%;" Variant="Variant.Filled" Color="Color.Primary" @onclick="loginUser" Disabled="true">כניסה</MudButton>
+                    <MudButton Style="background-color: #A5703C; border-radius:30px; width:32%;" Variant="Variant.Filled" Disabled="true">כניסה</MudButton>
                 }
                 else
                 {
-                    <MudButton Style="background-color: saddlebrown; border-radius: 30px; width:32%;" Variant="Variant.Filled" Color="Color.Primary" @onclick="loginUser">כניסה</MudButton>
+                    <MudButton Class="enterBTN" Variant="Variant.Filled" @onclick="loginUser">כניסה</MudButton>
                 }
             </div>
         </div>

@@ -229,6 +229,8 @@ nav {
     margin-top: 13px;
     margin-left: 143px;
     margin-right: 35px;
+
+    overflow-y: scroll;
 }
     #GameTable p {
         margin-right: 2%;
@@ -546,4 +548,39 @@ p.mypClass {
         /* padding-bottom: unset; */
 }
 
+.publishButtonActive {
+    background-color: darkorange;
+    height: 26px;
+    border-radius: 30px;
+    margin-top: 1%;
+}
 
+.publishButtonActive:hover {
+    background-color: #E46C0A;
+    transition: 0.2s;
+}
+
+.enterBTN {
+    background-color: saddlebrown;
+    border-radius: 30px;
+    width: 32%;
+    color:white
+}
+
+    .enterBTN:hover {
+        background-color: #A5703C;
+        transition: 0.2s;
+        color: white
+    }
+
+.createGAmeBTN {
+    background-color: saddlebrown;
+    color: white;
+    border-radius: 20px;
+    margin-right: 34px;
+}
+
+    .createGAmeBTN:hover {
+        background-color: #A5703C;
+        transition: 0.2s;
+    }
