@@ -32,11 +32,11 @@
 
 <br />
 <div id="GameTable">
-    <MudTable Items="@CurrentUser.UserGames" Hover="true" Dense="true" FixedHeader="true" NoRecordsContent="null">
+    <MudTable Items="@CurrentUser.UserGames" Hover="true" Dense="true" FixedHeader="true" NoRecordsContent="null" Style="overflow-y: scroll; @*height: 496px;*@ ">
         <HeaderContent>
 
             <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">שם המשחק</MudTh>
-            <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">לצפייה</MudTh>
+            <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;text-align: center;">לצפייה</MudTh>
             <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">קוד משחק</MudTh>
             <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;">מספר שאלות</MudTh>
             <MudTh style="line-height: 1.5rem;background-color: #DBCBAA;font-weight: bold;"><MudTooltip Text="בהגדרות ניתן לשנות את שם המשחק וזמן מענה לשאלה">הגדרות משחק<MudIcon Icon="@Icons.Filled.Info"></MudIcon></MudTooltip></MudTh>
@@ -48,7 +48,7 @@
         <RowTemplate>
 
             <MudTd DataLabel="שם המשחק">@context.GameName</MudTd>
-            <MudTd DataLabel="לצפייה"><MudTooltip Text="לא פעיל"><MudButton  EndIcon="@Icons.Material.Outlined.RemoveRedEye" Disabled="true" Style="color: #714727; cursor: not-allowed"></MudButton></MudTooltip></MudTd>
+            <MudTd DataLabel="לצפייה"><MudTooltip Text="לא פעיל"><MudButton  EndIcon="@Icons.Material.Outlined.RemoveRedEye" Disabled="true" Style="color: #714727; cursor: not-allowed;"></MudButton></MudTooltip></MudTd>
             <MudTd DataLabel="קוד המשחק">@context.GameCode</MudTd>
             <MudTd DataLabel="מספר שאלות">@context.GameQuestions.Count</MudTd>
             <MudTd DataLabel="הגדרות משחק"><MudButton Color="Color.Info" OnClick="@(() => OpenDialogSettings(context.ID, maxWidth))" EndIcon="@Icons.Material.Outlined.Settings" Style="color:#714727;"></MudButton></MudTd>
@@ -57,7 +57,7 @@
             @if (context.GameQuestions.Count >= 10) //תנאי שקשור לכפתור פרסום משחק
             {
                 <MudTd DataLabel="פרסום">
-                    <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context, MyDialogPublish))" Checked="@context.IsPublish" Color="Color.Primary"></MudCheckBox>
+                    <MudCheckBox CheckedChanged="@((bool newState) => PublishGame(context, MyDialogPublish))" Checked="@context.IsPublish" Color="Color.Success"></MudCheckBox>
                 </MudTd>
             }
             else
