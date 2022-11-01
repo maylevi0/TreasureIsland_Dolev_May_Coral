@@ -584,3 +584,43 @@ p.mypClass {
         background-color: #A5703C;
         transition: 0.2s;
     }
+
+.saveQBTN {
+    background-color: saddlebrown;
+    color: azure;
+    border-radius: 17px;
+    margin-right: 15px;
+    margin-top: -3%;
+    z-index: 3;
+    
+}
+
+    .saveQBTN:hover {
+        background-color: #A5703C;
+        transition: 0.2s;
+    }
+
+.DeleteQBTN {
+    background-color: saddlebrown;
+    color: azure;
+    border-radius: 20px;
+}
+
+    .DeleteQBTN:hover {
+        background-color: #A5703C;
+        transition: 0.2s;
+    }
+
+.saveSetBTN {
+    background: saddlebrown;
+    background-color: saddlebrown;
+    color: azure;
+    margin-top: 5%;
+    border-radius: 20px;
+}
+
+    .saveSetBTN :hover {
+        background: #714727;
+        background-color: #714727;
+        transition: 0.2s;
+    }

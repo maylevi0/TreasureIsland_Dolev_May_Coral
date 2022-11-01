@@ -19,18 +19,18 @@
                         </MudSelect>
                         @if (IsButtonEabled == true)
                         {
-                            <MudButton Style="background-color:saddlebrown; color:azure; margin-top: 5%; border-radius:20px;" ButtonType="ButtonType.Submit" Color="Color.Primary" Disabled="true" Variant="Variant.Filled">צור משחק</MudButton>
+                            <MudButton Style="background-color:saddlebrown; color:azure; margin-top: 5%; border-radius:20px;" ButtonType="ButtonType.Submit"  Disabled="true" Variant="Variant.Filled">צור משחק</MudButton>
                         }
                         else
                         {
-                            <MudButton Style="background-color:saddlebrown; color:azure; margin-top: 5%; border-radius:20px;" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">צור משחק</MudButton>
+                            <MudButton Class="DeleteQBTN"Style="margin-top: 5%"  ButtonType="ButtonType.Submit"  Variant="Variant.Filled">צור משחק</MudButton>
                         }
                     </MudItem>
                     <div id="PopUpIcone"></div>
                 </EditForm>
             </DialogContent>
             <DialogActions>
-                <MudButton Style="border-color: #714727; border-width: 0.5px; border-style: solid; border-radius: 10px " OnClick="Cancel">ביטול</MudButton>
+                <MudButton Style="border-color: #714727; border-width: 0.5px; border-style: solid; border-radius: 17px " OnClick="Cancel">ביטול</MudButton>
             </DialogActions>
         </MudDialog>
     </div>
