@@ -8,7 +8,7 @@
                 <EditForm Model="@newGame" OnValidSubmit="OnValidSubmit">
                     <DataAnnotationsValidator />
                     <MudItem Style="width: 55%; height:40%; margin-right: -1%;">
-                        <MudTextField Variant="Variant.Outlined" Placeholder="הקלידו שם למשחק..." Label="שם משחק" Counter="25" MaxLength="25"  @onkeyup="statusButton"
+                        <MudTextField Variant="Variant.Outlined" Placeholder="הקלידו שם למשחק..." Label="שם משחק"  MaxLength="30" Counter="30" Immediate="true" Validation="@(new Func<string, IEnumerable<string>>(MaxCharacters))"  @onkeyup="statusButton"
                                       @bind-Value="newGame.GameName" For="@(() => newGame.GameName)" />
 
                         <MudSelect Placeholder="20 שניות" Style="text-align: -webkit-right;" Variant="Variant.Outlined" T="int" Label="זמן מענה לשאלה" @bind-Value="newGame.QTimeLimit" For="@(() => newGame.QTimeLimit)" AnchorOrigin="Origin.BottomCenter">
@@ -121,6 +121,16 @@
                 IsButtonEabled = false;
                 StateHasChanged();
 
+            }
+
+        }
+
+        //להגבלת ומספר תווים בתיבת טקסט
+        private IEnumerable<string> MaxCharacters(string ch)
+        {
+            if (!string.IsNullOrEmpty(ch) && 100 < ch?.Length)
+            {
+                yield return "";
             }
 
         }
