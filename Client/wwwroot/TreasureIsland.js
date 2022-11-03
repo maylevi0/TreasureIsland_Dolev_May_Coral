@@ -3545,8 +3545,8 @@ if (reversed == null) { reversed = false; }
 		
 		
 		//..//הנתיב המוביל לפרויקט המחולל שלכם לשיטה השולפת משחק לפי קוד
-		var url = "https://localhost:5001/api/Games/byCode/";
-		//var url = "Editor/api/Games/byCode/";
+		//var url = "https://localhost:5001/api/Games/byCode/";
+		var url = "api/Games/byCode/";
 		
 		// משתנה שיכיל את הנתונים שמתקבלים
 		var myJSON;

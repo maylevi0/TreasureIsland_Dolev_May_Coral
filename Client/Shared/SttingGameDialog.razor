@@ -71,7 +71,7 @@
             if (UpdatedGame.GameName != GameTOPage.GameName || UpdatedGame.QTimeLimit != GameTOPage.QTimeLimit)
             {
 
-                Console.WriteLine("נכנס לתנאי בדיאלוג ");
+                //Console.WriteLine("נכנס לתנאי בדיאלוג ");
                 UpdatedGame = GameFromPage;
                 //שליחת המשחק מהקומפוננטה לדף עם השינויים
                 //MudDialog.Close(DialogResult.Ok(GameTOPage));
@@ -80,7 +80,7 @@
             }
             else
             {
-                Console.WriteLine("נכנס ל ELSE");
+                //Console.WriteLine("נכנס ל ELSE");
 
                 GameTOPage = GameFromPage;
                 MudDialog.Close(DialogResult.Ok(true));
@@ -96,7 +96,7 @@
             {
                 yield return "";
             }
-               
+
         }
 
 

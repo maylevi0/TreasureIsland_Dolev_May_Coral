@@ -16,7 +16,7 @@
         <ul>
             <li><a @onclick="@(() => GotoOdot(MyDialogPopup))">אודות</a></li>
             <li><a @onclick="@(() => GotoHowtoDialog(MyDialogPopup))">איך משחקים?</a></li>
-            <li><a class="about" href="../indextest.html">למשחק</a></li>
+            <li><a class="about" href="indextest.html">למשחק</a></li>
 
         </ul>
     </nav>
@@ -86,7 +86,7 @@
 @code {
 
 
-   
+
 
 
 
@@ -114,7 +114,7 @@
         {
             //המשתמש לחץ על שמירת שינויים אז נעדכן את הבסיס נתונים
 
-            Console.WriteLine("יש לשמור שינויים");
+            //Console.WriteLine("יש לשמור שינויים");
 
             var GetResponse = await Http.GetAsync("api/Games/" + userId);
             if (GetResponse.IsSuccessStatusCode == true)
@@ -131,7 +131,7 @@
                     string error = GetResponse.Content.ReadAsStringAsync().Result;
                     if (error == "user not logged in" || error == "Empty Session")
                     {
-                        Console.WriteLine(error);
+                        //Console.WriteLine(error);
 
 
                         var dialog2 = DialogService.Show<SessionDialog>("התנתקת מהמערכת", options);
@@ -140,7 +140,7 @@
                     }
                     else
                     {
-                        Console.WriteLine(error);
+                        //Console.WriteLine(error);
                         var dialog2 = DialogService.Show<BadServer>("תקלה במערכת", options);
 
                     }
@@ -154,7 +154,7 @@
             GametoUpdateinDialog.GameName = game.GameName;
             GametoUpdateinDialog.QTimeLimit = game.QTimeLimit;
 
-            Console.WriteLine(" לא בוצעו שינויים החלון נסגר");
+            //Console.WriteLine(" לא בוצעו שינויים החלון נסגר");
         }
         GametoUpdateinDialog = new Game(); //איפוס המופע
         game = new Game(); //איפוע המופע המקומי
@@ -176,13 +176,13 @@
 
         if (result.Cancelled == false)
         {
-            Console.WriteLine("התבצעו שינויים");
+            //Console.WriteLine("התבצעו שינויים");
             await RefreshTable(); //רענון הטבלה
 
         }
         else
         {
-            Console.WriteLine("לא היו שינויים סגירת חלון ");
+            //Console.WriteLine("לא היו שינויים סגירת חלון ");
 
         }
 
@@ -229,7 +229,7 @@
             }
             else
             {
-                Console.WriteLine("התרחשה תקלת שרת");
+                //Console.WriteLine("התרחשה תקלת שרת");
                 nav.NavigateTo("./");
             }
         }
@@ -264,11 +264,11 @@
 
         if (result.Cancelled == false)
         {
-            Console.WriteLine("התבצעו שינויים");
+            //Console.WriteLine("התבצעו שינויים");
         }
         else
         {
-            Console.WriteLine("לא היו שינויים סגירת חלון ");
+            //Console.WriteLine("לא היו שינויים סגירת חלון ");
             selectedGame.IsPublish = selectedGame.IsPublish;
         }
 
@@ -288,7 +288,7 @@
 
             else
             {
-                Console.WriteLine("משחק לא פורסם");
+                //Console.WriteLine("משחק לא פורסם");
 
 
             }
@@ -298,13 +298,13 @@
 
             if (error == "user not logged in" || error == "Empty Session")
             {
-                Console.WriteLine(error);
+                //Console.WriteLine(error);
 
                 nav.NavigateTo("./");
             }
             else
             {
-                Console.WriteLine(error);
+                //Console.WriteLine(error);
             }
         }
 
@@ -334,7 +334,7 @@
             }
             else
             {
-                Console.WriteLine("התרחשה תקלת שרת");
+                //Console.WriteLine("התרחשה תקלת שרת");
             }
         }
 
@@ -371,7 +371,7 @@
 
         if (result.Cancelled == false)
         {
-            Console.WriteLine("התבצעו שינויים");
+            //Console.WriteLine("התבצעו שינויים");
 
             var getResponse = await Http.GetAsync("api/Games/bygameID/" + CurrentGame.ID + "/" + CurrentGame.UserID); // שליפת תוכן המשחק כולל מסיחים ושאלות
             if (getResponse.IsSuccessStatusCode == true)
@@ -400,14 +400,14 @@
                 }
 
             }
-            Console.WriteLine("DeletedImages.Count " + DeletedImages.Count);
+            //Console.WriteLine("DeletedImages.Count " + DeletedImages.Count);
 
             var saveResponse = await Http.PostAsJsonAsync("api/Games/deleteImages/" + userId, DeletedImages);
 
             //פעולת המחיקה
             if (saveResponse.IsSuccessStatusCode == true)
             {
-                Console.WriteLine(" תמונות נמחקו ");
+                //Console.WriteLine(" תמונות נמחקו ");
             }
 
             DeletedImages = new List<string>(); //איפוס
@@ -434,7 +434,7 @@
                 }
                 else
                 {
-                    Console.WriteLine("לא נמחק") ;
+                    //Console.WriteLine("לא נמחק") ;
                 }
             } else
             {
@@ -442,7 +442,7 @@
                 if (error == "user not logged in" || error == "Empty Session")
                 {
 
-                    Console.WriteLine(error);
+                    //Console.WriteLine(error);
 
                 }
 
@@ -451,7 +451,7 @@
         }
         else
         {
-            Console.WriteLine("לא היו שינויים סגירת חלון ");
+            //Console.WriteLine("לא היו שינויים סגירת חלון ");
 
         }
 
@@ -471,7 +471,7 @@
         }
         else
         {
-            Console.WriteLine("התרחשה תקלת שרת");
+            //Console.WriteLine("התרחשה תקלת שרת");
 
 
         }
@@ -485,8 +485,8 @@
 
     void GotoHowtoDialog(DialogOptions options) // פופאפ לתפריט ניווט איך משחקים
     {
-        Console.WriteLine("נכנס לפונקציה");
-        Console.WriteLine("options " + options);
+        //Console.WriteLine("נכנס לפונקציה");
+        //Console.WriteLine("options " + options);
         var dialog = DialogService.Show<HowtoplayDialog>(" ", options);
 
         //var result = await dialog.Result;

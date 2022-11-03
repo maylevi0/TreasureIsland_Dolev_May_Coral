@@ -14,7 +14,7 @@
         <ul>
             <li><a @onclick="@(() => GotoOdot(MyDialogPop))">אודות</a></li>
             <li><a @onclick="@(() => GotoHowtoDialog(MyDialogPop))">איך משחקים?</a></li>
-            <li><a class="about" href="../indextest.html">למשחק</a></li>
+            <li><a class="about" href="indextest.html">למשחק</a></li>
 
         </ul>
     </nav>
@@ -289,7 +289,7 @@ else
 
         parameters.Add("GameFromPage", CurrentGame); //שולח מופע של משחק
 
-        Console.WriteLine("לפני הפופאפ " + CurrentGame.IsPublish);
+        //Console.WriteLine("לפני הפופאפ " + CurrentGame.IsPublish);
         var dialog = DialogService.Show<GameIsPublishedDialogAtEditPage>("פרסום המשחק", parameters, options);
 
         var result = await dialog.Result;
@@ -297,17 +297,17 @@ else
         if (result.Cancelled == false)
         {
 
-            Console.WriteLine("המשחק פורסם, סגירת חלון והמשך עריכת שאלות");
+            //Console.WriteLine("המשחק פורסם, סגירת חלון והמשך עריכת שאלות");
         }
         else
         {
 
-            Console.WriteLine("המשחק פורסם והמשתמש רוצה לשחק!");
+            //Console.WriteLine("המשחק פורסם והמשתמש רוצה לשחק!");
             // nav.NavigateTo("");
         }
 
 
-        Console.WriteLine("אחרי הפופאפ " + CurrentGame.IsPublish);
+        //Console.WriteLine("אחרי הפופאפ " + CurrentGame.IsPublish);
 
         //עדכון בקונטרולר
 
@@ -372,7 +372,7 @@ else
                 myDistractorList.Add(CurrentDistractor);
             }
 
-            Console.WriteLine("קריאה הצליחה  OnInitializedAsync");
+            //Console.WriteLine("קריאה הצליחה  OnInitializedAsync");
 
         }
         else
@@ -392,7 +392,7 @@ else
                     parameters.Add("MudText", "לא הייתה פעילות במערבת במשך זמן רב, התחברו שנית");
                     var dialog = DialogService.Show<SessionDialog>("נותקת מהמערכת", parameters, options);
                 }
-                Console.WriteLine("התרחשה תקלת שרת");
+                //Console.WriteLine("התרחשה תקלת שרת");
             }
 
         }
@@ -497,7 +497,7 @@ else
             }
 
             DistractorsonScreen = CurrentQuestion.QuestionDistractors.Count;
-            Console.WriteLine("השאלה נשלפה בהצלחה");
+            //Console.WriteLine("השאלה נשלפה בהצלחה");
             //EditQBool = true;
             StateHasChanged();
 
@@ -505,7 +505,7 @@ else
         else
         {
             string error = GetResponse.Content.ReadAsStringAsync().Result;
-            Console.WriteLine(error);
+            //Console.WriteLine(error);
 
         }
 
@@ -543,7 +543,7 @@ else
 
                 }
 
-                Console.WriteLine("DeletedImages.Count " + DeletedImages.Count);
+                //Console.WriteLine("DeletedImages.Count " + DeletedImages.Count);
 
                 //פעולת המחיקה
                 if (DeletedImages.Count > 0)
@@ -554,7 +554,7 @@ else
                 var deleteRespone = await Http.DeleteAsync("api/Games/DeleteQ/" + CurrentGame.UserID.ToString() + "/" + Qtodelet.ID);
                 if (deleteRespone.IsSuccessStatusCode == true)
                 {
-                    Console.WriteLine("שאלה נמחקה");
+                    //Console.WriteLine("שאלה נמחקה");
                     CurrentGame.GameQuestions.Remove(Qtodelet);
 
                     CurrentGame.IsPublish = false;
@@ -567,7 +567,7 @@ else
                         {
 
                             Game updateGame = postRespone.Content.ReadFromJsonAsync<Game>().Result;
-                            Console.WriteLine("פרסום בוטל ");
+                            //Console.WriteLine("פרסום בוטל ");
 
                         }
 
@@ -576,7 +576,7 @@ else
                 else
                 {
                     string error = deleteRespone.Content.ReadAsStringAsync().Result;
-                    Console.WriteLine(error);
+                    //Console.WriteLine(error);
 
                 }
 
@@ -621,14 +621,14 @@ else
                 var deleteRespone = await Http.DeleteAsync("api/Games/DeleteQ/" + CurrentGame.UserID.ToString() + "/" + Qtodelet.ID);
                 if (deleteRespone.IsSuccessStatusCode == true)
                 {
-                    Console.WriteLine("שאלה נמחקה");
+                    //Console.WriteLine("שאלה נמחקה");
                     CurrentGame.GameQuestions.Remove(Qtodelet);
-                    Console.WriteLine("הרשימה התעדכנה");
+                    //Console.WriteLine("הרשימה התעדכנה");
                 }
                 else
                 {
                     string error = deleteRespone.Content.ReadAsStringAsync().Result;
-                    Console.WriteLine(error);
+                    //Console.WriteLine(error);
 
                 }
 
@@ -669,14 +669,14 @@ else
                 {
                     string resizeUrl = saveResponse.Content.ReadAsStringAsync().Result;
                     myFileImage = resizeUrl;
-                    Console.WriteLine(resizeUrl);
+                    //Console.WriteLine(resizeUrl);
                     CurrentQuestion.QuestionImage = myFileImage;
 
                 }
                 else
                 {
                     string error = saveResponse.Content.ReadAsStringAsync().Result;
-                    Console.WriteLine(error);
+                    //Console.WriteLine(error);
 
                 }
             }
@@ -704,14 +704,14 @@ else
                 {
                     string resizeUrl = saveResponse.Content.ReadAsStringAsync().Result;
                     myFileImageCorrectAnswer = resizeUrl;
-                    Console.WriteLine(resizeUrl);
+                    //Console.WriteLine(resizeUrl);
                     CorrectAnswer.DistractorContent = myFileImageCorrectAnswer;
                     CorrectAnswer.IsImage = true;
                 }
                 else
                 {
                     string error = saveResponse.Content.ReadAsStringAsync().Result;
-                    Console.WriteLine(error);
+                    //Console.WriteLine(error);
 
                 }
             }
@@ -738,14 +738,14 @@ else
                 {
                     string resizeUrl = saveResponse.Content.ReadAsStringAsync().Result;
                     myFileImageWorngAnswer = resizeUrl;
-                    Console.WriteLine(resizeUrl);
+                    //Console.WriteLine(resizeUrl);
                     myDistractorList[Place].DistractorContent = myFileImageWorngAnswer;
                     myDistractorList[Place].IsImage = true;
                 }
                 else
                 {
                     string error = saveResponse.Content.ReadAsStringAsync().Result;
-                    Console.WriteLine(error);
+                    //Console.WriteLine(error);
 
                 }
             }
@@ -758,7 +758,7 @@ else
     {
         CurrentQuestion.QuestionDistractors = new List<Distractor>();
 
-        Console.WriteLine("CurrentQuestion.QuestionDistractors.count " + CurrentQuestion.QuestionDistractors.Count);
+        //Console.WriteLine("CurrentQuestion.QuestionDistractors.count " + CurrentQuestion.QuestionDistractors.Count);
 
         CorrectAnswer.IsCorrect = true;
         CorrectAnswer.QuestionID = CurrentQuestion.ID;
@@ -775,8 +775,8 @@ else
 
         }
 
-        Console.WriteLine("CurrentQuestion.QuestionDistractors.count " + CurrentQuestion.QuestionDistractors.Count);
-        Console.WriteLine("myDistractorList.Count" + myDistractorList.Count);
+        //Console.WriteLine("CurrentQuestion.QuestionDistractors.count " + CurrentQuestion.QuestionDistractors.Count);
+        //Console.WriteLine("myDistractorList.Count" + myDistractorList.Count);
 
         var postRespone = await Http.PostAsJsonAsync("api/Games/editQuestion/" + userId + "/" + gameID, CurrentQuestion);
 
@@ -784,14 +784,14 @@ else
         {
 
             Question updateQuestion = postRespone.Content.ReadFromJsonAsync<Question>().Result;
-            Console.WriteLine(" updateQuestion" + updateQuestion.QuestionDistractors.Count);
+            //Console.WriteLine(" updateQuestion" + updateQuestion.QuestionDistractors.Count);
 
 
             var GetResponse = await Http.GetAsync("api/Games/bygameID/" + gameID + "/" + userId);
             if (GetResponse.IsSuccessStatusCode == true)
             {
                 CurrentGame = GetResponse.Content.ReadFromJsonAsync<Game>().Result;
-                Console.WriteLine(" OnValidSubmit קריאה שניה של משחק לפי ID");
+                //Console.WriteLine(" OnValidSubmit קריאה שניה של משחק לפי ID");
                 // לעדכן טבלה
             }
             else
@@ -804,9 +804,9 @@ else
                 }
                 else
                 {
-                    Console.WriteLine(" OnValidSubmit תקלה בשמירת השאלה ");
+                    //Console.WriteLine(" OnValidSubmit תקלה בשמירת השאלה ");
 
-                    Console.WriteLine(error);
+                    //Console.WriteLine(error);
                 }
             }
         }
@@ -858,7 +858,7 @@ else
         //פעולת המחיקה
         if (saveResponse.IsSuccessStatusCode == true)
         {
-            Console.WriteLine(" נמחקה בהצלחה");
+            //Console.WriteLine(" נמחקה בהצלחה");
             //myFileImage = "";
         }
         else
@@ -867,10 +867,10 @@ else
 
             if (error == "user not logged in" || error == "Empty session")
             {
-                Console.WriteLine(error);
+                //Console.WriteLine(error);
 
             }
-            Console.WriteLine(error);
+            //Console.WriteLine(error);
 
         }
 
@@ -881,7 +881,7 @@ else
     void CleanFuncQuestionImage(string myFileImage) // פונקציה למחיקת תמונה בגזע השאלה
     {
         DeletedImages.Add(myFileImage); //הוספה לרשימת המחיקה
-        Console.WriteLine(" myFileImage" + myFileImage);
+        //Console.WriteLine(" myFileImage" + myFileImage);
 
         CurrentQuestion.QuestionImage = null;
         Xbuttonhidden2 = false;
@@ -923,8 +923,8 @@ else
 
     void GotoHowtoDialog(DialogOptions options) // פופאפ לתפריט ניווט איך משחקים
     {
-        Console.WriteLine("נכנס לפונקציה");
-        Console.WriteLine("options " + options);
+        //Console.WriteLine("נכנס לפונקציה");
+        //Console.WriteLine("options " + options);
         var dialog = DialogService.Show<HowtoplayDialog>(" ", options);
 
         //var result = await dialog.Result;
@@ -932,8 +932,8 @@ else
 
     void GotoOdot(DialogOptions options) //פופאפ לאודות
     {
-        Console.WriteLine("נכנס לפונקציה");
-        Console.WriteLine("options " + options);
+        //Console.WriteLine("נכנס לפונקציה");
+        //Console.WriteLine("options " + options);
         var dialog = DialogService.Show<Odot>(" ", options);
 
         //var result = await dialog.Result;

@@ -45,8 +45,8 @@
         userId = GameFromPage.UserID;
         gameCurrentName = GameFromPage.GameName;
         GameCode = GameFromPage.GameCode.ToString(); ;
-        Console.WriteLine("gameCurrentName : " + gameCurrentName);
-        Console.WriteLine("GameCode : " + GameCode);
+        //Console.WriteLine("gameCurrentName : " + gameCurrentName);
+        //Console.WriteLine("GameCode : " + GameCode);
 
         var postRespone = await Http.PostAsJsonAsync("api/Games/Update/Publish", GameFromPage);
         if (postRespone.IsSuccessStatusCode == true)

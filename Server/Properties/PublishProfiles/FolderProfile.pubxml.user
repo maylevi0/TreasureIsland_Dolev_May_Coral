@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\Users\Dolev\OneDrive\שולחן העבודה\New folder\GameProject\TreasureIsland_Dolev_May_Coral\Server\bin\Release\net5.0\publish\</_PublishTargetUrl>
+    <History>True|2022-11-03T13:36:58.7741486Z;True|2022-11-03T14:37:19.9818980+02:00;True|2022-11-03T14:01:27.1421472+02:00;True|2022-11-03T14:00:34.8151099+02:00;True|2022-11-03T13:56:26.3791669+02:00;</History>
+  </PropertyGroup>
+</Project>
